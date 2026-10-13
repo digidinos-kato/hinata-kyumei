@@ -352,6 +352,15 @@ const isWrong = id => !!(store.q[id] && store.q[id].wrong);
 const isBm = id => !!(store.q[id] && store.q[id].bookmarked);
 const isAnswered = id => !!(store.q[id] && store.q[id].attempts > 0);
 function toggleBm(id){ const r = rec(id); r.bookmarked = !r.bookmarked; save(); return r.bookmarked; }
+// what: 'wrong' = 復習リストだけ外す / 'stats' = 解答記録(正答率)だけ消す / 'all' = 両方。★は常に残す
+function clearRecords(ids, what){
+  for (const id of ids){
+    const r = store.q[id]; if (!r) continue;
+    if (what === 'wrong' || what === 'all'){ r.wrong = false; r.streak = 0; }
+    if (what === 'stats' || what === 'all'){ r.attempts = 0; r.correct = 0; r.last = null; r.streak = 0; delete r.ts; }
+  }
+  save();
+}
 
 function statsOf(ids){
   let answered = 0, lastOk = 0, wrong = 0;
@@ -498,6 +507,12 @@ function modeList(s){
   </div>`;
 }
 
+function secReset(s, st){
+  const has = st.answered || st.wrong;
+  return `<h2 class="sec-h">記録</h2><button class="btn btn-ghost" data-act="clearAsk" data-what="all" data-sid="${esc(s.id)}" ${has ? '' : 'disabled'}>この${s.kind === 'mock' ? '模擬試験' : '章'}の記録をリセット</button>
+    <p class="small muted" style="margin-top:6px">正答率と復習リストを消して、最初から解き直せます（★は残ります）。</p>`;
+}
+
 function vStart(){
   const s = SEC(view.sid);
   if (!s) return vHome();
@@ -520,9 +535,10 @@ function vStart(){
       </section>
       <h2 class="sec-h">練習モード（1問ずつ解説あり）</h2>
       ${modeList(s)}
+      ${secReset(s, st)}
     </main>`;
   }
-  return topbar(backBtn(), esc(p.k || '問題を選ぶ')) + `<main class="wrap">${head}<h2 class="sec-h">出題のしかた</h2>${modeList(s)}</main>`;
+  return topbar(backBtn(), esc(p.k || '問題を選ぶ')) + `<main class="wrap">${head}<h2 class="sec-h">出題のしかた</h2>${modeList(s)}${secReset(s, st)}</main>`;
 }
 
 function starBtn(id){
@@ -671,7 +687,12 @@ function vSettings(){
     <section class="card"><h2>学習の記録</h2>
       <p class="small muted">解いた問題 ${all.answered} / ${TOTAL}・のべ解答数 ${att}・復習中 ${wrongIds().length}・保存 ${bmIds().length}</p>
       <p class="small muted" style="margin-top:6px">記録はこの端末のこのブラウザだけに保存されます。${storageOK ? '' : '<br><b>現在、保存できない状態です。</b>'}</p></section>
-    <section class="card"><h2>進捗をリセット</h2><p class="small muted" style="margin-bottom:12px">すべての解答記録・復習リスト・保存・模試の結果を消去します。元に戻せません。</p>
+    <section class="card"><h2>記録をクリア</h2><p class="small muted" style="margin-bottom:12px">★保存した問題はどちらでも残ります。章ごとのクリアは各章の画面からできます。</p>
+      <div class="stack">
+        <button class="btn" data-act="clearAsk" data-what="wrong" ${wrongIds().length ? '' : 'disabled'}>復習リストをクリア（${wrongIds().length}問）</button>
+        <button class="btn" data-act="clearAsk" data-what="stats" ${all.answered ? '' : 'disabled'}>正答率・解答記録をクリア</button>
+      </div></section>
+    <section class="card"><h2>進捗をすべてリセット</h2><p class="small muted" style="margin-bottom:12px">すべての解答記録・復習リスト・保存・模試の結果を消去します。元に戻せません。</p>
       <button class="btn btn-danger" data-act="resetAsk">進捗をリセット</button></section>
   </main>`;
 }
@@ -839,6 +860,22 @@ const ACT = {
     if (!MR) return;
     const ids = MR.ids.filter(id => MR.answers[id] !== QMAP.get(id).q.answer);
     startPractice(ids, '模試の間違い直し');
+  },
+  clearAsk(d){
+    const s = d.sid ? SEC(d.sid) : null;
+    const ids = s ? secIds(s) : ALL_IDS;
+    const where = s ? `「${shortLabel(s)}」の` : 'すべての問題の';
+    const txt = {
+      wrong: ['復習リストをクリアしますか？', `${where}「間違えた問題」リストを空にします。正答率と★はそのまま残ります。`],
+      stats: ['正答率をクリアしますか？', `${where}解答記録（解いた数・正答率）を消します。復習リストと★はそのまま残ります。`],
+      all:   ['記録をリセットしますか？', `${where}正答率・復習リスト${s && s.kind === 'mock' ? '・模試の結果' : ''}を消します。★は残ります。元に戻せません。`]
+    }[d.what];
+    if (!txt) return;
+    openModal({ title: txt[0], body: txt[1], ok: 'クリアする', danger: true, onOk(){
+      clearRecords(ids, d.what);
+      if (s && s.kind === 'mock' && d.what === 'all' && store.mocks){ delete store.mocks[s.id]; save(); }
+      render(false);
+    } });
   },
   resetAsk(){
     openModal({ title:'進捗をリセットしますか？', body:'すべての解答記録・復習リスト・保存した問題・模試の結果が消えます。元に戻せません。', ok:'リセットする', danger:true,
