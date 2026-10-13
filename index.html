@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="救命士ドリル">
+</head>
+<body>
+<title>救命士ドリル</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f5f7;
+  --surface:#ffffff;
+  --surface-2:#eaeef2;
+  --text:#14202b;
+  --muted:#566472;
+  --border:#d5dce3;
+  --accent:#c2410c;
+  --accent-strong:#9a3412;
+  --accent-ink:#ffffff;
+  --accent-soft:#fdeee4;
+  --ok:#17803d;
+  --ok-ink:#ffffff;
+  --ok-soft:#e3f5e9;
+  --ng:#c4242b;
+  --ng-ink:#ffffff;
+  --ng-soft:#fde7e8;
+  --star:#b7791f;
+  --focus:#1d5fd1;
+  --scrim:rgba(10,18,26,.55);
+  --shadow:0 1px 2px rgba(16,24,32,.06),0 2px 8px rgba(16,24,32,.05);
+  --track:#dfe5ea;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1318;
+    --surface:#171e25;
+    --surface-2:#212a33;
+    --text:#e6ecf1;
+    --muted:#9babb9;
+    --border:#2d3945;
+    --accent:#ff8a4c;
+    --accent-strong:#ffa877;
+    --accent-ink:#1b0c03;
+    --accent-soft:#3a2216;
+    --ok:#4cc37c;
+    --ok-ink:#06180d;
+    --ok-soft:#12301f;
+    --ng:#ff6b70;
+    --ng-ink:#2a0607;
+    --ng-soft:#3a1719;
+    --star:#f2c14e;
+    --focus:#7fb0ff;
+    --scrim:rgba(0,0,0,.65);
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+    --track:#2a343e;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1318;
+  --surface:#171e25;
+  --surface-2:#212a33;
+  --text:#e6ecf1;
+  --muted:#9babb9;
+  --border:#2d3945;
+  --accent:#ff8a4c;
+  --accent-strong:#ffa877;
+  --accent-ink:#1b0c03;
+  --accent-soft:#3a2216;
+  --ok:#4cc37c;
+  --ok-ink:#06180d;
+  --ok-soft:#12301f;
+  --ng:#ff6b70;
+  --ng-ink:#2a0607;
+  --ng-soft:#3a1719;
+  --star:#f2c14e;
+  --focus:#7fb0ff;
+  --scrim:rgba(0,0,0,.65);
+  --shadow:0 1px 2px rgba(0,0,0,.4);
+  --track:#2a343e;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"BIZ UDPGothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic UI",Meiryo,system-ui,sans-serif;font-size:16px;line-height:1.65;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:8px}
+[tabindex="-1"]:focus{outline:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* top bar */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--border)}
+.topbar-in{max-width:680px;margin:0 auto;min-height:56px;padding:4px 8px;display:flex;align-items:center;gap:4px}
+.brand{display:flex;align-items:center;gap:10px;padding-left:8px;font-weight:700;font-size:18px;flex:1;min-width:0}
+.logo{width:28px;height:28px;flex:none}
+.logo .bgc{fill:var(--accent)}
+.logo .fg{fill:var(--accent-ink)}
+.top-title{flex:1;min-width:0;text-align:center;font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-title small{display:block;font-weight:400;font-size:12px;color:var(--muted);line-height:1.2}
+.icon-btn{min-width:48px;min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:4px;border:0;background:transparent;border-radius:12px;padding:0 10px;color:var(--text)}
+.icon-btn svg{width:24px;height:24px}
+.icon-btn .lbl{font-size:14px}
+.icon-btn[aria-pressed="true"]{color:var(--star)}
+.spacer{min-width:48px}
+.pbar-top{height:4px;background:var(--track)}
+.pbar-top>span{display:block;height:100%;background:var(--accent);transition:width .25s ease}
+
+/* layout */
+.wrap{max-width:680px;margin:0 auto;padding:16px 16px 40px}
+.wrap.has-bottom{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))}
+.stack>*+*{margin-top:12px}
+.sec-h{font-size:15px;font-weight:700;color:var(--muted);margin:28px 0 10px;letter-spacing:.04em}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.notice{background:var(--accent-soft);border:1px solid var(--border);color:var(--text);border-radius:12px;padding:10px 14px;font-size:14px;margin-bottom:12px}
+
+/* hero */
+.hello{color:var(--muted);font-size:14px}
+.hero h1{font-size:20px;line-height:1.4;margin:2px 0 14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.stat{background:var(--surface-2);border-radius:12px;padding:10px 8px;text-align:center}
+.stat b{display:block;font-size:22px;line-height:1.2;font-variant-numeric:tabular-nums}
+.stat b small{font-size:13px;font-weight:400;color:var(--muted)}
+.stat span{font-size:12px;color:var(--muted)}
+.bar{display:block;height:10px;border-radius:99px;background:var(--track);overflow:hidden}
+.bar>span{display:block;height:100%;background:var(--accent);border-radius:99px}
+.bar.thin{height:6px}
+
+/* buttons */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:12px 18px;border-radius:14px;border:1.5px solid var(--border);background:var(--surface);font-weight:700;font-size:16px;text-align:center;width:100%;line-height:1.3}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn-danger{background:var(--ng);border-color:var(--ng);color:var(--ng-ink)}
+.btn-ghost{background:transparent}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn .badge{display:inline-block;min-width:26px;padding:1px 8px;border-radius:99px;background:var(--ng);color:var(--ng-ink);font-size:13px}
+.btn-primary .badge{background:var(--accent-ink);color:var(--accent)}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quick{display:grid;gap:10px;margin-top:16px}
+@media (hover:hover){
+  .btn:not([disabled]):hover{border-color:var(--accent)}
+  .btn-primary:not([disabled]):hover{background:var(--accent-strong);border-color:var(--accent-strong)}
+  .sec-card:hover,.mode:not([disabled]):hover{border-color:var(--accent)}
+  .choice:not([disabled]):hover{border-color:var(--accent)}
+}
+
+/* section cards */
+.sec-card{display:block;width:100%;text-align:left;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow)}
+.sec-card+.sec-card{margin-top:10px}
+.kicker{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.06em}
+.sec-card .t{display:block;font-weight:700;font-size:16px;line-height:1.45}
+.sec-card .s{display:block;font-size:13px;color:var(--muted);line-height:1.5;margin:2px 0 10px}
+.sec-card .m{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px;color:var(--muted);margin-top:8px;font-variant-numeric:tabular-nums}
+.sec-card .m .w{color:var(--ng);font-weight:700}
+.tag{display:inline-block;font-size:11px;font-weight:700;border:1px solid var(--accent);color:var(--accent);border-radius:6px;padding:0 6px;margin-left:6px;vertical-align:2px}
+
+/* start view */
+.head h1{font-size:21px;line-height:1.4;margin:2px 0 6px}
+.head p{color:var(--muted);font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{background:var(--surface-2);border-radius:99px;padding:4px 12px;font-size:13px;font-variant-numeric:tabular-nums}
+.modes{display:grid;gap:10px}
+.mode{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 12px;text-align:left;width:100%;min-height:64px;padding:12px 16px;border-radius:14px;border:1.5px solid var(--border);background:var(--surface)}
+.mode b{font-size:16px}
+.mode .d{grid-column:1;font-size:13px;color:var(--muted)}
+.mode .n{grid-row:1/span 2;grid-column:2;font-size:14px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.mode[disabled]{opacity:.45;cursor:not-allowed}
+.mock-box{border-left:4px solid var(--accent)}
+.mock-box h2{font-size:16px;margin-bottom:4px}
+.hist{list-style:none;margin:10px 0 0;padding:0;font-size:14px}
+.hist li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid var(--border);font-variant-numeric:tabular-nums}
+
+/* question */
+.qmeta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-4px -8px 4px 0}
+.qmeta .lab{font-size:13px;color:var(--muted)}
+.qmeta .lab b{color:var(--accent)}
+.star-btn{min-width:48px;min-height:48px;border:0;background:transparent;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:4px;color:var(--muted);font-size:13px;padding:0 8px}
+.star-btn svg{width:24px;height:24px}
+.star-btn[aria-pressed="true"]{color:var(--star)}
+.star-btn[aria-pressed="true"] svg path{fill:currentColor}
+.qtext{font-size:18px;line-height:1.75;font-weight:700;white-space:pre-wrap;word-break:break-word;margin-bottom:18px}
+.choices{display:grid;gap:10px}
+.choice{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:12px;width:100%;min-height:58px;padding:12px 14px;text-align:left;border:2px solid var(--border);border-radius:14px;background:var(--surface);font-size:16px;line-height:1.55;transition:transform .08s ease,border-color .15s ease,background-color .15s ease}
+.choice .cl{width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--surface-2);font-weight:700;font-size:15px}
+.choice .ct{white-space:pre-wrap;word-break:break-word}
+.choice .mk{font-weight:700;font-size:13px;white-space:nowrap}
+.choice:not([disabled]):active{transform:scale(.985)}
+.choice[disabled]{cursor:default}
+.choice.is-sel{border-color:var(--accent);background:var(--accent-soft)}
+.choice.is-sel .cl{background:var(--accent);color:var(--accent-ink)}
+.choice.is-ok{border-color:var(--ok);background:var(--ok-soft)}
+.choice.is-ok .cl{background:var(--ok);color:var(--ok-ink)}
+.choice.is-ok .mk{color:var(--ok)}
+.choice.is-ng{border-color:var(--ng);background:var(--ng-soft)}
+.choice.is-ng .cl{background:var(--ng);color:var(--ng-ink)}
+.choice.is-ng .mk{color:var(--ng)}
+.choice.is-dim{opacity:.6}
+.feedback{margin-top:18px;border-radius:14px;padding:14px 16px;font-size:17px;font-weight:700;display:flex;align-items:center;gap:10px;scroll-margin-top:80px;scroll-margin-bottom:120px}
+.feedback svg{width:28px;height:28px;flex:none}
+.feedback.ok{background:var(--ok-soft);color:var(--ok);border:1.5px solid var(--ok)}
+.feedback.ng{background:var(--ng-soft);color:var(--ng);border:1.5px solid var(--ng)}
+.feedback .sub{display:block;font-size:14px;font-weight:400;color:var(--text)}
+.exp{margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px}
+.exp h2,.exp h3{font-size:14px;color:var(--accent);margin-bottom:6px;letter-spacing:.05em}
+.exp p{white-space:pre-wrap;word-break:break-word;font-size:15px;line-height:1.8}
+.qhist{margin-top:10px;font-size:13px;color:var(--muted)}
+
+/* bottom bar */
+.bottombar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--border);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.bottombar-in{max-width:680px;margin:0 auto;display:grid;gap:10px;grid-template-columns:1fr}
+.bottombar-in.two{grid-template-columns:1fr 1fr}
+
+/* mock grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:6px;margin-bottom:16px}
+.grid button{min-height:48px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}
+.grid button.done{background:var(--accent-soft);border-color:var(--accent)}
+.grid button.cur{outline:3px solid var(--accent);outline-offset:1px}
+.timer{font-variant-numeric:tabular-nums}
+
+/* results */
+.score{text-align:center;padding:24px 16px}
+.score .big{font-size:44px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.score .big small{font-size:20px;color:var(--muted);font-weight:400}
+.score .pct{font-size:18px;font-weight:700;color:var(--accent);margin-top:4px}
+.score .msg{margin-top:8px;color:var(--muted);font-size:15px}
+.rv{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.rv+.rv{margin-top:8px}
+.rv summary{list-style:none;display:grid;grid-template-columns:32px 1fr 20px;gap:10px;align-items:start;padding:12px 14px;min-height:56px;cursor:pointer}
+.rv summary::-webkit-details-marker{display:none}
+.rv summary::after{content:"";width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-top:8px;transition:transform .15s}
+.rv[open] summary::after{transform:rotate(225deg);margin-top:12px}
+.rv-mark{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;background:var(--surface-2);color:var(--muted)}
+.rv-mark.ok{background:var(--ok-soft);color:var(--ok)}
+.rv-mark.ng{background:var(--ng-soft);color:var(--ng)}
+.rv-mark.st{color:var(--star)}
+.rv-meta{display:block;font-size:12px;color:var(--muted)}
+.rv-q{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:15px;line-height:1.55}
+.rv[open] .rv-q{display:none}
+.rv-body{padding:0 14px 14px}
+.rv-body .full{white-space:pre-wrap;word-break:break-word;font-weight:700;line-height:1.7;margin-bottom:10px}
+.rv-ch{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.rv-ch li{display:grid;grid-template-columns:26px 1fr;gap:8px;padding:8px 10px;border-radius:10px;background:var(--surface-2);font-size:14px;line-height:1.55}
+.rv-ch li .ct{white-space:pre-wrap;word-break:break-word}
+.rv-ch li.ok{background:var(--ok-soft);box-shadow:inset 0 0 0 1.5px var(--ok)}
+.rv-ch li.ng{background:var(--ng-soft);box-shadow:inset 0 0 0 1.5px var(--ng)}
+.rv-ch .tg{display:block;font-size:12px;font-weight:700}
+.rv-ch li.ok .tg{color:var(--ok)}
+.rv-ch li.ng .tg{color:var(--ng)}
+.rv-body .exp{background:var(--bg)}
+.rv-tools{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:13px;color:var(--muted)}
+
+/* tabs */
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--surface-2);border-radius:14px;padding:4px;gap:4px;margin-bottom:14px}
+.tabs button{min-height:48px;border:0;border-radius:10px;background:transparent;font-weight:700;font-size:15px;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+.empty{text-align:center;color:var(--muted);padding:32px 16px}
+
+/* settings */
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.seg span{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:12px;border:1.5px solid var(--border);font-weight:700;font-size:15px}
+.seg input:checked+span{border-color:var(--accent);background:var(--accent-soft);color:var(--text)}
+.seg input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+.card h2{font-size:16px;margin-bottom:4px}
+
+/* modal */
+.scrim{position:fixed;inset:0;z-index:50;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.dialog{background:var(--surface);color:var(--text);border-radius:18px;padding:20px 18px 16px;width:100%;max-width:440px;box-shadow:0 10px 40px rgba(0,0,0,.25);animation:pop .18s ease-out}
+.dialog h2{font-size:18px;margin-bottom:8px}
+.dialog p{font-size:15px;color:var(--muted);white-space:pre-wrap}
+.dialog .btn-row{margin-top:18px}
+@media (min-width:600px){.scrim{align-items:center}}
+@keyframes pop{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+  .choice:not([disabled]):active{transform:none}
+}
+</style>
+
+<div id="app" aria-live="off"></div>
+<div id="modal"></div>
+
+<script>
+const DATA = {"title":"救急救命士 完全対策問題集","sections":[{"id":"c1","kind":"chapter","title":"第1章 救急医療の基礎と救急体制","subtitle":"救急救命士の役割・医療体制・関連法規・メディカルコントロール","questions":[{"id":"c1-1","n":1,"q":"日本で救急救命士法が公布された年として正しいものはどれか。","choices":["2010年","1985年","1991年","2000年"],"answer":2,"exp":"救急救命士法は1991年（平成3年）に公布・施行された。"},{"id":"c1-2","n":2,"q":"救急救命士の業務範囲として最も適切なものはどれか。","choices":["手術","薬剤の独立処方","重度傷病者に対する医師の指示下の救急救命処置","診断と診断書の交付"],"answer":2,"exp":"救急救命士は医師の指示のもとで重度傷病者に対する救急救命処置を行う国家資格であり、手術や診断書交付などの医行為はできない。"},{"id":"c1-3","n":3,"q":"救急救命士の業務を規定する法律として正しいものはどれか。","choices":["医師法","地方自治法","救急救命士法","看護師法"],"answer":2,"exp":"救急救命士の業務は救急救命士法に定められている。"},{"id":"c1-4","n":4,"q":"メディカルコントロール（MC）体制の主目的として最も適切なものはどれか。","choices":["病院前救護の質を確保する","救急隊員数を増加させる","救急車を増やす","搬送時間の統計のみを取る"],"answer":0,"exp":"MC体制は医師の関与により病院前救護の質（オンライン・オフライン両面）を確保する仕組みである。"},{"id":"c1-5","n":5,"q":"オンラインメディカルコントロールの説明として正しいものはどれか。","choices":["救急搬送を拒否すること","研修だけを行うこと","現場で医師から直接指示・助言を受けること","事後検証のみ行うこと"],"answer":2,"exp":"オンラインMCは救急現場で救急救命士が無線や電話を通じて医師から直接指示・助言を受ける仕組みである。"},{"id":"c1-6","n":6,"q":"オフラインメディカルコントロールの具体例として正しいものはどれか。","choices":["救急出動の拒否","警察との連絡","プロトコル作成、事後検証、教育・再教育","現場での医師からの無線指示"],"answer":2,"exp":"オフラインMCにはプロトコル作成、事後検証、再教育・研修など、リアルタイム以外の品質管理活動が含まれる。"},{"id":"c1-7","n":7,"q":"日本の救急医療体制の初期・二次・三次の区分のうち「三次救急」の例として正しいものはどれか。","choices":["救命救急センター","在宅訪問診療","休日夜間急患センター","一般診療所"],"answer":0,"exp":"三次救急は生命に関わる重篤症例を扱い、救命救急センターが中心的役割を担う。"},{"id":"c1-8","n":8,"q":"救急搬送の原則として正しいものはどれか。","choices":["搬送先は毎回ランダムに決定する","希望する病院へ無条件で搬送する","最も近い診療所へ必ず搬送する","傷病者の状態に応じた適切な医療機関へ搬送する"],"answer":3,"exp":"救急搬送は傷病者の重症度・緊急度に応じ、対応可能な医療機関を選定することが原則である。"},{"id":"c1-9","n":9,"q":"救急救命士が実施できる救急救命処置のうち、特定行為に該当しないものはどれか。","choices":["静脈路確保のための輸液","器具を用いた気道確保","口腔内吸引","薬剤投与（エピネフリン等）"],"answer":2,"exp":"特定行為は器具による気道確保、静脈路確保と輸液、薬剤投与などであり、口腔内吸引は一般的な処置で特定行為ではない。"},{"id":"c1-10","n":10,"q":"救急救命士の特定行為として正しくないものはどれか。","choices":["エピネフリンの投与","外科的気管切開","乳酸リンゲル液の輸液","器具による気道確保"],"answer":1,"exp":"救急救命士は気管切開のような外科的処置は実施できない。特定行為は気道確保（器具）、輸液、薬剤投与等に限られる。"},{"id":"c1-11","n":11,"q":"救急救命士が心肺機能停止傷病者以外にも実施可能となった処置として正しいものはどれか。","choices":["心臓カテーテル検査","心肺機能停止前の静脈路確保および輸液","気管切開術","全身麻酔の導入"],"answer":1,"exp":"2014年の制度改正によりショック（心肺停止前）傷病者に対する静脈路確保・輸液が、特定の条件下で可能となった。"},{"id":"c1-12","n":12,"q":"救急救命士が投与可能な薬剤として正しいものはどれか。","choices":["エピネフリン（アドレナリン）","経口降圧薬","抗生物質","インスリン製剤"],"answer":0,"exp":"救急救命士は心肺停止傷病者に対する医師の指示下でエピネフリンを投与できる。"},{"id":"c1-13","n":13,"q":"低血糖の傷病者に救急救命士が投与できる薬剤はどれか。","choices":["アトロピン","ブドウ糖（ブドウ糖溶液）","インスリン","リドカイン"],"answer":1,"exp":"血糖測定により低血糖と判明した心肺停止前傷病者に対しては、医師の指示下でブドウ糖溶液を投与できる。"},{"id":"c1-14","n":14,"q":"救急救命士の養成課程に関する記述として正しいものはどれか。","choices":["医師国家試験合格と同等である","消防学校卒業のみで自動的に資格が得られる","特に教育は不要","厚生労働大臣指定の養成所等で所定の教育を受けた後に国家試験受験資格を得る"],"answer":3,"exp":"救急救命士は厚生労働大臣指定の養成所等で所定のカリキュラムを修了した上で国家試験に合格する必要がある。"},{"id":"c1-15","n":15,"q":"日本における救急要請の無料電話番号はどれか。","choices":["118","119","104","110"],"answer":1,"exp":"日本の119番は消防・救急要請の番号で、無料で通報できる。110番は警察、118番は海上保安庁。"},{"id":"c1-16","n":16,"q":"救急車の現場到着時間（全国平均）としておおむね該当するのはどれか。","choices":["約30秒","約1分","約10分前後","約1時間"],"answer":2,"exp":"消防庁の統計では近年、119番通報から救急車の現場到着までは全国平均でおおむね10分前後で推移している。"},{"id":"c1-17","n":17,"q":"トリアージの第一の目的として最も適切なものはどれか。","choices":["限られた医療資源で最大多数を救命する","軽症者を優先する","患者の要望順に治療する","同時にすべて治療する"],"answer":0,"exp":"トリアージは災害等で限られた医療資源を有効活用し、最大多数の救命を目的として緊急度・重症度で優先順位をつける行為。"},{"id":"c1-18","n":18,"q":"START法のトリアージカテゴリで「赤」が意味するのはどれか。","choices":["軽症","死亡・救命困難","中等症","最優先治療群（重症で救命可能）"],"answer":3,"exp":"START法では赤＝最優先（重症だが救命可能）、黄＝中等症、緑＝軽症、黒＝救命困難・死亡に分類する。"},{"id":"c1-19","n":19,"q":"START法のトリアージカテゴリで「黒」が意味するのはどれか。","choices":["中等症","最優先重症","救命困難・死亡","軽症"],"answer":2,"exp":"START法の黒カテゴリは救命困難または死亡と判断された傷病者を示す。"},{"id":"c1-20","n":20,"q":"災害現場でCSCATTTのうち「C」は何を指すか。","choices":["Care（治療）","Continue（継続）","Command（指揮）","Confirm（確認）"],"answer":2,"exp":"CSCATTTのCはCommand and Control（指揮・統制）を指し、災害医療の基本的な行動原則の一つである。"},{"id":"c1-21","n":21,"q":"災害医療の3T（TTT）に含まれるものはどれか。","choices":["Test, Treatment, Transfer","Trust, Truth, Timing","Time, Team, Technique","Triage, Treatment, Transport"],"answer":3,"exp":"3TはTriage（選別）、Treatment（応急処置）、Transport（搬送）を示し、災害医療の中核要素。"},{"id":"c1-22","n":22,"q":"DMATの主な役割として正しいものはどれか。","choices":["災害急性期の医療支援活動","病院経営の監査","平時の地域医療の主担","医療保険の審査"],"answer":0,"exp":"DMAT（災害派遣医療チーム）は災害急性期（概ね48時間以内）に現地で活動できる機動性を持った医療チーム。"},{"id":"c1-23","n":23,"q":"救急搬送におけるドクターヘリの主な役割はどれか。","choices":["医師同乗による迅速な初期治療と搬送","物資輸送のみ","観光用","警察の捜査支援"],"answer":0,"exp":"ドクターヘリは医師・看護師が同乗して現場直近へ駆けつけ、初期治療と迅速な搬送を行うシステム。"},{"id":"c1-24","n":24,"q":"救急救命士が守秘義務を負う根拠となる主たる法律はどれか。","choices":["医師法","道路交通法","個人情報保護法のみ","救急救命士法"],"answer":3,"exp":"救急救命士の守秘義務は救急救命士法に規定されている。退職後も継続する。"},{"id":"c1-25","n":25,"q":"救急救命士法に規定される欠格事由に含まれないものはどれか。","choices":["本人の趣味","精神の機能の障害により業務を適正に行えない場合","罰金以上の刑に処せられた一定の者","麻薬・大麻等の中毒者"],"answer":0,"exp":"救急救命士法の欠格事由は心身の機能障害、中毒、罰金以上の刑罰履歴等であり、本人の趣味は該当しない。"},{"id":"c1-26","n":26,"q":"医療法に定める「医療機関」の区分として正しいものはどれか。","choices":["薬局、学校、役所","薬局、銀行、郵便局","病院、宿泊施設、飲食店","病院、診療所、助産所"],"answer":3,"exp":"医療法では医療機関を病院、診療所、助産所に区分している。"},{"id":"c1-27","n":27,"q":"医療法における「病院」の病床数の要件として正しいものはどれか。","choices":["100床以上","20床以上","5床以上","500床以上"],"answer":1,"exp":"医療法上、病院は20床以上の病床を持つ施設、診療所は19床以下または無床の施設と定義される。"},{"id":"c1-28","n":28,"q":"救急告示病院の制度に関する説明として正しいものはどれか。","choices":["都道府県知事が救急業務に協力する医療機関として告示する","警察が認定する","国が直接指定する","総理大臣が告示する"],"answer":0,"exp":"救急告示病院は厚生省令に基づき都道府県知事が告示する救急業務協力医療機関である。"},{"id":"c1-29","n":29,"q":"医療機関の機能分化として一次・二次・三次の目的はどれか。","choices":["重症度・緊急度に応じて適切な機能へ振り分けること","全疾病を1病院で治療すること","医療費を無条件に増やすこと","病院数を減らすこと"],"answer":0,"exp":"医療機関の階層化は重症度・緊急度に応じて資源を効率的に配分し、最適な医療を提供するため。"},{"id":"c1-30","n":30,"q":"救急救命士が活動する主な場として正しくないものはどれか。","choices":["美術館の展示ホール","救急車内","搬送先医療機関の入口まで","病院前の救護現場"],"answer":0,"exp":"救急救命士の主な活動場所は救急現場から病院までの病院前救護領域で、美術館等は通常業務の場ではない。"},{"id":"c1-31","n":31,"q":"救急救命士による処置の範囲拡大の背景として最も重要な要因はどれか。","choices":["医師数の増加","救急救命士の人件費を下げるため","病院前救護の質向上が救命率改善に寄与するため","救急車台数の減少"],"answer":2,"exp":"病院前からの適切な処置が救命率・社会復帰率に影響するエビデンスが積み重なり、処置範囲が段階的に拡大してきた。"},{"id":"c1-32","n":32,"q":"救急救命士法における「救急救命処置」の定義に含まれる要素はどれか。","choices":["重度傷病者が病院搬送される途中で実施されること","診療所の常勤業務","退院後の在宅ケア","医療事務の補助"],"answer":0,"exp":"救急救命処置は、重度傷病者が医療機関に搬送されるまでの間（および2021年改正により、医療機関到着後に入院するまでの間）に、症状の著しい悪化防止や生命の危険の回避のために行う処置と定義されている。","revised":true},{"id":"c1-33","n":33,"q":"医療機関到着後でも、一定条件下で救急救命士の処置が認められるようになった背景はどれか。","choices":["事務作業を増やすため","救急搬送を減らすため","救急外来での迅速対応を可能にするため","医師数を削減するため"],"answer":2,"exp":"2021年の法改正により医療機関到着後でも、一定の条件下で救急救命士が処置を継続できるようになり、迅速対応が可能になった。"},{"id":"c1-34","n":34,"q":"救急救命士の処置拡大（2021年改正）により、院内で可能となった行為として正しいものはどれか。","choices":["処方箋の発行","手術の執刀","診断書の交付","救急外来での救急救命処置の継続"],"answer":3,"exp":"2021年の法改正により、救急救命士は救急外来等で一定条件のもとで救急救命処置を継続できるようになった。"},{"id":"c1-35","n":35,"q":"救急救命士の継続教育で重視される点はどれか。","choices":["関係法令の無視","業務から離れる","教育の固定化","最新の医学知識・ガイドラインの習得"],"answer":3,"exp":"ガイドラインの改訂や新たな医学的知見に応じ、生涯学習を通じて知識・技能をアップデートすることが重要。"},{"id":"c1-36","n":36,"q":"救急医療における「ゴールデンアワー」の考え方はどれか。","choices":["医師の勤務時間","夜間に活動が活発になる時間","救急車の運用時間","重症外傷等で初期治療を行うべき最初の1時間を重視する考え方"],"answer":3,"exp":"ゴールデンアワーは重症外傷等で発症から1時間以内の初期治療が転帰に大きく影響するとする考え方。"},{"id":"c1-37","n":37,"q":"外傷治療における「プラチナ10分」の意味として最も適切なものはどれか。","choices":["現場活動時間をできるだけ10分以内に抑える考え方","トリアージの10分","10分後に到着すべきという意味","10分間の休憩"],"answer":0,"exp":"プラチナ10分は重症外傷で現場滞在を10分以内に抑え、迅速搬送を重視する考え方。"},{"id":"c1-38","n":38,"q":"救急救命士の業務記録の意義として正しくないものはどれか。","choices":["法的記録として保管する","事実を改ざんして体裁を整えるため","MC事後検証の資料となる","医療機関への引き継ぎ資料"],"answer":1,"exp":"業務記録は事後検証・引継ぎ・法的証拠として重要であり、改ざんは絶対に許されない。"},{"id":"c1-39","n":39,"q":"応急手当普及活動の目的として最も適切なものはどれか。","choices":["救急車出動を減らすため","バイスタンダーCPR実施率の向上と救命率向上","医療費を増やすため","消防職員数を減らすため"],"answer":1,"exp":"市民による応急手当（バイスタンダーCPR等）は救命率向上に直結するため、消防機関は普及講習を行っている。"},{"id":"c1-40","n":40,"q":"AEDの普及促進のきっかけとなった政策はどれか。","choices":["2010年の消防法改正","2004年の一般市民によるAED使用の容認","1995年の保険改正","2020年の道路交通法改正"],"answer":1,"exp":"2004年に非医療者によるAEDの使用が認められ、公共施設等への普及が急速に進んだ。"},{"id":"c1-41","n":41,"q":"救命の連鎖（Chain of Survival）に含まれないものはどれか。","choices":["早期CPR","心停止の早期認識と通報","事後報告書の作成","早期除細動"],"answer":2,"exp":"救命の連鎖は早期認識・通報、早期CPR、早期除細動、二次救命処置と心拍再開後の集中治療で構成される。"},{"id":"c1-42","n":42,"q":"成人の心停止で最も重要な初期行動はどれか。","choices":["腹部圧迫","下肢挙上","胸骨圧迫と早期除細動","経口補水液"],"answer":2,"exp":"成人の心停止ではまず胸骨圧迫を早期に開始し、必要に応じて早期の除細動を行うことが生存率を左右する。"},{"id":"c1-43","n":43,"q":"救急救命士が他の医療職と連携する際に重要な姿勢はどれか。","choices":["情報を独占する","責任を他人に押し付ける","独断専行する","情報共有と役割分担を明確にする"],"answer":3,"exp":"チーム医療では情報共有と役割分担が基本であり、救急救命士と医師・看護師等の円滑な連携が傷病者の救命率を高める。"},{"id":"c1-44","n":44,"q":"救急救命士の倫理として最も重要な態度はどれか。","choices":["自己評価優先","業績優先","傷病者の最善の利益を考える","速度のみを追求する"],"answer":2,"exp":"医療職としての倫理の基本は傷病者の最善の利益を常に第一に考えることである。"},{"id":"c1-45","n":45,"q":"救急現場での安全確認で最優先すべき項目はどれか。","choices":["傷病者の氏名確認","現場の安全（自分と隊員、傷病者）","業務日報の記入","搬送先の決定"],"answer":1,"exp":"救急活動は現場安全の確認を最優先に行う。自分と隊員、傷病者の安全が確保できなければ活動はできない。"},{"id":"c1-46","n":46,"q":"感染防止（スタンダードプリコーション）の基本として正しいものはどれか。","choices":["感染症が確定した場合のみ防護具を着用する","すべての体液等を感染性があるものとして扱う","手袋は不要","マスクのみで十分"],"answer":1,"exp":"スタンダードプリコーションはすべての体液・血液・分泌物を感染性があるものとして扱い、必要な防護具を着用する考え方。"},{"id":"c1-47","n":47,"q":"救急現場で感染防護具として一般的に装着しないものはどれか。","choices":["ゴーグル","手袋","金属製腕時計","マスク"],"answer":2,"exp":"手袋・マスク・ゴーグル・ガウン等が標準的な個人防護具で、金属製腕時計は感染管理上むしろ外すべきもの。"},{"id":"c1-48","n":48,"q":"救急救命士の処置記録（活動記録票）に含めるべき項目として正しくないものはどれか。","choices":["隊員の私的感想","引き継ぎ時の状況","発生時刻・観察所見","実施した処置内容"],"answer":0,"exp":"活動記録票は客観的事実を記録するものであり、個人的感想は不要。事実・観察・処置・引継ぎが基本項目。"},{"id":"c1-49","n":49,"q":"救急搬送における傷病者観察の基本的なABCDアプローチのうち、Aが示すものはどれか。","choices":["Age（年齢）","Ability（能力）","Airway（気道）","Action（行動）"],"answer":2,"exp":"ABCDアプローチはAirway、Breathing、Circulation、Disability（意識）の順で評価する。"},{"id":"c1-50","n":50,"q":"JCS（ジャパンコーマスケール）で「痛み刺激で開眼する」状態はどれに該当するか。","choices":["100","3","30","1"],"answer":2,"exp":"JCSで痛み刺激を加えつつ呼びかけを繰り返すとかろうじて開眼する状態はII-30。II-10は普通の呼びかけで容易に開眼、II-20は大きな声または体を揺さぶることにより開眼、III-100は痛み刺激に対し払いのける動作をする状態。","revised":true},{"id":"c1-51","n":51,"q":"GCS（グラスゴーコーマスケール）の最高スコアとして正しいものはどれか。","choices":["10","100","20","15"],"answer":3,"exp":"GCSは開眼（E1-4）、言語（V1-5）、運動（M1-6）の合計で、最高スコアは15（正常）、最低スコアは3である。"},{"id":"c1-52","n":52,"q":"成人の正常脈拍数として最も適切な範囲はどれか。","choices":["200〜300回/分","30〜40回/分","150〜200回/分","60〜100回/分"],"answer":3,"exp":"成人の安静時脈拍は一般に60〜100回/分が正常範囲とされる。"},{"id":"c1-53","n":53,"q":"成人の正常呼吸数の目安として正しいものはどれか。","choices":["40〜60回/分","12〜20回/分","80〜100回/分","2〜4回/分"],"answer":1,"exp":"成人の安静時呼吸数はおおむね12〜20回/分が正常範囲とされる。"},{"id":"c1-54","n":54,"q":"成人の正常血圧（収縮期）の目安として正しいものはどれか。","choices":["60以下","200以上","おおむね120前後（〜140未満）","40前後"],"answer":2,"exp":"日本高血圧学会ガイドラインでは診察室血圧140/90以上を高血圧とするなど、成人の正常収縮期血圧はおおむね120前後とされる。"},{"id":"c1-55","n":55,"q":"成人の正常体温の目安として最も適切なものはどれか。","choices":["38℃以上が正常","34℃未満","40℃以上が正常","36.0〜37.0℃前後"],"answer":3,"exp":"成人の正常体温はおおむね36.0〜37.0℃前後で、個人差や計測部位による差がある。"},{"id":"c1-56","n":56,"q":"SpO2（経皮的酸素飽和度）の正常値としておおむね該当するのはどれか。","choices":["70%前後","100%以上","96〜100%","50%以下"],"answer":2,"exp":"成人の安静時SpO2は96〜100%が一般的な正常範囲で、90%以下は明らかな低酸素血症を示唆する。"},{"id":"c1-57","n":57,"q":"バイタルサインに含まれないものはどれか。","choices":["体温","呼吸数","脈拍","身長"],"answer":3,"exp":"バイタルサインは体温・脈拍・呼吸数・血圧等の生命徴候で、身長は含まれない。"},{"id":"c1-58","n":58,"q":"救急救命士が用いる観察手順の総称として最も適切なものはどれか。","choices":["広報活動","施設管理","初期評価と詳細観察","経理処理"],"answer":2,"exp":"救急救命士は初期評価（緊急度の判断）と詳細観察（バイタル・問診・既往歴等）を組み合わせて状態を把握する。"},{"id":"c1-59","n":59,"q":"意識レベル評価で「見当識障害はあるが会話可能」な状態はJCSでどれか。","choices":["II-20","I-2（見当識障害あり）","II-30","III-300"],"answer":1,"exp":"JCSのI-2は意識清明でないものの、見当識障害程度がある状態で、会話は可能である。"},{"id":"c1-60","n":60,"q":"救急現場で119番通報者から得ることが重要な情報として正しくないものはどれか。","choices":["傷病者の状態","周囲の危険状況","通報者の血液型","場所・状況"],"answer":2,"exp":"初報では場所、状況、傷病者数、状態、危険情報等を聞き取る。通報者の血液型は通常必要ない。"},{"id":"c1-61","n":61,"q":"救急現場到着時に救急隊員が最初に行うことはどれか。","choices":["救急車を洗車する","安全確認と感染防護具装着","搬送先を決める","病院前記録票を記入する"],"answer":1,"exp":"現場到着時はまず自身と隊員、傷病者の安全確認と感染防護具の装着が優先される。"},{"id":"c1-62","n":62,"q":"観察における「問診」で最初に確認すべき内容はどれか。","choices":["年収","主訴（何が一番つらいか）","学歴","趣味"],"answer":1,"exp":"問診は主訴、現病歴、既往歴、内服薬、アレルギー等の順で確認する。個人情報や属人的情報は必要最低限に抑える。"},{"id":"c1-63","n":63,"q":"SAMPLE聴取に含まれない項目はどれか。","choices":["血液型","Allergies（アレルギー）","Medications（内服薬）","Symptoms（症状）"],"answer":0,"exp":"SAMPLEはSymptoms、Allergies、Medications、Past history、Last meal、Events。血液型は含まれない。"},{"id":"c1-64","n":64,"q":"救急救命士が服用歴を確認する目的として正しいものはどれか。","choices":["広報のため","家計を調査するため","症状や処置への影響を評価するため","薬価を計算するため"],"answer":2,"exp":"既往歴や服用薬は症状の解釈や処置判断に影響するため、救急現場で確認すべき重要項目。"},{"id":"c1-65","n":65,"q":"搬送先選定の際に参考にする情報として最も重要なものはどれか。","choices":["傷病者の緊急度・重症度","運転手の好み","家族の希望のみ","医療機関の古さ"],"answer":0,"exp":"搬送先選定は緊急度・重症度に応じて対応可能な医療機関を選定することが大原則。"},{"id":"c1-66","n":66,"q":"搬送先医療機関と事前に連絡する目的として最も適切なものはどれか。","choices":["患者のプライバシーを漏洩するため","クレームを入れるため","医師数を数えるため","受入準備を整え引継ぎを円滑にするため"],"answer":3,"exp":"到着前連絡（ホットラインや病院連絡）により受入側は人員・資材の準備ができ、引継ぎの質が高まる。"},{"id":"c1-67","n":67,"q":"救急搬送中の傷病者への説明に関する適切な姿勢はどれか。","choices":["専門用語のみで話す","威圧的に話す","一切説明しない","必要な説明を分かりやすく行う"],"answer":3,"exp":"傷病者や家族には処置内容や搬送状況を分かりやすく説明し、不安の軽減と協力を得ることが望ましい。"},{"id":"c1-68","n":68,"q":"救急隊員のチーム構成として一般的に正しいものはどれか。","choices":["隊長・隊員・機関員を含む3名体制が中心","救急救命士1名のみ","20名体制が基本","医師を必ず同乗させる"],"answer":0,"exp":"日本の救急隊は通常、隊長・隊員・機関員の3名を基本として構成される。"},{"id":"c1-69","n":69,"q":"救急救命士が業務中に医師との連絡を迅速に取るための手段はどれか。","choices":["MC体制における直接連絡回線","FAXのみ","口頭伝言のみ","郵送"],"answer":0,"exp":"MC体制ではオンラインで医師と直接連絡でき、指示を迅速に受けられる体制が整備されている。"},{"id":"c1-70","n":70,"q":"「不搬送」とされるケースの例として正しいものはどれか。","choices":["心肺停止例","意識障害例","軽症で本人が拒否した場合等","重症例"],"answer":2,"exp":"本人が明確に搬送を拒否し医学的にも軽症と判断される場合等は、不搬送となることがある。ただし判断には慎重さが必要。"},{"id":"c1-71","n":71,"q":"救急救命士法に規定される処分として「業務停止」以外の主な行政処分はどれか。","choices":["昇進","職務出張命令","賞与減額","免許取消"],"answer":3,"exp":"救急救命士法第9条では、欠格事由に該当した場合や救急救命士としての信用を傷つける行為があった場合などに、厚生労働大臣が免許の取消し、または期間を定めて救急救命士の名称の使用の停止を命ずることができると規定されている。","revised":true},{"id":"c1-72","n":72,"q":"救急救命士の免許を与える主体はどれか。","choices":["厚生労働大臣","警察庁長官","都道府県知事","市町村長"],"answer":0,"exp":"救急救命士の免許は厚生労働大臣が国家試験合格者に対して与える。"},{"id":"c1-73","n":73,"q":"救急救命士国家試験を実施する主体はどれか。","choices":["都道府県知事","総務大臣","厚生労働大臣","消防庁長官"],"answer":2,"exp":"救急救命士国家試験は救急救命士法に基づき厚生労働大臣が行う。"},{"id":"c1-74","n":74,"q":"救急救命士が行う「特定行為」は、どのような指示のもとで実施できるか。","choices":["自己判断","医師の具体的指示","警察官の命令","消防隊長の指示"],"answer":1,"exp":"特定行為は救急救命士法および関連省令で医師の具体的指示のもとで実施できると定められている。"},{"id":"c1-75","n":75,"q":"救急救命士が行う救急救命処置の目的として最も適切なものはどれか。","choices":["診断書を作成すること","現場で根治治療を行うこと","生命の危険を回避し、医療機関へつなぐこと","処方箋を発行すること"],"answer":2,"exp":"救急救命処置の本質は生命の危機を回避し、医療機関で行う根治治療までの橋渡しをすることである。"}]},{"id":"c2","kind":"chapter","title":"第2章 解剖学・生理学の基礎","subtitle":"人体の構造と機能・循環・呼吸・神経・代謝","questions":[{"id":"c2-76","n":76,"q":"成人の心臓の重さとしておおむね該当するものはどれか。","choices":["約1kg","約50g","約5kg","約250〜300g"],"answer":3,"exp":"成人の心臓の重量はおおむね250〜300g程度である。"},{"id":"c2-77","n":77,"q":"心臓の弁のうち、左心房と左心室の間にあるものはどれか。","choices":["大動脈弁","肺動脈弁","僧帽弁","三尖弁"],"answer":2,"exp":"左心房と左心室の間には僧帽弁（二尖弁）が、右心房と右心室の間には三尖弁がある。"},{"id":"c2-78","n":78,"q":"肺動脈を流れている血液の性状はどれか。","choices":["髄液","リンパ液","動脈血","静脈血"],"answer":3,"exp":"肺動脈は右心室から肺へ静脈血を送る血管であり、肺静脈は動脈血を左心房へ戻す。"},{"id":"c2-79","n":79,"q":"心臓の刺激伝導系で最初に電気刺激を発生させる部位はどれか。","choices":["His束","洞結節","プルキンエ線維","房室結節"],"answer":1,"exp":"洞結節（洞房結節）は心拍の起点となるペースメーカー細胞で、通常約60〜100回/分で自発放電する。"},{"id":"c2-80","n":80,"q":"成人の安静時心拍出量としておおむね該当するのはどれか。","choices":["約4〜6L/分","約20L/分","約100L/分","約0.5L/分"],"answer":0,"exp":"成人の安静時心拍出量はおおむね4〜6L/分とされる。"},{"id":"c2-81","n":81,"q":"冠動脈について正しいものはどれか。","choices":["主に拡張期に心筋を灌流する","収縮期にのみ血流する","肺循環の血管である","静脈の一種である"],"answer":0,"exp":"冠動脈は主に心臓拡張期に心筋を灌流する。収縮期は心筋の内圧が高まり血流が妨げられる。"},{"id":"c2-82","n":82,"q":"成人の循環血液量の目安として最も適切なものはどれか。","choices":["体重の約1%","体重と同量","体重の約8%（60kgで約5L）","体重の約50%"],"answer":2,"exp":"成人の循環血液量は体重の約7〜8%程度で、体重60kgで約4.2〜4.8L程度とされる。"},{"id":"c2-83","n":83,"q":"赤血球の主な役割はどれか。","choices":["貪食作用","ヘモグロビンによる酸素運搬","抗体産生","血液凝固"],"answer":1,"exp":"赤血球はヘモグロビンを含み、酸素の運搬を主な役割とする。"},{"id":"c2-84","n":84,"q":"血液凝固に関与する血球はどれか。","choices":["赤血球","好酸球","血小板","リンパ球"],"answer":2,"exp":"血小板は止血・血液凝固に重要な役割を果たす血球である。"},{"id":"c2-85","n":85,"q":"白血球のうち細菌感染への防御を主に担うものはどれか。","choices":["好塩基球","赤血球","好中球","好酸球"],"answer":2,"exp":"好中球は細菌感染時に増加し、貪食作用を示す白血球である。"},{"id":"c2-86","n":86,"q":"肺における酸素と二酸化炭素の交換が行われる部位はどれか。","choices":["胸膜","気管支","気管","肺胞"],"answer":3,"exp":"ガス交換は肺胞と毛細血管との間で行われる。"},{"id":"c2-87","n":87,"q":"成人の1回換気量の目安として最も適切なものはどれか。","choices":["約10L","約500mL","約5L","約50mL"],"answer":1,"exp":"成人の安静時1回換気量はおおむね500mL程度（体重の約7mL/kg）である。"},{"id":"c2-88","n":88,"q":"呼吸中枢はどこにあるか。","choices":["延髄","後頭葉","脊髄仙髄","前頭葉"],"answer":0,"exp":"呼吸中枢は延髄にあり、呼吸リズムをコントロールする。"},{"id":"c2-89","n":89,"q":"横隔膜の主な神経支配はどれか。","choices":["副神経","舌下神経","迷走神経","横隔神経（C3-C5）"],"answer":3,"exp":"横隔膜は主に頸神経C3-C5から分枝する横隔神経により支配される。"},{"id":"c2-90","n":90,"q":"酸素解離曲線について正しいものはどれか。","choices":["体温上昇やアシドーシスで右方移動する","アルカローシスで右方移動する","酸素分圧と無関係","体温低下で右方移動する"],"answer":0,"exp":"酸素解離曲線は体温上昇、pH低下（アシドーシス）、PaCO2上昇、2,3-DPG増加で右方移動し、組織への酸素放出が進む。"},{"id":"c2-91","n":91,"q":"脳の機能部位として「言語中枢（ブローカ野）」が位置する場所はどれか。","choices":["脊髄","小脳","前頭葉","後頭葉"],"answer":2,"exp":"ブローカ野は前頭葉に位置する運動性言語中枢で、損傷により運動性失語を生じる。"},{"id":"c2-92","n":92,"q":"脳幹に含まれない部位はどれか。","choices":["延髄","小脳","中脳","橋"],"answer":1,"exp":"脳幹は中脳・橋・延髄から構成され、小脳は含まれない。"},{"id":"c2-93","n":93,"q":"自律神経系の交感神経の作用として正しいものはどれか。","choices":["心拍数増加・瞳孔散大","気管支収縮","消化促進","心拍数減少・瞳孔縮小"],"answer":0,"exp":"交感神経は心拍数・血圧上昇、瞳孔散大、気管支拡張、消化抑制など「闘争か逃走か」の反応を担う。"},{"id":"c2-94","n":94,"q":"副交感神経の作用として正しいものはどれか。","choices":["心拍数減少・消化促進","心拍数増加・消化抑制","瞳孔散大","気管支拡張"],"answer":0,"exp":"副交感神経は休息時の反応を担い、心拍数減少、消化促進、瞳孔縮小、気管支収縮等をもたらす。"},{"id":"c2-95","n":95,"q":"脳神経のうち迷走神経に該当するのはどれか。","choices":["第X脳神経","第VII脳神経","第V脳神経","第II脳神経"],"answer":0,"exp":"迷走神経は第X脳神経で、広範な自律神経支配（心臓・消化管等）を行う。"},{"id":"c2-96","n":96,"q":"胃から分泌されない物質はどれか。","choices":["塩酸","ペプシノゲン","インスリン","粘液"],"answer":2,"exp":"インスリンは膵臓ランゲルハンス島のβ細胞から分泌されるホルモンで、胃からは分泌されない。"},{"id":"c2-97","n":97,"q":"膵臓のランゲルハンス島α細胞から分泌されるホルモンはどれか。","choices":["グルカゴン","アドレナリン","インスリン","コルチゾール"],"answer":0,"exp":"α細胞はグルカゴン、β細胞はインスリン、δ細胞はソマトスタチンを分泌する。"},{"id":"c2-98","n":98,"q":"肝臓の主な働きに含まれないものはどれか。","choices":["糖・タンパク質・脂質代謝","解毒","胆汁の産生","インスリンの産生"],"answer":3,"exp":"肝臓は解毒、胆汁産生、代謝などを担うが、インスリンは膵臓で産生されるホルモンであり肝臓ではない。"},{"id":"c2-99","n":99,"q":"腎臓の機能として正しくないものはどれか。","choices":["消化酵素の分泌","体液量と電解質の調節","尿生成","酸塩基平衡の調節"],"answer":0,"exp":"腎臓は尿生成、体液・電解質・酸塩基平衡の調節、ホルモン（エリスロポエチン等）産生を担うが、消化酵素は分泌しない。"},{"id":"c2-100","n":100,"q":"副腎皮質から分泌される主なホルモンに該当しないものはどれか。","choices":["コルチゾール","アルドステロン","アドレナリン","副腎アンドロゲン"],"answer":2,"exp":"アドレナリンは副腎髄質から分泌される。副腎皮質はコルチゾール、アルドステロン、副腎アンドロゲンを分泌する。"},{"id":"c2-101","n":101,"q":"甲状腺ホルモンの主な作用はどれか。","choices":["骨塩量低下","基礎代謝の亢進","血糖低下","筋肉弛緩"],"answer":1,"exp":"甲状腺ホルモン（T3、T4）は全身の代謝を活性化させ、基礎代謝を上昇させる。"},{"id":"c2-102","n":102,"q":"成人の正常血糖（空腹時）として最も適切な範囲はどれか。","choices":["30mg/dL以下","おおむね70〜109mg/dL","200mg/dL以上","500mg/dL前後"],"answer":1,"exp":"空腹時血糖はおおむね70〜109mg/dLが正常値で、126以上は糖尿病の診断基準の一つ。"},{"id":"c2-103","n":103,"q":"成人の血液のpHの正常範囲として正しいものはどれか。","choices":["6.50〜6.80","8.00〜8.20","5.00〜6.00","7.35〜7.45"],"answer":3,"exp":"動脈血のpHは7.35〜7.45が正常範囲で、これを外れるとアシドーシス・アルカローシスとなる。"},{"id":"c2-104","n":104,"q":"動脈血酸素分圧（PaO2）の正常値としておおむね該当するのはどれか。","choices":["80〜100mmHg","20〜30mmHg","150〜200mmHg","40〜50mmHg"],"answer":0,"exp":"動脈血酸素分圧の正常値は80〜100mmHgとされ、60未満は呼吸不全の基準となる。"},{"id":"c2-105","n":105,"q":"動脈血二酸化炭素分圧（PaCO2）の正常値として最も適切なものはどれか。","choices":["80〜100mmHg","35〜45mmHg","200mmHg以上","10〜20mmHg"],"answer":1,"exp":"PaCO2の正常値は35〜45mmHgで、高値は呼吸性アシドーシスを示唆する。"},{"id":"c2-106","n":106,"q":"体内の主な電解質のうち細胞外液に多く含まれるものはどれか。","choices":["ナトリウム","マグネシウム","リン酸","カリウム"],"answer":0,"exp":"ナトリウムは細胞外液の主要な陽イオンで、カリウムは細胞内液の主要な陽イオン。"},{"id":"c2-107","n":107,"q":"細胞内液に多く含まれる電解質はどれか。","choices":["カリウム","カルシウム","塩化物","ナトリウム"],"answer":0,"exp":"カリウムは細胞内液の主要な陽イオンで、ナトリウム・塩化物は細胞外液に多い。"},{"id":"c2-108","n":108,"q":"成人の総水分量は体重の約何%か。","choices":["約60%","約90%","約20%","約10%"],"answer":0,"exp":"成人男性の体水分量は体重の約60%とされる。"},{"id":"c2-109","n":109,"q":"血液の主な成分のうち、液性成分はどれか。","choices":["赤血球","血漿","血小板","白血球"],"answer":1,"exp":"血液は血漿（液性成分）と血球（赤血球・白血球・血小板）から構成される。"},{"id":"c2-110","n":110,"q":"動脈と静脈の一般的な違いとして正しいものはどれか。","choices":["静脈はすべて内膜が厚い","動脈は弁が発達している","静脈は血圧が高い","動脈は壁が厚く弾性に富む"],"answer":3,"exp":"動脈は高圧の血流に耐えるため壁が厚く弾性線維に富む。静脈には弁があり逆流を防ぐ。"},{"id":"c2-111","n":111,"q":"大動脈から分岐する最初の動脈として正しいものはどれか。","choices":["大腿動脈","冠動脈","総頸動脈","腎動脈"],"answer":1,"exp":"上行大動脈の基部から冠動脈が分岐し、心筋に血液を供給する。"},{"id":"c2-112","n":112,"q":"脳の主要な動脈として正しいものはどれか。","choices":["大腿動脈と上腕動脈","内頸動脈と椎骨動脈","腕頭動脈と腎動脈","大腿動脈と腓骨動脈"],"answer":1,"exp":"脳への主たる動脈供給は内頸動脈系と椎骨動脈系（脳底動脈）で、ウィリス動脈輪で連絡する。"},{"id":"c2-113","n":113,"q":"頭蓋内圧が上昇した際に生じる生理学的反応として正しいものはどれか。","choices":["クッシング現象（血圧上昇、徐脈、呼吸異常）","血圧低下・頻脈","意識清明化","低体温・多尿"],"answer":0,"exp":"頭蓋内圧亢進時にはクッシング現象として血圧上昇、徐脈、呼吸異常が出現することがある。"},{"id":"c2-114","n":114,"q":"乳児の頭蓋骨にある骨が完全に癒合していない部分を何というか。","choices":["縫合線","耳石器","大脳皮質","泉門"],"answer":3,"exp":"乳児の頭蓋骨は前方と後方に泉門（大泉門・小泉門）があり、一定の発達時期までに閉鎖する。"},{"id":"c2-115","n":115,"q":"小児の気道の特徴として正しいものはどれか。","choices":["成人より気道径が大きい","気道が細く閉塞しやすい","舌が小さい","喉頭蓋が硬い"],"answer":1,"exp":"小児は気道径が細く、舌が相対的に大きく、喉頭蓋が柔らかいため閉塞しやすい特徴を持つ。"},{"id":"c2-116","n":116,"q":"高齢者の循環生理の特徴として最も適切なものはどれか。","choices":["血液量が過剰になる","心拍応答が過剰に亢進する","心機能・血管の弾性が低下しやすく予備力が減少","血圧変動が起きにくい"],"answer":2,"exp":"高齢者は心機能や血管弾性の低下により循環予備力が減少し、負荷時に状態が悪化しやすい。"},{"id":"c2-117","n":117,"q":"妊婦の生理的変化として正しいものはどれか。","choices":["心拍数は変わらない","血圧は必ず上昇する","呼吸数は減少する","循環血液量が増加する"],"answer":3,"exp":"妊娠中は循環血液量が増加し、心拍数も上昇するなど大きな生理的変化が生じる。"},{"id":"c2-118","n":118,"q":"骨格筋が自発的に収縮する神経伝達物質はどれか。","choices":["セロトニン","アセチルコリン","ノルアドレナリン","ドーパミン"],"answer":1,"exp":"神経筋接合部でアセチルコリンが受容体に結合して筋収縮が起こる。"},{"id":"c2-119","n":119,"q":"骨格筋の収縮に必要なイオンはどれか。","choices":["銀イオン","カルシウムイオン","亜鉛イオンのみ","マグネシウムイオンのみ"],"answer":1,"exp":"筋収縮はカルシウムイオンが筋小胞体から放出されアクチンとミオシンの結合を可能にすることで起こる。"},{"id":"c2-120","n":120,"q":"平衡感覚を司る器官はどれか。","choices":["水晶体","小脳虫部のみ","内耳の三半規管と前庭","舌"],"answer":2,"exp":"平衡感覚は内耳の三半規管と前庭（卵形嚢・球形嚢）で感知される。"},{"id":"c2-121","n":121,"q":"視覚情報が処理される大脳皮質の領域はどれか。","choices":["頭頂葉","後頭葉","前頭葉","側頭葉"],"answer":1,"exp":"視覚野は主に後頭葉に位置し、視覚情報の解析を担う。"},{"id":"c2-122","n":122,"q":"聴覚情報が処理される大脳皮質の領域はどれか。","choices":["前頭葉","側頭葉","後頭葉","頭頂葉"],"answer":1,"exp":"聴覚野は側頭葉上部にあり、音情報を処理する。"},{"id":"c2-123","n":123,"q":"脳脊髄液（髄液）の主な機能はどれか。","choices":["栄養素の主要な運搬","酸素の供給","脳の保護とクッション作用","消化酵素の供給"],"answer":2,"exp":"脳脊髄液は脳・脊髄を保護し、浮力効果や代謝産物の除去に寄与する。"},{"id":"c2-124","n":124,"q":"上行性感覚路が交叉する主な部位はどこか。","choices":["小脳皮質","大脳皮質","脊髄または延髄","海馬"],"answer":2,"exp":"深部感覚経路は延髄で交叉し、温痛覚経路は脊髄で交叉して反対側の視床へ向かう。"},{"id":"c2-125","n":125,"q":"錐体路が交叉する部位はどこか。","choices":["中脳","脊髄仙髄","延髄下部（錐体交叉）","大脳皮質"],"answer":2,"exp":"錐体路の多くは延髄下部の錐体交叉で反対側に乗り換える。"},{"id":"c2-126","n":126,"q":"脊髄の数として正しいものはどれか（区分）。","choices":["頸髄と仙髄のみ","頸髄・胸髄・腰髄・仙髄・尾髄に区分される","10区分以上","3区分のみ"],"answer":1,"exp":"脊髄は頸髄・胸髄・腰髄・仙髄・尾髄に区分される。"},{"id":"c2-127","n":127,"q":"体表から触れる代表的な動脈のうち「橈骨動脈」の位置はどれか。","choices":["腋窩","足関節内側","手首の親指側","肘の内側"],"answer":2,"exp":"橈骨動脈は手関節の親指側で触れやすく、バイタル測定に広く用いられる。"},{"id":"c2-128","n":128,"q":"脈拍触知が可能な代表的動脈として正しくないものはどれか。","choices":["橈骨動脈","大腿動脈","総頸動脈","肝動脈"],"answer":3,"exp":"肝動脈は深部にあり体表から触知できない。総頸動脈・大腿動脈・橈骨動脈は触知可能。"},{"id":"c2-129","n":129,"q":"体温調節の中枢はどこにあるか。","choices":["視床下部","頸髄","前頭葉","小脳"],"answer":0,"exp":"体温調節中枢は視床下部にあり、セットポイントを維持する働きを持つ。"},{"id":"c2-130","n":130,"q":"食欲の中枢がある部位はどれか。","choices":["大脳基底核","脊髄","視床下部","副腎皮質"],"answer":2,"exp":"食欲中枢（摂食中枢・満腹中枢）は視床下部にあり、食行動をコントロールする。"},{"id":"c2-131","n":131,"q":"体液の主なpH調節に関与する器官として正しくないものはどれか。","choices":["血液中の緩衝系","肺","腎臓","甲状腺"],"answer":3,"exp":"体液pHは肺（呼気でCO2排出）、腎臓（HCO3-と水素イオンの調節）、緩衝系で主に調整される。甲状腺の役割は小さい。"},{"id":"c2-132","n":132,"q":"ヘモグロビンのうち酸素と結合した状態を何というか。","choices":["還元ヘモグロビン","メトヘモグロビン","一酸化炭素ヘモグロビン","酸素化ヘモグロビン"],"answer":3,"exp":"酸素と結合したヘモグロビンを酸素化ヘモグロビン（オキシヘモグロビン）と呼ぶ。"},{"id":"c2-133","n":133,"q":"一酸化炭素中毒で生じる現象として最も正しいものはどれか。","choices":["尿量が増加する","視野が広がる","ヘモグロビンへのCO結合により酸素運搬が阻害される","血糖が上昇する"],"answer":2,"exp":"一酸化炭素はヘモグロビンに対し酸素の約250倍の結合力を持ち、酸素運搬機能を著しく低下させる。"},{"id":"c2-134","n":134,"q":"成人の気道の構造として正しいものはどれか。","choices":["食道経由で肺胞に至る","気管と食道は完全に一体","咽頭→喉頭→気管→気管支→細気管支→肺胞の順","気管支は左右1本ずつ完全対称"],"answer":2,"exp":"空気は咽頭→喉頭→気管→左右気管支→細気管支→肺胞の順に流れる。右気管支は左より太く短く垂直に近い。"},{"id":"c2-135","n":135,"q":"成人において誤嚥が起こりやすい気管支はどれか。","choices":["両方同じ","気管支ではなく食道","左主気管支","右主気管支"],"answer":3,"exp":"右主気管支は左より太く垂直に近い角度のため、異物が落ちやすい。"},{"id":"c2-136","n":136,"q":"血液の液性成分に含まれないものはどれか。","choices":["赤血球","水","電解質","アルブミン"],"answer":0,"exp":"血液液性成分（血漿）は水、アルブミン、電解質、凝固因子等で、赤血球は血球成分。"},{"id":"c2-137","n":137,"q":"血漿タンパクのうち最も多いものはどれか。","choices":["フィブリノゲン","グロブリン","プロトロンビン","アルブミン"],"answer":3,"exp":"血漿タンパクの大部分はアルブミンで、浸透圧維持や物質運搬に寄与する。"},{"id":"c2-138","n":138,"q":"胃の主な運動機能はどれか。","choices":["蠕動運動による食物の攪拌・排出","ガス交換","尿生成","血液凝固"],"answer":0,"exp":"胃は蠕動運動により食物を攪拌・消化し、幽門から十二指腸へ送り出す。"},{"id":"c2-139","n":139,"q":"消化管の全長の大まかな順序として正しいものはどれか。","choices":["口腔→大腸→胃→食道→小腸","口腔→肛門→胃","胃→食道→小腸→大腸","口腔→食道→胃→小腸→大腸→肛門"],"answer":3,"exp":"消化管は口腔→食道→胃→小腸→大腸→肛門の順に構成される。"},{"id":"c2-140","n":140,"q":"骨格系の役割として最も適切なものはどれか。","choices":["ホルモン産生のみ","体の支持・保護・血球産生","酸素交換のみ","消化のみ"],"answer":1,"exp":"骨格系は身体の支持、内臓保護、造血（骨髄）、ミネラル貯蔵など多機能を持つ。"},{"id":"c2-141","n":141,"q":"成人の骨の数としておおむね該当するのはどれか。","choices":["約50個","約1000個","約206個","約500個"],"answer":2,"exp":"成人の骨は約206個とされる。小児はより多く、成長過程で癒合する。"},{"id":"c2-142","n":142,"q":"皮膚の主な機能として正しくないものはどれか。","choices":["体温調節","尿生成","外部環境からの保護","感覚受容"],"answer":1,"exp":"皮膚は体温調節、感覚受容、保護、水分喪失の防止等を担うが、尿生成は腎臓の役割。"},{"id":"c2-143","n":143,"q":"心音のうち心室収縮開始を意味する主な成分はどれか。","choices":["II音","III音","I音","IV音"],"answer":2,"exp":"I音は房室弁（僧帽弁・三尖弁）の閉鎖に対応し、心室収縮の開始を意味する。II音は半月弁の閉鎖に対応する。"},{"id":"c2-144","n":144,"q":"肺循環と体循環の経路として正しいものはどれか。","choices":["体循環と肺循環は同じ経路","肺循環は右心房から始まる","体循環は右心室から始まる","体循環：左心室→大動脈→全身→右心房／肺循環：右心室→肺動脈→肺→左心房"],"answer":3,"exp":"体循環は左心室から全身へ、肺循環は右心室から肺へ血液を送る。両者は直列で接続される。"},{"id":"c2-145","n":145,"q":"「静脈還流」に影響を与える要因として最も適切なものはどれか。","choices":["髪の毛の量","体毛の長さ","筋ポンプ作用と呼吸ポンプ","動脈圧の上昇のみ"],"answer":2,"exp":"静脈還流は下肢の筋ポンプ作用や呼吸による胸腔内圧変動、重力等に影響される。"},{"id":"c2-146","n":146,"q":"心房細動の電気生理学的特徴はどれか。","choices":["心室だけが興奮する","心房が無秩序かつ高頻度に興奮する","洞結節のみ興奮する","心電図は波形を示さない"],"answer":1,"exp":"心房細動では心房が無秩序かつ高頻度に興奮し、心電図上f波と不規則なQRSを呈する。"},{"id":"c2-147","n":147,"q":"徐脈と呼ばれる心拍数の目安はどれか（成人）。","choices":["毎分200回以上","毎分60回未満","毎分30回以上","毎分100回以上"],"answer":1,"exp":"成人では心拍数60回/分未満を徐脈、100回/分を超えると頻脈と呼ぶのが一般的。"},{"id":"c2-148","n":148,"q":"低体温（成人）とされる深部体温の目安はどれか。","choices":["36℃未満","37℃未満","35℃未満","39℃未満"],"answer":2,"exp":"深部体温35℃未満を低体温症とする。重症では意識障害や不整脈を生じる。"},{"id":"c2-149","n":149,"q":"ショックの本質として最も適切なものはどれか。","choices":["心理的動揺のみ","体温上昇","組織への酸素供給不足（組織低灌流）","気分の落ち込み"],"answer":2,"exp":"ショックは組織への十分な酸素・栄養供給ができず低灌流に陥る状態で、循環不全を示す。"},{"id":"c2-150","n":150,"q":"ヒトの正常な尿量（成人の1日目安）はどれか。","choices":["約1000〜1500mL/日","約100mL/日","約50mL/日","約10000mL/日"],"answer":0,"exp":"成人の正常な1日尿量はおおむね1000〜1500mLで、400mL以下で乏尿、100mL以下で無尿とされる。"}]},{"id":"c3","kind":"chapter","title":"第3章 病態生理と症候学","subtitle":"ショック・意識障害・呼吸困難・胸痛・腹痛等の症候","questions":[{"id":"c3-151","n":151,"q":"循環血液量減少性ショックの主な原因はどれか。","choices":["心筋梗塞","肺塞栓","大量出血や脱水","アナフィラキシー"],"answer":2,"exp":"循環血液量減少性ショックは外傷による出血や消化管出血、重度脱水等により循環血液量が減少することで生じる。"},{"id":"c3-152","n":152,"q":"心原性ショックの主な原因はどれか。","choices":["アナフィラキシー","高度脱水","大量出血","広範囲の心筋梗塞"],"answer":3,"exp":"心原性ショックはポンプ機能の低下によるもので、広範囲心筋梗塞や重症心不全が代表的原因。"},{"id":"c3-153","n":153,"q":"閉塞性ショックの原因として正しいものはどれか。","choices":["脊髄損傷","アナフィラキシー","緊張性気胸や肺塞栓、心タンポナーデ","出血"],"answer":2,"exp":"閉塞性ショックは心拍出を機械的に妨げる病態で、緊張性気胸・心タンポナーデ・肺塞栓症が代表。"},{"id":"c3-154","n":154,"q":"血液分布異常性ショック（分配異常性ショック）に該当しないものはどれか。","choices":["敗血症性ショック","神経原性ショック","アナフィラキシーショック","出血性ショック"],"answer":3,"exp":"血液分布異常性ショックには敗血症性・アナフィラキシー・神経原性が含まれる。出血性は循環血液量減少性。"},{"id":"c3-155","n":155,"q":"ショック傷病者に共通してみられる臨床所見として最も適切なものはどれか。","choices":["体温上昇のみ","皮膚蒼白・冷汗・頻脈","徐脈のみ","多幸症"],"answer":1,"exp":"ショック徴候として皮膚蒼白、冷汗、頻脈、血圧低下、意識障害等が一般的にみられる。"},{"id":"c3-156","n":156,"q":"ショック指数（SI）の定義として正しいものはどれか。","choices":["呼吸数×心拍数","心拍数÷収縮期血圧","収縮期血圧÷心拍数","体温÷血圧"],"answer":1,"exp":"ショック指数は心拍数／収縮期血圧で計算され、1.0以上は高リスクの目安となる。"},{"id":"c3-157","n":157,"q":"ショック指数が1.5以上のときに推定される出血量の目安はどれか。","choices":["循環血液量の約30〜40%以上","ほぼ0","5%未満","10%前後"],"answer":0,"exp":"ショック指数が1.5以上の場合、循環血液量の30〜40%以上の出血を示唆するとされる。"},{"id":"c3-158","n":158,"q":"アナフィラキシーショックの原因として代表的なものはどれか。","choices":["心筋梗塞","出血","低体温","ハチ毒、食物、薬剤等による重度アレルギー反応"],"answer":3,"exp":"アナフィラキシーはIgE介在性の全身性アレルギーで、蜂毒・食物・薬剤が代表的原因。"},{"id":"c3-159","n":159,"q":"アナフィラキシー発症時に第一選択で投与される薬剤はどれか。","choices":["ステロイド","ブドウ糖","エピネフリン（アドレナリン）","抗ヒスタミン薬"],"answer":2,"exp":"アナフィラキシーの第一選択薬はエピネフリン（アドレナリン）筋注である。抗ヒスタミン薬・ステロイドは補助。"},{"id":"c3-160","n":160,"q":"意識障害の原因を思い出すための語呂合わせ「AIUEOTIPS」のうち、最初の「I」（AIUEOのI）が示す原因はどれか。","choices":["Infection","Iron","Injury","Insulin（低血糖・高血糖）"],"answer":3,"exp":"AIUEOTIPSの最初のI（AIUEOのI）はInsulin（低血糖・高血糖）を指す。なお、後半TIPSのIはInfection（感染症）である。","revised":true},{"id":"c3-161","n":161,"q":"AIUEOTIPSの「S」が示す原因はどれか。","choices":["Stress","Stroke（脳卒中）・Shock・Seizure","Skin","Sweating"],"answer":1,"exp":"AIUEOTIPSのSはStroke・Shock・Seizure・Syncope等、複数の意味を持つ。"},{"id":"c3-162","n":162,"q":"低血糖発作の典型症状に含まれないものはどれか。","choices":["冷汗","動悸","意識障害","高熱"],"answer":3,"exp":"低血糖では冷汗・動悸・意識障害・ふるえ等がみられる。高熱は典型的ではない。"},{"id":"c3-163","n":163,"q":"けいれん（全般発作）の際に救急隊員がまず行うべきことはどれか。","choices":["口に物を入れる","無理に体を押さえつける","安全確保と気道確保の準備","水を飲ませる"],"answer":2,"exp":"けいれん時は周囲の危険を除去し、気道確保の準備を行う。口に物を入れる行為は危険。"},{"id":"c3-164","n":164,"q":"脳卒中を疑う症候としてCPSS（Cincinnati Prehospital Stroke Scale）に含まれないものはどれか。","choices":["腹部圧痛","顔面麻痺","上肢脱力","構音障害"],"answer":0,"exp":"CPSSは顔面麻痺・上肢脱力・構音障害の3項目で評価する。腹部圧痛は含まれない。"},{"id":"c3-165","n":165,"q":"脳卒中の症候として「急激な片側麻痺と構音障害」が現れた際に疑うべきはどれか。","choices":["脳梗塞または脳出血","単純性頭痛","片頭痛","緊張型頭痛"],"answer":0,"exp":"急激な片側麻痺と構音障害は脳卒中（脳梗塞・脳出血）の典型症候で、迅速な対応が必要。"},{"id":"c3-166","n":166,"q":"急性冠症候群（ACS）の典型的な症状として正しいものはどれか。","choices":["急性頭痛のみ","関節痛のみ","下肢の掻痒感","胸部の圧迫感・絞扼感、放散痛、冷汗"],"answer":3,"exp":"ACSでは胸部圧迫感・絞扼感、左上肢や下顎への放散痛、冷汗、悪心等が典型的にみられる。"},{"id":"c3-167","n":167,"q":"心筋梗塞における冠動脈の病態はどれか。","choices":["プラーク破綻と血栓形成による冠動脈閉塞","動脈瘤破裂","冠動脈の先天奇形","冠動脈の過拡張"],"answer":0,"exp":"心筋梗塞は冠動脈のプラーク破綻に続く血栓形成により内腔が閉塞し、心筋虚血に陥る病態。"},{"id":"c3-168","n":168,"q":"急性心筋梗塞で高率にみられる不整脈はどれか。","choices":["WPW症候群のみ","洞頻脈のみ","心室細動・心室頻拍","発作性房室ブロックのみ"],"answer":2,"exp":"急性心筋梗塞では発症後早期に心室細動・心室頻拍等の致死的不整脈を起こしやすい。"},{"id":"c3-169","n":169,"q":"大動脈解離の典型症状はどれか。","choices":["突発的で激しい背部痛・胸痛","関節痛のみ","軽い腹痛のみ","頭痛のみ"],"answer":0,"exp":"大動脈解離は突然発症する激しい胸背部痛を特徴とし、解離進展で症状部位が変化する。"},{"id":"c3-170","n":170,"q":"肺塞栓症（PE）の主な原因はどれか。","choices":["下肢深部静脈血栓","気管支炎","肝硬変","心筋梗塞"],"answer":0,"exp":"肺塞栓の多くは下肢深部静脈血栓（DVT）由来であり、長時間の臥床や飛行機での長距離移動が危険因子。"},{"id":"c3-171","n":171,"q":"気管支喘息の発作時の音としてよく聞かれるものはどれか。","choices":["呼気性喘鳴（wheezing）","吸気性喘鳴のみ","胸膜摩擦音のみ","心雑音"],"answer":0,"exp":"気管支喘息発作では呼気性喘鳴が特徴的で、気道狭窄を示す。"},{"id":"c3-172","n":172,"q":"気管支喘息の治療で使用される救急薬剤に含まれるものはどれか。","choices":["抗生物質","降圧薬","抗凝固薬","β2刺激薬の吸入"],"answer":3,"exp":"気管支喘息ではβ2刺激薬（サルブタモール等）の吸入で気管支拡張を図ることが基本治療。"},{"id":"c3-173","n":173,"q":"肺炎に典型的にみられない症状はどれか。","choices":["多尿","咳嗽","呼吸困難","発熱"],"answer":0,"exp":"肺炎では発熱、咳、喀痰、呼吸困難等がみられるが、多尿は典型的ではない。"},{"id":"c3-174","n":174,"q":"過換気症候群の原因として最も多いものはどれか。","choices":["不安・精神的ストレス","出血","脱水","外傷"],"answer":0,"exp":"過換気症候群は精神的ストレスが主な原因で、呼気のCO2排出過剰により呼吸性アルカローシスとなる。"},{"id":"c3-175","n":175,"q":"過換気症候群でみられる所見として正しいものはどれか。","choices":["手指のしびれや筋けいれん","血糖低下","乏尿","高体温"],"answer":0,"exp":"過換気ではイオン化カルシウムの低下が生じ、手指・口周のしびれやテタニー様症状が出現する。"},{"id":"c3-176","n":176,"q":"急性腹症で「腹部全体の強い圧痛と筋性防御」を呈した場合に疑うべき病態はどれか。","choices":["過敏性腸症候群","良性便秘","尿路結石","汎発性腹膜炎"],"answer":3,"exp":"汎発性腹膜炎では腹膜刺激症状（強い圧痛・筋性防御・反跳痛）が出現する。"},{"id":"c3-177","n":177,"q":"腹部大動脈瘤破裂に典型的な症状として最も適切なものはどれか。","choices":["無症状のまま軽快","限局性の頭痛","軽度の倦怠感のみ","突発的な腹痛・背部痛とショック"],"answer":3,"exp":"腹部大動脈瘤破裂は突発的な腹痛・背部痛とショックを伴い、救命には迅速な搬送が必要。"},{"id":"c3-178","n":178,"q":"消化管出血を示唆する症状として正しくないものはどれか。","choices":["多飲","吐血","下血（タール便）","血便"],"answer":0,"exp":"消化管出血は吐血、下血、血便、ショック徴候等を呈するが、多飲は直接的な所見ではない。"},{"id":"c3-179","n":179,"q":"熱中症の重症度分類としてⅢ度に該当する所見はどれか。","choices":["喉の渇きのみ","軽度のこむら返りのみ","意識障害、高体温、臓器障害","軽度の発汗"],"answer":2,"exp":"熱中症Ⅲ度（熱射病）は中枢神経障害・臓器障害・高体温を伴う重症状態。"},{"id":"c3-180","n":180,"q":"熱中症の傷病者に対する初期対応で適切なものはどれか。","choices":["激しい運動","温風で加温する","アルコール摂取","涼しい場所へ移動し身体冷却"],"answer":3,"exp":"熱中症では速やかに涼しい場所へ移動し、体表冷却を行うことが重要。"},{"id":"c3-181","n":181,"q":"低体温症で最初に失われやすい反応はどれか。","choices":["咳嗽反射","震え（シバリング）","嘔吐反射","瞳孔反射"],"answer":1,"exp":"低体温症では体温低下に伴い震えがまず出現し、さらに低下すると震えも消失する。"},{"id":"c3-182","n":182,"q":"糖尿病性ケトアシドーシス（DKA）の典型症状として正しいものはどれか。","choices":["徐脈、低体温","赤血球増加","多血症","クスマウル呼吸、脱水、意識障害"],"answer":3,"exp":"DKAでは高血糖、アシドーシス、脱水、クスマウル呼吸、意識障害が典型的にみられる。"},{"id":"c3-183","n":183,"q":"腎不全で高カリウム血症が生じたときに心電図で見られる特徴はどれか。","choices":["尖鋭化したT波","QTが著明に短縮のみ","すべてが正常","P波が増大"],"answer":0,"exp":"高カリウム血症ではテント状（尖鋭化）T波が典型的で、進行するとQRS幅広化等を呈する。"},{"id":"c3-184","n":184,"q":"尿閉を疑う際の典型所見はどれか。","choices":["腰背部の限局痛のみ","発熱と咳","喉頭浮腫","下腹部の膨満と排尿困難"],"answer":3,"exp":"尿閉では下腹部膨満と排尿困難、膀胱の触知可能な腫大がみられる。"},{"id":"c3-185","n":185,"q":"子癇の発症時期として最も正しいものはどれか。","choices":["月経時のみ","妊娠初期のみ","無月経時のみ","妊娠後期や分娩前後"],"answer":3,"exp":"子癇は妊娠高血圧症候群に伴うけいれんで、妊娠後期から分娩前後にかけて発症することが多い。"},{"id":"c3-186","n":186,"q":"新生児仮死の初期評価に用いられる代表的スコアはどれか。","choices":["Apgarスコア","JCSスコア","GCS","APACHE"],"answer":0,"exp":"新生児の状態評価にはApgarスコア（心拍・呼吸・筋緊張・反射・皮膚色）が広く用いられる。"},{"id":"c3-187","n":187,"q":"Apgarスコアに含まれない項目はどれか。","choices":["筋緊張","呼吸","心拍数","体温"],"answer":3,"exp":"Apgarは心拍数、呼吸、筋緊張、反射、皮膚色の5項目。体温は含まれない。"},{"id":"c3-188","n":188,"q":"急性アルコール中毒で注意が必要な呼吸器症状はどれか。","choices":["関節痛のみ","多呼吸のみ","頻尿のみ","舌根沈下と気道閉塞、嘔吐・誤嚥"],"answer":3,"exp":"急性アルコール中毒では意識低下に伴う舌根沈下、嘔吐物誤嚥、気道閉塞のリスクが高い。"},{"id":"c3-189","n":189,"q":"電解質異常のうち「高ナトリウム血症」の主な症状はどれか。","choices":["多血症のみ","脱水と意識障害","脱毛のみ","関節痛のみ"],"answer":1,"exp":"高ナトリウム血症は水分の相対的不足により脱水・口渇・意識障害を引き起こす。"},{"id":"c3-190","n":190,"q":"中毒の原因薬物が不明な場合、救急救命士が確認すべきことはどれか。","choices":["周辺の薬容器・薬包・食品の確認、目撃情報","家族の職業","近隣の地名","患者の預金残高"],"answer":0,"exp":"中毒原因の特定には周囲の薬容器・薬包・食品や目撃者からの情報が重要となる。"},{"id":"c3-191","n":191,"q":"一酸化炭素中毒の症状として最も適切なものはどれか。","choices":["体温低下のみ","嚥下困難のみ","頭痛・倦怠感・意識障害","多尿のみ"],"answer":2,"exp":"一酸化炭素中毒では頭痛、吐気、意識障害、重症では心停止を起こし、SpO2では低下を捉えにくい。"},{"id":"c3-192","n":192,"q":"一酸化炭素中毒の傷病者に対する初期対応として適切なものはどれか。","choices":["保温のみ","経口水分補給のみ","安静のみ","速やかに新鮮空気下へ搬出し、高濃度酸素投与"],"answer":3,"exp":"一酸化炭素中毒は速やかに中毒環境から救出し、高濃度酸素投与を行うことが重要。"},{"id":"c3-193","n":193,"q":"熱傷の重症度評価で「9の法則」を用いる対象はどれか（成人）。","choices":["血糖の推定","尿量の推定","体表面積の推定","意識レベルの推定"],"answer":2,"exp":"成人の熱傷面積の推定には9の法則が用いられる。小児では5の法則等が用いられる。"},{"id":"c3-194","n":194,"q":"重症熱傷の搬送基準の一つとして正しいものはどれか。","choices":["前腕の小さな擦過傷","軽度の日焼け","広範な熱傷（体表面積の一定割合以上）や気道熱傷","微量のかすり傷"],"answer":2,"exp":"広範囲熱傷や気道熱傷は重症として専門施設への搬送を要する。"},{"id":"c3-195","n":195,"q":"溺水での初期対応で最も重要なものはどれか。","choices":["血圧測定のみ","気道確保と換気","ストレッチングのみ","体温測定のみ"],"answer":1,"exp":"溺水では低酸素が主病態のため、気道確保と人工呼吸による酸素供給が最優先となる。"},{"id":"c3-196","n":196,"q":"感染症で特に飛沫感染により感染する代表的疾患はどれか。","choices":["インフルエンザ","C型肝炎","結核（飛沫核）","ノロウイルス感染症"],"answer":0,"exp":"インフルエンザは主に飛沫感染で、咳・くしゃみ等で感染する。結核は空気感染（飛沫核）。"},{"id":"c3-197","n":197,"q":"空気感染（飛沫核感染）する代表的疾患はどれか。","choices":["結核","B型肝炎","普通感冒","梅毒"],"answer":0,"exp":"結核・麻疹・水痘は空気感染（飛沫核感染）を起こす代表的疾患。"},{"id":"c3-198","n":198,"q":"感染経路として接触感染に該当しないものはどれか。","choices":["医療器具を介した接触","直接接触","間接接触","空気感染経路"],"answer":3,"exp":"接触感染には直接接触・間接接触・器具を介する接触があり、空気感染は別の経路。"},{"id":"c3-199","n":199,"q":"小児の発熱に伴うけいれんで最多の原因はどれか。","choices":["外傷","てんかん","熱性けいれん","低血糖"],"answer":2,"exp":"熱性けいれんは小児で最も頻度の高いけいれんの原因で、予後は一般に良好。"},{"id":"c3-200","n":200,"q":"急性喉頭蓋炎の典型的な症状はどれか。","choices":["吸気性喘鳴と発熱、嚥下困難","頻尿のみ","関節痛のみ","下痢のみ"],"answer":0,"exp":"急性喉頭蓋炎は吸気性喘鳴、発熱、嚥下困難、流涎等をきたし、気道閉塞のリスクが高い。"},{"id":"c3-201","n":201,"q":"気道異物窒息で意識のある成人に最初に行うべき処置はどれか。","choices":["水を飲ませる","胸骨圧迫","経鼻気管挿管","腹部突き上げ法（ハイムリック法）"],"answer":3,"exp":"意識のある成人の気道異物では腹部突き上げ法が推奨される。背部叩打法を併用することもある。"},{"id":"c3-202","n":202,"q":"乳児の気道異物で推奨される処置はどれか。","choices":["水を飲ませる","背部叩打法と胸部突き上げ法","腹部突き上げ法","強制嘔吐"],"answer":1,"exp":"乳児では腹部突き上げは禁忌で、背部叩打法と胸部突き上げ法を交互に行うのが推奨される。"},{"id":"c3-203","n":203,"q":"めまいの原因で命に関わる可能性が高いのはどれか。","choices":["前庭神経炎","良性発作性頭位めまい症","メニエール病","小脳梗塞"],"answer":3,"exp":"小脳梗塞は急性めまいの中でも緊急性が高く、早期治療が必要。"},{"id":"c3-204","n":204,"q":"吐血の色調が「鮮紅色」の場合に疑う出血源はどれか。","choices":["食道・胃噴門からの急性出血","小腸","直腸","下部消化管"],"answer":0,"exp":"鮮紅色の吐血は比較的新鮮な上部消化管出血（食道静脈瘤破裂等）を示唆する。"},{"id":"c3-205","n":205,"q":"下血がタール便様である場合、出血源として考えられるものはどれか。","choices":["上部消化管","下行結腸","肛門","直腸"],"answer":0,"exp":"タール便（黒色便）は上部消化管出血を示唆し、ヘモグロビンが消化酵素で分解されて黒色を呈する。"},{"id":"c3-206","n":206,"q":"脳動脈瘤破裂（くも膜下出血）の典型的症状はどれか。","choices":["緩徐進行の頭痛","軽度の胃部不快","下肢浮腫","突然発症の激しい頭痛（今までに経験のない）"],"answer":3,"exp":"くも膜下出血は「バットで殴られたような」突発性の激しい頭痛が特徴的。"},{"id":"c3-207","n":207,"q":"てんかん重積状態の定義として最も適切なものはどれか。","choices":["けいれんが5分以上持続する、または発作が連続して意識が回復しない状態","30秒のけいれん","年単位のけいれん","1週間のけいれん"],"answer":0,"exp":"国際てんかん連盟の定義では5分以上持続するけいれんや意識回復しない連続発作は重積と位置づけられる。"},{"id":"c3-208","n":208,"q":"高齢者の転倒による外傷で最も頻度の高い骨折部位はどれか。","choices":["鎖骨","胸椎","腓骨","大腿骨近位部"],"answer":3,"exp":"高齢者の転倒では大腿骨近位部骨折（大腿骨頸部・転子部）が頻度が高く、寝たきりの原因にもなる。"},{"id":"c3-209","n":209,"q":"高齢者の意識障害で見落としやすい原因はどれか。","choices":["外傷","薬剤副作用（多剤併用）","出血","頭痛"],"answer":1,"exp":"高齢者は多剤併用が多く、薬剤性の意識障害を見落とさないよう服薬歴の確認が重要。"},{"id":"c3-210","n":210,"q":"敗血症の定義として正しいものはどれか。","choices":["感染に対する生体反応が破綻し臓器障害を伴う状態","単なる発熱","軽度の創傷感染","風邪症候群"],"answer":0,"exp":"Sepsis-3では敗血症を感染に対する調節不能な宿主反応によって引き起こされる生命を脅かす臓器障害と定義する。"},{"id":"c3-211","n":211,"q":"脳梗塞の危険因子として正しくないものはどれか。","choices":["高血圧","心房細動","低血圧","糖尿病"],"answer":2,"exp":"脳梗塞の危険因子は高血圧、糖尿病、脂質異常症、心房細動、喫煙等。低血圧はむしろ危険因子ではない。"},{"id":"c3-212","n":212,"q":"心不全の急性増悪でみられやすい症状はどれか。","choices":["難聴","関節痛のみ","起座呼吸","脱毛"],"answer":2,"exp":"心不全の急性増悪では起座呼吸（横になると息苦しく起き上がって呼吸したくなる状態）が特徴的である。"},{"id":"c3-213","n":213,"q":"心タンポナーデで見られるベックの三徴に含まれないものはどれか。","choices":["血圧低下","頸静脈怒張","心音減弱","高血圧"],"answer":3,"exp":"ベックの三徴は血圧低下・頸静脈怒張・心音減弱で、高血圧は含まれない。"},{"id":"c3-214","n":214,"q":"緊張性気胸で見られる所見として正しいものはどれか。","choices":["患側の呼吸音減弱・気管偏位・頸静脈怒張","両側呼吸音左右差なし","徐脈と高血圧","脱水による乾燥肌のみ"],"answer":0,"exp":"緊張性気胸では患側の呼吸音減弱、気管の健側偏位、頸静脈怒張、ショック等がみられる。"},{"id":"c3-215","n":215,"q":"頸部外傷が疑われる傷病者への搬送時に注意すべきことはどれか。","choices":["頚部をねじる","頚部への冷却のみ","頚部の積極的屈曲運動","頚椎固定と愛護的な搬送"],"answer":3,"exp":"頸椎損傷の可能性があるため頚椎固定を徹底し、愛護的な搬送を行う必要がある。"},{"id":"c3-216","n":216,"q":"痙攣後の意識回復過程で見られる「postictal state」とは何か。","choices":["発作後の意識減退・傾眠状態","発作予兆","失明","言語能力の永続的喪失"],"answer":0,"exp":"発作後は意識がしばらく傾眠状態となるpostictal stateが見られることが多い。"},{"id":"c3-217","n":217,"q":"傷病者の心理的サポートで重要な姿勢はどれか。","choices":["安心感を与える声かけと共感的対応","無言で処置だけ行う","冗談で済ませる","叱責する"],"answer":0,"exp":"救急現場では傷病者の不安軽減のため、声かけや共感的な対応が処置の有効性にも影響する。"},{"id":"c3-218","n":218,"q":"自殺企図例に対する救急救命士の対応として正しいものはどれか。","choices":["責めるような言葉で対応する","無視する","身体的救命と同時に危険物の除去・安全確保を行う","写真を撮影する"],"answer":2,"exp":"自殺企図例では身体治療と同時に危険物除去・再企図の防止・安全確保が重要で、受容的な対応が求められる。"},{"id":"c3-219","n":219,"q":"精神科救急で警察・医療との連携が必要な場面はどれか。","choices":["通常の一般疾患のみ","自傷他害の恐れがあるとき","軽度の不眠のみ","既往歴がないとき"],"answer":1,"exp":"自傷他害の恐れがある精神科救急では警察・精神科医療機関との連携が必要となる場合がある。"},{"id":"c3-220","n":220,"q":"虐待が疑われる所見として典型的なものはどれか。","choices":["虫刺され","単発の捻挫","不自然な部位の多発性あざや説明と一致しない外傷","軽度の日焼け"],"answer":2,"exp":"虐待は不自然な部位の多発性外傷や説明と合致しない受傷機転等が疑いの所見となる。"},{"id":"c3-221","n":221,"q":"児童虐待の疑いがある場合の対応として正しいものはどれか。","choices":["関係機関（児童相談所等）と連携して対応する","保護者を責める","見逃す","現場で独断で処分する"],"answer":0,"exp":"児童虐待の疑いは児童相談所等関係機関への通告が法的にも求められ、関係機関連携が不可欠。"},{"id":"c3-222","n":222,"q":"心電図でST上昇がみられた場合に最も疑う疾患はどれか。","choices":["鉄欠乏性貧血","胆石症","急性心筋梗塞","喘息発作"],"answer":2,"exp":"ST上昇は急性心筋梗塞の代表的所見で、貫壁性の虚血を示唆する。"},{"id":"c3-223","n":223,"q":"DKAと高血糖高浸透圧症候群（HHS）の違いとして最も正しいものはどれか。","choices":["DKAはケトン体蓄積によりアシドーシスを伴うが、HHSはアシドーシスが軽度","両者は完全に同じ","DKAはケトン体産生がない","HHSは1型糖尿病のみに起こる"],"answer":0,"exp":"DKAはケトン体蓄積によりアシドーシスが強いが、HHSは高浸透圧・高血糖が中心で、アシドーシスは軽度。"},{"id":"c3-224","n":224,"q":"失神の原因として頻度の高いものはどれか。","choices":["単純な風邪のみ","単純な脱水のみ","神経調節性（血管迷走神経）失神","小脳出血のみ"],"answer":2,"exp":"失神の原因は神経調節性（迷走神経反射）が最も頻度が高く、若年層に多い。"},{"id":"c3-225","n":225,"q":"アナフィラキシーで見られる皮膚症状として正しいものはどれか。","choices":["皮膚の蒼白のみ","黒色便","紫斑のみ","全身の蕁麻疹・紅潮"],"answer":3,"exp":"アナフィラキシーの多くで全身の蕁麻疹・紅潮・瘙痒等の皮膚症状がみられる。"}]},{"id":"c4","kind":"chapter","title":"第4章 心肺蘇生とショック対応","subtitle":"BLS・ALS・除細動・気道確保・ショック管理","questions":[{"id":"c4-226","n":226,"q":"成人に対するBLSの胸骨圧迫の深さとして最も適切なものはどれか。","choices":["約10cm","約2cm","指が届く程度","約5cm（6cmを超えない）"],"answer":3,"exp":"成人では胸骨圧迫の深さは約5cmで、6cmを超えないようにすると推奨されている。"},{"id":"c4-227","n":227,"q":"成人CPRの胸骨圧迫のテンポとして最も適切なものはどれか。","choices":["毎分100〜120回","毎分30回以下","毎分200回以上","毎分60回程度"],"answer":0,"exp":"成人に対する胸骨圧迫は毎分100〜120回のテンポで実施するのが推奨される。"},{"id":"c4-228","n":228,"q":"BLSにおける胸骨圧迫と人工呼吸の比率として正しいもの（成人・1人法）はどれか。","choices":["10対5","5対1","15対1","30対2"],"answer":3,"exp":"成人の1人法BLSでは胸骨圧迫30回：人工呼吸2回のサイクルで実施する。"},{"id":"c4-229","n":229,"q":"小児に対する2人法BLSの胸骨圧迫と人工呼吸の比率はどれか。","choices":["10対1","15対2","30対2","5対1"],"answer":1,"exp":"小児の2人法では胸骨圧迫15回：人工呼吸2回が推奨される。1人法では30:2を使うこともある。"},{"id":"c4-230","n":230,"q":"AEDの使用手順として最も適切なものはどれか。","choices":["電源を入れ、パッドを貼り、指示に従う","電源をつけずに使用する","呼吸が戻ったかだけ確認する","パッドを確認せず解析する"],"answer":0,"exp":"AEDは電源ON→パッド装着→自動解析→指示に従い通電（必要時）の順で使用する。"},{"id":"c4-231","n":231,"q":"AEDによる通電適応となる不整脈はどれか。","choices":["心室細動・無脈性心室頻拍","心房細動のみ","房室ブロックのみ","洞徐脈のみ"],"answer":0,"exp":"AEDは心室細動（VF）と無脈性心室頻拍（pVT）に対して通電する。"},{"id":"c4-232","n":232,"q":"心停止波形のうち除細動適応ではないものはどれか。","choices":["無脈性VT","VF","PEA","VF（細かい）"],"answer":2,"exp":"PEA（無脈性電気活動）と心静止（Asystole）は除細動の適応ではなく、胸骨圧迫と可逆的原因検索が優先される。"},{"id":"c4-233","n":233,"q":"PEAと心静止に共通して行うべき処置はどれか。","choices":["除細動","経口水分補給","何も処置しない","質の高い胸骨圧迫と可逆的原因（5H5T）の検索"],"answer":3,"exp":"PEA・心静止では除細動は適応外で、質の高いCPRと可逆的原因の検索・是正が重要。"},{"id":"c4-234","n":234,"q":"可逆的原因「5H5T」の「H」に含まれないものはどれか。","choices":["Hypoxia","Hemorrhage（出血）単独","Hypothermia","Hypovolemia"],"answer":1,"exp":"5H5TのHはHypoxia、Hypovolemia、Hypothermia、H+（アシドーシス）、Hypo/Hyperkalemiaであり、出血単独では列挙されない（低循環量に含む）。"},{"id":"c4-235","n":235,"q":"高度気道確保の器具として正しくないものはどれか。","choices":["食道閉鎖式エアウェイ","ラリンゲアルマスク（LMA）","酸素マスクのみ","気管チューブ（挿管）"],"answer":2,"exp":"高度気道確保は気管内挿管、LMA、食道閉鎖式エアウェイ等を指す。酸素マスクは補助的酸素投与具。"},{"id":"c4-236","n":236,"q":"口腔内吸引の目的として正しいものはどれか。","choices":["心電図評価","血糖測定","体温管理","気道確保のための分泌物・吐物の除去"],"answer":3,"exp":"口腔内吸引は気道を清浄化して換気を確保するための基本処置で、吐物・分泌物の除去が目的。"},{"id":"c4-237","n":237,"q":"口咽頭エアウェイ（経口エアウェイ）の適応はどれか。","choices":["咳嗽反射が亢進した傷病者","意識のない成人で舌根沈下による気道閉塞","意識清明な成人","鼻出血"],"answer":1,"exp":"経口エアウェイは意識のない患者の舌根沈下対策として用いる。意識があると嘔吐・喉頭けいれんの危険がある。"},{"id":"c4-238","n":238,"q":"経鼻エアウェイが適応となる状況はどれか。","choices":["完全閉塞の鼻中隔湾曲","出血傾向のある頭蓋底骨折","咳嗽反射があっても使用でき、経口エアウェイが挿入困難な場合","重度の鼻出血"],"answer":2,"exp":"経鼻エアウェイは咽頭反射を誘発しにくく、意識のある傷病者にも使用可能だが、頭蓋底骨折疑いでは禁忌。"},{"id":"c4-239","n":239,"q":"バッグバルブマスク（BVM）換気の1回換気量目安はどれか（成人）。","choices":["約2L","約500〜600mL（胸郭の挙上を確認できる程度）","約50mL","約100mL"],"answer":1,"exp":"BVMによる換気は1回約500〜600mL（胸の上がりが確認できる程度）で、過換気を避けることが重要。"},{"id":"c4-240","n":240,"q":"BVM換気での過換気が有害となる理由はどれか。","choices":["SpO2の上昇","CO2の過剰蓄積","胸腔内圧上昇による静脈還流障害・心拍出量低下","逆流防止"],"answer":2,"exp":"CPR中の過換気は胸腔内圧を上昇させ静脈還流を阻害し、心拍出量低下を招く。"},{"id":"c4-241","n":241,"q":"救急救命士が使用できる器具を用いた気道確保として正しいものはどれか。","choices":["輪状甲状靭帯切開のみ","ラリンゲアルマスク、食道閉鎖式エアウェイ、気管内チューブ","外科的気管切開","胸腔ドレナージ"],"answer":1,"exp":"救急救命士が行う器具を用いた気道確保は、LMAや食道閉鎖式エアウェイ、気管内チューブ（条件付き）等。"},{"id":"c4-242","n":242,"q":"気管挿管を救急救命士が実施するために必要な条件はどれか。","choices":["一般市民の同意のみ","独自判断で実施可能","消防長の許可のみ","所定の教育と認定を受けており、医師の具体的指示のもとで実施する"],"answer":3,"exp":"気管挿管は所定の教育・認定を受けた救急救命士が、医師の具体的指示下で実施する特定行為である。"},{"id":"c4-243","n":243,"q":"気管挿管の合併症として最も重要なものはどれか。","choices":["便秘","食道挿管の見逃しによる低酸素","脱毛","難聴"],"answer":1,"exp":"食道挿管を見逃すと換気が行われず重大な低酸素を招く。二酸化炭素モニタリング等で確認が必須。"},{"id":"c4-244","n":244,"q":"EtCO2（呼気終末二酸化炭素分圧）の測定がCPR時に重要な理由はどれか。","choices":["尿量の指標","血液型の判定","血糖の指標","気道確保の位置確認や胸骨圧迫の質の指標になる"],"answer":3,"exp":"EtCO2は気管チューブ位置の確認、胸骨圧迫の質、ROSCの早期把握に役立つ。"},{"id":"c4-245","n":245,"q":"CPR中のROSCの可能性を示唆するEtCO2の変化はどれか。","choices":["急激な低下","ゼロになる","変化しない","急激な上昇"],"answer":3,"exp":"CPR中にEtCO2が急激に上昇する場合、自己心拍再開（ROSC）の可能性を示唆する。"},{"id":"c4-246","n":246,"q":"静脈路確保の代表的な部位はどれか。","choices":["頸動脈","大動脈","前腕・肘窩の表在静脈","胸管"],"answer":2,"exp":"静脈路確保は通常、前腕や肘窩の表在静脈に留置針で行う。"},{"id":"c4-247","n":247,"q":"救急救命士の特定行為としての静脈路確保の主な目的はどれか。","choices":["薬剤投与・輸液の投与経路を確保すること","血液を採取すること","気道を確保すること","尿路を確保すること"],"answer":0,"exp":"救急救命士の静脈路確保は薬剤投与や輸液の投与経路確保が目的。"},{"id":"c4-248","n":248,"q":"輸液として一般的に使用される等張電解質輸液はどれか。","choices":["乳酸リンゲル液または酢酸リンゲル液等","ブドウ糖10%単独","生理食塩水のみは不可","5%ブドウ糖単独"],"answer":0,"exp":"乳酸リンゲル液・酢酸リンゲル液等の等張電解質輸液は救急初期輸液として広く用いられる。"},{"id":"c4-249","n":249,"q":"CPR中に救急救命士が医師の指示下で投与可能な薬剤はどれか。","choices":["抗生物質","エピネフリン","経口降圧薬","インスリン"],"answer":1,"exp":"CPR中の薬剤投与としてエピネフリンの投与が救急救命士の特定行為として可能である。"},{"id":"c4-250","n":250,"q":"成人CPRにおけるエピネフリン投与量として正しいものはどれか。","choices":["1回あたり100mg","1回あたり1mgを3〜5分ごとに投与","1回あたり0.01mg","1回あたり10mg"],"answer":1,"exp":"成人心停止ではエピネフリン1mgを3〜5分ごとに投与することが標準的。"},{"id":"c4-251","n":251,"q":"CPR中のエピネフリン投与のタイミング（非ショック適応波形）として正しいものはどれか。","choices":["除細動後のみ","ROSC後のみ","搬送後病院でのみ","心停止波形を確認したらできるだけ早く"],"answer":3,"exp":"PEA・心静止のような非ショック適応波形では、エピネフリンをできるだけ早期に投与することが推奨される。"},{"id":"c4-252","n":252,"q":"CPR中のエピネフリン投与のタイミング（ショック適応波形）として正しいものはどれか。","choices":["初回除細動前","投与しない","2〜3回目の除細動後からの投与","搬送後のみ"],"answer":2,"exp":"ショック適応波形ではまず除細動を優先し、2〜3回目の除細動後にエピネフリンを投与するのが一般的。"},{"id":"c4-253","n":253,"q":"CPRの質を担保するために重要なポイントとして正しいものはどれか。","choices":["片手で実施すること","ゆっくりとした圧迫","十分な深さ・テンポ、完全な胸郭反動、中断の最小化","浅い圧迫"],"answer":2,"exp":"質の高いCPRは十分な深さ、テンポ、完全な胸郭の戻り、中断の最小化が重要なポイント。"},{"id":"c4-254","n":254,"q":"CPR担当者の疲労を軽減し質を維持するための推奨はどれか。","choices":["10分ごとに交代する","交代しない","30秒ごとに交代する","約2分（5サイクル）ごとに交代する"],"answer":3,"exp":"担当者の疲労による質低下を避けるため、約2分ごとに交代することが推奨されている。"},{"id":"c4-255","n":255,"q":"小児（1〜思春期前）の胸骨圧迫の深さとして正しい目安はどれか。","choices":["胸郭の5分の1","指が届く程度","胸郭前後径の約3分の1","胸郭前後径の半分以上"],"answer":2,"exp":"小児では胸郭前後径の約3分の1（約5cm）を目安とする。"},{"id":"c4-256","n":256,"q":"乳児（1歳未満）の胸骨圧迫の深さとして正しい目安はどれか。","choices":["胸郭前後径の約3分の1（約4cm）","10cm以上","胸郭前後径の80%","1cmに満たない"],"answer":0,"exp":"乳児では胸郭前後径の約3分の1（約4cm）を目安に圧迫する。"},{"id":"c4-257","n":257,"q":"乳児のCPRで圧迫手技として推奨されるものはどれか。","choices":["片手の手掌で圧迫","両手指で胸郭を挟む","肘を伸ばして手根で圧迫","指2本法（1人法）または両母指法（2人法）"],"answer":3,"exp":"乳児では1人法で指2本法、2人法では両母指で胸郭を包むように圧迫する方法が推奨される。"},{"id":"c4-258","n":258,"q":"人工呼吸の1回換気時間の推奨として正しいものはどれか。","choices":["急速に0.1秒で押し込む","10秒かけて行う","約1秒かけて胸の挙上を確認する程度","できるだけ長く押し続ける"],"answer":2,"exp":"人工呼吸は約1秒かけて胸の挙上を目視できる程度の換気量で行うことが推奨される。"},{"id":"c4-259","n":259,"q":"気道確保後の人工呼吸とCPRの関係として正しいものはどれか。","choices":["圧迫のみ行う","圧迫と換気を非同期に実施する","必ず圧迫を止めてから換気する","換気のみ行う"],"answer":1,"exp":"高度気道確保後は胸骨圧迫と換気を非同期に行い、圧迫を可能な限り中断しないようにする。"},{"id":"c4-260","n":260,"q":"ROSC（自己心拍再開）後のケアで最も重要な点はどれか。","choices":["速やかに冷水で冷却","バイタル測定を行わない","低酸素・低血圧の回避と原疾患検索","高濃度酸素投与の継続のみ"],"answer":2,"exp":"ROSC後は低酸素・低血圧を避け、原疾患の検索・治療を並行して行うポスト蘇生ケアが重要。"},{"id":"c4-261","n":261,"q":"DNAR（蘇生拒否）指示がある傷病者への対応として最も適切なものはどれか。","choices":["MCの指示と指示書の確認を行い対応する","家族を責める","必ず蘇生しない","無条件に蘇生する"],"answer":0,"exp":"DNAR指示はMC体制での確認や指示書の有無等を踏まえ、慎重に判断する必要がある。"},{"id":"c4-262","n":262,"q":"体温低下による心停止でCPRを中止する前に考慮すべきことはどれか。","choices":["即時中止する","体温測定せず中止する","酸素投与を中止する","十分な復温を試みる"],"answer":3,"exp":"低体温の場合は「暖まるまでは死亡と判定しない」とも言われ、十分な復温まで蘇生努力を継続する。"},{"id":"c4-263","n":263,"q":"溺水の心停止に特有の対応として正しいものはどれか。","choices":["胸骨圧迫は不要","人工呼吸は不要","気道確保は不要","CPR開始時に十分な人工呼吸を重視する"],"answer":3,"exp":"溺水では低酸素が主病態のため、通常のCPRに加えて十分な換気が重要となる。"},{"id":"c4-264","n":264,"q":"外傷による心停止で優先的に行うべき処置はどれか。","choices":["静脈路確保のみに注力","バイタル測定のみ","大量出血の制御、気道確保、緊張性気胸の解除など可逆的原因の対応","呼吸音聴取のみ"],"answer":2,"exp":"外傷性心停止では出血制御、気道確保、緊張性気胸・心タンポナーデの早期対応といった可逆的原因の是正が重要。"},{"id":"c4-265","n":265,"q":"ショックに対する初期輸液の目標として最も適切なものはどれか。","choices":["循環血液量の回復と組織灌流の改善","心拍を必ず120以上に保つ","尿量ゼロにする","体温上昇を抑制する"],"answer":0,"exp":"ショックに対する初期輸液は循環血液量の補充と組織灌流の改善が主目的である。"},{"id":"c4-266","n":266,"q":"出血性ショックで最も重要な初期対応はどれか。","choices":["出血制御（直接圧迫、止血帯等）と迅速搬送","ひたすら輸液","搬送を遅らせる","酸素投与のみ"],"answer":0,"exp":"出血性ショックでは直接圧迫や止血帯による出血制御と迅速な手術室への搬送が生存に不可欠。"},{"id":"c4-267","n":267,"q":"止血帯を使用する際の注意点として正しいものはどれか。","choices":["時間は記録しなくてよい","絶対に記録しない","強く締めないようにする","装着時刻を記録し、過度な長時間使用に注意する"],"answer":3,"exp":"止血帯は使用時は時刻を必ず記録し、装着時間を医療機関へ正確に伝える。"},{"id":"c4-268","n":268,"q":"神経原性ショックの特徴として正しいものはどれか。","choices":["血圧低下と頻脈","血圧低下と徐脈（交感神経遮断）","血圧上昇と頻脈","血圧上昇と徐脈"],"answer":1,"exp":"神経原性ショックは脊髄損傷等による交感神経遮断が原因で、血圧低下に徐脈を伴うのが特徴。"},{"id":"c4-269","n":269,"q":"敗血症性ショックの典型的な初期血行動態はどれか。","choices":["末梢血管収縮のみ","血圧上昇と徐脈","高体温と浅呼吸のみ","末梢血管拡張・暖かい皮膚・頻脈（ウォームショック）"],"answer":3,"exp":"敗血症性ショック初期は末梢血管拡張により温かい皮膚と頻脈を呈する「ウォームショック」となることが多い。"},{"id":"c4-270","n":270,"q":"心原性ショックの治療で輸液を行う際の注意点はどれか。","choices":["輸液禁忌とは限らない","経口のみ","無制限に大量輸液する","過剰輸液を避け肺うっ血の悪化に注意する"],"answer":3,"exp":"心原性ショックでは過剰輸液が肺うっ血・心不全を悪化させる恐れがあるため、慎重な輸液が求められる。"},{"id":"c4-271","n":271,"q":"小児（乳児除く）に除細動を行う際のエネルギー目安（初回）として正しいものはどれか。","choices":["100J/kg","20J/kg","2J/kg","500J/kg"],"answer":2,"exp":"小児の除細動エネルギーは初回2〜4J/kg（2J/kgが一般的）、2回目以降は4J/kgとし、さらに必要なら10J/kgまたは成人量を超えない範囲で増量を考慮する。","revised":true},{"id":"c4-272","n":272,"q":"AEDの小児モードの適用対象として正しい目安はどれか。","choices":["高齢者のみ","乳児未満","未就学児（おおむね6歳未満）","成人全般"],"answer":2,"exp":"JRC蘇生ガイドライン2020では、未就学児（おおむね6歳未満、乳児を含む）には小児用パッド・小児用モードを用い、小学生以上には成人用パッドを用いる。小児用パッドがない場合は未就学児にも成人用パッドを使用する（パッド同士が重ならないよう注意）。","revised":true},{"id":"c4-273","n":273,"q":"ショック離脱後のモニタリングで重要な項目はどれか。","choices":["視力のみ","尿比重のみ","体温のみ","血圧・心拍・尿量・意識レベル・末梢循環"],"answer":3,"exp":"ショック管理では循環指標（血圧・心拍・末梢循環・尿量）と意識レベルを含む包括的な評価が必要。"},{"id":"c4-274","n":274,"q":"傷病者の呼吸停止・心停止の判断手順として正しいものはどれか。","choices":["10秒以内に呼吸と脈拍を同時に確認する","脈拍は確認しない","30秒以上呼吸を観察する","2分間は待機する"],"answer":0,"exp":"成人の心停止判断では10秒以内に呼吸と脈拍（頚動脈）を同時に確認するのが標準手順である。"},{"id":"c4-275","n":275,"q":"死戦期呼吸（あえぎ呼吸）をどう判断すべきか。","choices":["通常呼吸として扱う","無視する","パニック発作として扱う","心停止の兆候として扱いCPRを開始する"],"answer":3,"exp":"死戦期呼吸は心停止の兆候であり、通常呼吸と誤認せずCPRを開始することが重要。"},{"id":"c4-276","n":276,"q":"心停止傷病者に初期行うべき「CAB」の順序として正しいものはどれか。","choices":["Airway→Compressions→Breathing","Compressions→Airway→Breathing","Breathing→Airway→Compressions","Airway→Breathing→Compressions"],"answer":1,"exp":"現行BLSガイドラインでは成人心停止はCAB順序で開始し、胸骨圧迫を優先する。"},{"id":"c4-277","n":277,"q":"意識確認の方法として正しいものはどれか。","choices":["頬を平手打ちする","肩をたたきながら大声で呼びかける","体を激しく揺する","顔に水をかける"],"answer":1,"exp":"肩を軽くたたきながら大声で呼びかけ、意識の有無を確認する。乳児では足裏を刺激する。"},{"id":"c4-278","n":278,"q":"CPR中に除細動の準備ができた際の対応として正しいものはどれか。","choices":["圧迫を長時間中断する","圧迫を最小限に中断し、除細動を実施","圧迫を継続しながら通電","通電を省略する"],"answer":1,"exp":"除細動時は感電防止のため圧迫を一時中断する必要があるが、中断時間は最小限に抑える。"},{"id":"c4-279","n":279,"q":"小児で除細動を行う場合の備えるべき重要事項はどれか。","choices":["年齢・体重に応じた小児用パッドとエネルギー設定","通電しない","成人と同一の設定","パッドを外して通電する"],"answer":0,"exp":"小児に対しては小児用パッドと適切なエネルギー設定（2J/kg等）を選択する必要がある。"},{"id":"c4-280","n":280,"q":"CPR中の酸素投与について正しいものはどれか。","choices":["CO2を吸入させる","室内気のみで十分","可能な限り高濃度酸素で換気する","酸素投与は禁忌"],"answer":2,"exp":"心停止時は可能な限り高濃度酸素を用いて換気を行うことが推奨される。"},{"id":"c4-281","n":281,"q":"ALSの薬剤投与として一般に救急救命士が扱える範囲はどれか。","choices":["抗生剤","全ての薬剤","麻酔薬","医師指示下でのエピネフリン等、特定行為として定められた薬剤"],"answer":3,"exp":"救急救命士の薬剤投与は特定行為として定められた範囲（エピネフリン等）であり、医師の具体的指示下で実施する。"},{"id":"c4-282","n":282,"q":"CPR中に確認・是正すべき「5T」に含まれないものはどれか。","choices":["Tumor","Thrombosis","Tension pneumothorax","Tamponade"],"answer":0,"exp":"5TはTamponade、Tension pneumothorax、Thrombosis（肺塞栓・心筋梗塞）、Toxins、Traumaで、Tumorは含まれない。"},{"id":"c4-283","n":283,"q":"CPR中の聴診によるROSC判定について正しいものはどれか。","choices":["ROSC判定は脈拍確認、EtCO2等複数の所見で行う","聴診のみで十分","ROSC判定は不可能","CPRを継続しながら判定可能"],"answer":0,"exp":"ROSCの判定は脈拍確認（頚動脈）、EtCO2上昇、モニター波形等を総合して行う。"},{"id":"c4-284","n":284,"q":"人工呼吸時の注意点として正しいものはどれか。","choices":["過度な換気量と速度を避ける","できるだけ大量に送り込む","通常呼吸の2倍の量を送り込む","可能な限り強く押す"],"answer":0,"exp":"過換気は胸腔内圧上昇により有害となるため、適切な量と速度で換気する。"},{"id":"c4-285","n":285,"q":"CPR中の胸骨圧迫の位置として正しいものはどれか。","choices":["胸骨上端","左側胸部","剣状突起","胸骨の下半分"],"answer":3,"exp":"胸骨圧迫は胸骨の下半分（乳頭を結ぶ線の中央付近）を圧迫する。"},{"id":"c4-286","n":286,"q":"CPR時に必ず確保すべき対応時間として「初期対応時間」の目安はどれか。","choices":["関係ない","心停止発見から圧迫開始まで極力短く","圧迫開始まで5分以上","圧迫開始まで10分以上"],"answer":1,"exp":"心停止発見からCPR開始までの時間が短いほど生存率が高い。即座に開始することが重要。"},{"id":"c4-287","n":287,"q":"救急隊員がBLSを開始する前に確認すべきことはどれか。","choices":["保険証の提示","現場の安全","住所の確認","家族名の確認"],"answer":1,"exp":"救急活動は現場安全の確認を最優先で行う。安全でない場合は救助者を守る行動が優先される。"},{"id":"c4-288","n":288,"q":"CPR中のデブリーフィング（事後検討）の目的はどれか。","choices":["時間の浪費","勤務時間を延ばすため","責任追及のみ","チームの振り返りと質向上"],"answer":3,"exp":"デブリーフィングは実施したCPRを振り返り、良かった点や改善点を共有することで次回以降の質向上につなげる取り組み。"},{"id":"c4-289","n":289,"q":"CPRにおける胸骨圧迫中断（no-flow）を短くすべき理由はどれか。","choices":["冠動脈灌流圧の維持と生存率向上のため","チーム連携を阻害するため","疲労を増やすため","救助者の負担を増やすため"],"answer":0,"exp":"圧迫の中断（no-flow time）が長いと冠動脈灌流圧が低下し、ROSCや生存率に悪影響を及ぼす。"},{"id":"c4-290","n":290,"q":"心停止傷病者への「チームCPR」で最も重要な要素はどれか。","choices":["役割分担と明確な声かけ","各自の独断","経験者だけが話す","無言で行う"],"answer":0,"exp":"チームCPRでは役割分担と明確なコミュニケーション（クローズドループ）で質を担保する。"},{"id":"c4-291","n":291,"q":"CPR中の胸郭反動（full recoil）を重視する理由はどれか。","choices":["心臓への静脈還流を確保するため","体温を上げるため","過換気を防ぐため","浅い圧迫を誘発するため"],"answer":0,"exp":"胸郭の完全な戻りを確保することで、心臓への静脈還流が維持され次の圧迫による拍出量も確保される。"},{"id":"c4-292","n":292,"q":"CPR時に胸骨圧迫を行う救助者の姿勢として正しいものはどれか。","choices":["指先で押す","片手で済ませる","肘を曲げて腕の力で押す","肘を伸ばして体重を乗せる"],"answer":3,"exp":"肘を伸ばし体重を利用することで長時間にわたり質の高い圧迫を維持できる。"},{"id":"c4-293","n":293,"q":"CPRで時間経過管理に使える補助ツールはどれか。","choices":["地図","温度計","カレンダー","メトロノームや音声ガイド付きAED"],"answer":3,"exp":"メトロノームや音声ガイド付きAEDはテンポと時間管理に役立つ補助ツール。"},{"id":"c4-294","n":294,"q":"ショック傷病者の搬送体位として一般的に推奨されるものはどれか。","choices":["水平仰臥位（必要に応じ下肢挙上の検討）","常に座位","必ず側臥位","常に腹臥位"],"answer":0,"exp":"ショック時は水平仰臥位が基本で、必要に応じて下肢挙上を検討する。意識障害時の誤嚥対策として側臥位を用いる場合もある。"},{"id":"c4-295","n":295,"q":"心筋梗塞疑いの搬送中体位として推奨されるものはどれか。","choices":["必ず腹臥位","完全な水平臥位のみ","楽な体位（半座位が多い）","頭低位"],"answer":2,"exp":"急性心筋梗塞の傷病者は半座位など呼吸が楽な体位を取らせるのが一般的。"},{"id":"c4-296","n":296,"q":"脳卒中疑いの傷病者の体位で注意すべき点はどれか。","choices":["完全に俯せにする","頭部を強く下げる","頭部を大きく回す","頭部を過度に屈曲させない"],"answer":3,"exp":"頭部の過度な屈曲や回転は頭蓋内圧や頸部への影響があり、中立位を意識した体位が望ましい。"},{"id":"c4-297","n":297,"q":"脊髄損傷疑いの傷病者の搬送で最も重要な注意はどれか。","choices":["体位は全て側臥位","頚椎固定は不要","自由な姿勢で搬送","全脊柱固定と愛護的な取り扱い"],"answer":3,"exp":"脊髄損傷疑いでは全脊柱を中立位で固定し、愛護的に搬送することが重要。"},{"id":"c4-298","n":298,"q":"心肺蘇生に関連する「社会復帰率」を高める主な要因はどれか。","choices":["救急車の色","救急隊員の年齢","搬送先医療機関のベッド数","早期CPRと早期除細動の実施"],"answer":3,"exp":"早期CPRと早期除細動が社会復帰率改善の最大要因で、救命の連鎖の中核となる。"},{"id":"c4-299","n":299,"q":"CPRのガイドラインは定期的に更新される理由はどれか。","choices":["予算の都合","作成者の気分","エビデンスの更新に伴い推奨が変化するため","特に理由はない"],"answer":2,"exp":"心肺蘇生法のガイドラインは国際的なエビデンスレビューに基づき、5年に1度程度の頻度で改訂される。"},{"id":"c4-300","n":300,"q":"救急救命士が日常的に行うべき自己研鑽として最も重要なものはどれか。","choices":["業務時間外の趣味のみ","最新ガイドラインの学習と実技訓練","資格更新の形式的参加のみ","知識の固定化"],"answer":1,"exp":"最新ガイドラインの学習と実技訓練を継続することで、救急現場での救命能力を維持・向上できる。"}]},{"id":"c5","kind":"chapter","title":"第5章 特定行為と処置・薬剤","subtitle":"特定行為の範囲・血糖測定・薬剤投与・観察と判断","questions":[{"id":"c5-301","n":301,"q":"救急救命士の特定行為に該当するものはどれか。","choices":["単純な皮膚消毒","観察のみ","静脈路確保のための輸液","問診のみ"],"answer":2,"exp":"特定行為は救急救命士法施行規則に定められており、静脈路確保・輸液投与、器具による気道確保、薬剤投与等が含まれる。"},{"id":"c5-302","n":302,"q":"救急救命士が特定行為を行う前提条件として正しいものはどれか。","choices":["消防団長の指示","医師の具体的指示","自己判断での実施","市民の同意のみ"],"answer":1,"exp":"特定行為は医師の具体的指示下で実施することが法で定められている。"},{"id":"c5-303","n":303,"q":"特定行為として認められている薬剤投与の代表例はどれか。","choices":["エピネフリン（心停止時）","抗生物質","睡眠薬","降圧薬"],"answer":0,"exp":"救急救命士は心肺停止時のエピネフリン投与が医師指示下で可能。"},{"id":"c5-304","n":304,"q":"低血糖と判定された心肺停止前傷病者に対して、救急救命士が医師指示下で投与可能な薬剤はどれか。","choices":["インスリン","モルヒネ","ブドウ糖溶液","塩化カリウム"],"answer":2,"exp":"血糖測定により低血糖と判定された場合、ブドウ糖溶液の静脈投与が可能である。"},{"id":"c5-305","n":305,"q":"心肺停止前の静脈路確保と輸液の適応となる病態として正しいものはどれか。","choices":["軽い頭痛のみ","ショックまたは増悪する可能性の高い状態","風邪症状のみ","軽度の擦過傷のみ"],"answer":1,"exp":"心肺停止前の静脈路確保・輸液の適応はショックなど緊急性の高い状態に限定される。"},{"id":"c5-306","n":306,"q":"血糖測定の結果で、救急救命士が低血糖と判定するおおむねの基準はどれか。","choices":["血糖値500mg/dL","血糖値50mg/dL未満等の低値","血糖値200mg/dL","血糖値300mg/dL"],"answer":1,"exp":"明確な低血糖の目安としては概ね50mg/dL未満（プロトコルにより異なる）が用いられる。"},{"id":"c5-307","n":307,"q":"救急救命士の静脈路確保で注意すべき合併症はどれか。","choices":["視力低下","失聴","心筋梗塞","血腫形成、静脈炎、感染、薬液漏出"],"answer":3,"exp":"静脈路確保の合併症には血腫形成、静脈炎、感染、薬液の血管外漏出等がある。"},{"id":"c5-308","n":308,"q":"静脈路確保に使用する留置針（サーフロー等）で一般的に救急現場で用いられる径はどれか（成人）。","choices":["50G","18G〜20G","14G一択","30G"],"answer":1,"exp":"成人の救急初期輸液には一般に18G〜20G程度の留置針が用いられる。"},{"id":"c5-309","n":309,"q":"救急救命士の気道確保器具のうち、声門上気道確保器具（SGA）に該当するものはどれか。","choices":["ラリンゲアルマスク","経鼻エアウェイ","経口エアウェイ","気管チューブ"],"answer":0,"exp":"ラリンゲアルマスク（LMA）は声門上に設置する代表的なSGAで、救急救命士も用いる。"},{"id":"c5-310","n":310,"q":"食道閉鎖式エアウェイの目的はどれか。","choices":["血糖を測定する","心電図を記録する","胃内容物を排出する","食道を閉鎖し気管への換気経路を確保する"],"answer":3,"exp":"食道閉鎖式エアウェイは食道を閉鎖することで気管への換気経路を確保する器具で、非可視下挿入可能。"},{"id":"c5-311","n":311,"q":"気管挿管の確認手段として最も信頼性が高いのはどれか。","choices":["EtCO2波形（カプノメトリー）","指で触診","視認のみ","音のみ"],"answer":0,"exp":"気管挿管位置の確認にはEtCO2波形が最も信頼性の高い指標とされる。"},{"id":"c5-312","n":312,"q":"気管挿管の合併症として正しくないものはどれか。","choices":["歯牙損傷","片肺挿管","永久的な聴力低下","食道挿管"],"answer":2,"exp":"気管挿管の合併症には歯牙損傷、食道挿管、片肺挿管、喉頭損傷等がある。聴力低下は直接関係しない。"},{"id":"c5-313","n":313,"q":"輸液の流量調整で目安とするものはどれか。","choices":["匂い","滴下速度の計算（滴下数/分）","音","色合い"],"answer":1,"exp":"輸液は1分あたりの滴下数や輸液量で流量を管理する。"},{"id":"c5-314","n":314,"q":"救急救命士が使用するセミオートマチック除細動器と手動除細動器の違いはどれか。","choices":["手動は解析が自動","両者は同じ","セミオートは解析と通電指示が自動化されている","セミオートは人間が解析する"],"answer":2,"exp":"セミオートマチック除細動器は解析・通電判断が自動化されており、現場で広く用いられている。"},{"id":"c5-315","n":315,"q":"救急救命士のプロトコルに基づく処置の基本的な考え方はどれか。","choices":["家族の指示のみで実施","自己判断優先で独断的処置を行うこと","MC体制の下で手順を踏んだ安全な処置を行うこと","患者希望のみで実施"],"answer":2,"exp":"救急救命士の処置はMC体制の下、プロトコルと指示に基づき安全・確実に実施することが基本。"},{"id":"c5-316","n":316,"q":"プロトコルから逸脱する状況に遭遇した場合の対応として正しいものはどれか。","choices":["オンラインMCで医師の指示を仰ぐ","家族に判断を委ねる","処置を中止して放置","独断で新たな処置を実施"],"answer":0,"exp":"プロトコル外の状況ではオンラインMCにより医師の指示を仰ぎ、指示下で処置を調整する。"},{"id":"c5-317","n":317,"q":"酸素投与装置のうち、高濃度投与が可能なものはどれか。","choices":["鼻カニューレのみ","ヴェンチュリマスクのみ","フェイスマスク（単純型）のみ","リザーバ付き非再呼吸式マスク"],"answer":3,"exp":"リザーバ付き非再呼吸式マスクは10L/分以上の高流量酸素を送り、90%近い高濃度酸素を供給できる。"},{"id":"c5-318","n":318,"q":"鼻カニューレの利点として正しいものはどれか。","choices":["高濃度酸素投与","過換気予防","加湿不要","会話や食事が可能"],"answer":3,"exp":"鼻カニューレは低流量酸素投与に用いられ、会話や食事を妨げない。ただし高濃度投与は難しい。"},{"id":"c5-319","n":319,"q":"鼻カニューレでおおむね供給される酸素流量の上限はどれか。","choices":["約6L/分","約50L/分","約1L/分","約30L/分"],"answer":0,"exp":"鼻カニューレは一般に1〜6L/分で使用され、高流量は粘膜刺激となる。"},{"id":"c5-320","n":320,"q":"パルスオキシメータで測定できる項目はどれか。","choices":["pH","SpO2（経皮的酸素飽和度）と脈拍数","体温","血糖"],"answer":1,"exp":"パルスオキシメータはSpO2と脈拍数を非侵襲的に測定する機器。"},{"id":"c5-321","n":321,"q":"パルスオキシメータが正確に測定できない状況として正しいものはどれか。","choices":["通常の室内安静時","温かい末梢","末梢循環不全・マニキュア・強い体動","十分な拍動波形"],"answer":2,"exp":"末梢循環不全、マニキュア、体動、低体温、異常ヘモグロビン（CO中毒等）では誤差が生じやすい。"},{"id":"c5-322","n":322,"q":"血糖測定器使用の注意点として正しいものはどれか。","choices":["血液量は少ないほどよい","古いセンサーが良い","清潔な穿刺部位で、十分量の血液を用いる","穿刺後は消毒不要"],"answer":2,"exp":"血糖測定器は清潔な穿刺部位、十分な血液量、期限内のセンサー、適切な手技が信頼性の基本。"},{"id":"c5-323","n":323,"q":"傷病者の観察で「呼吸の質」を評価する項目として正しくないものはどれか。","choices":["胸郭運動の左右差","呼吸音","呼吸数のみ測定","呼吸数"],"answer":2,"exp":"呼吸の質の評価には呼吸数、呼吸音、深さ、胸郭運動、努力呼吸の有無など複数の要素が必要。"},{"id":"c5-324","n":324,"q":"傷病者への声かけで適切な姿勢はどれか。","choices":["無言のまま処置する","常に大声を出す","威圧的な声","落ち着いた声で分かりやすく説明する"],"answer":3,"exp":"傷病者への声かけは落ち着いた声で分かりやすく、不安を和らげる内容とする。"},{"id":"c5-325","n":325,"q":"静脈路確保時に駆血帯を締める時間として適切なものはどれか。","choices":["1時間","駆血しない","1分以内","10分"],"answer":2,"exp":"駆血帯は1分以内を目安とし、長時間の駆血は血液検査値や血液循環に影響を及ぼす。"},{"id":"c5-326","n":326,"q":"輸液に使用するラインのプライミングで重要なことはどれか。","choices":["薬液を混合すること","ラインを折り曲げること","気泡を取り除くこと","ラインを乾燥させること"],"answer":2,"exp":"輸液ラインは十分にプライミングし気泡を除去することで、静脈内空気塞栓を防ぐ。"},{"id":"c5-327","n":327,"q":"体位管理で「ショックの傷病者」に対し考慮される体位はどれか。","choices":["常に座位","常に腹臥位","必ず頭低位","水平仰臥位、必要に応じて下肢挙上"],"answer":3,"exp":"ショック時は水平仰臥位を基本とし、下肢挙上を検討するが、心不全・頭部外傷では慎重に判断する。"},{"id":"c5-328","n":328,"q":"呼吸困難の傷病者に対して楽な体位として適切なものはどれか。","choices":["頭低位","完全仰臥位","腹臥位","半座位（起座位）"],"answer":3,"exp":"呼吸困難時は半座位や起座位を好むことが多く、呼吸仕事量を軽減できる。"},{"id":"c5-329","n":329,"q":"妊婦の傷病者に対して左側臥位を取る理由はどれか。","choices":["下大静脈の圧迫を避けるため","呼吸が苦しいから","心音が聞こえやすいから","排尿が容易になるから"],"answer":0,"exp":"妊娠後期の妊婦では仰臥位で下大静脈が圧迫され低血圧を起こしやすいため左側臥位が推奨される。"},{"id":"c5-330","n":330,"q":"輸液時の合併症として「薬液漏出（漏出）」時に取るべき対応はどれか。","choices":["無視","温める","輸液を増加","輸液の中止と部位の観察・医療機関への伝達"],"answer":3,"exp":"輸液漏出時は速やかに輸液を中止し、部位を観察して医療機関に伝達する。"},{"id":"c5-331","n":331,"q":"救急救命士が実施する観察の基本順序として正しいものはどれか。","choices":["問診のみ","初期観察（ABCD）→詳細観察","必ず詳細観察から","いきなり処置"],"answer":1,"exp":"救急現場では初期観察で致死的病態を見逃さず、安定後に詳細観察を行うのが基本。"},{"id":"c5-332","n":332,"q":"初期観察の「D」が評価する内容はどれか。","choices":["意識レベル（Disability）","Dental","Distance","Diet"],"answer":0,"exp":"初期観察のDはDisability＝意識障害の評価を指す。"},{"id":"c5-333","n":333,"q":"傷病者の体温測定で使用されない部位はどれか。","choices":["腋窩","直腸","耳","毛髪部"],"answer":3,"exp":"体温測定は腋窩・口腔・直腸・鼓膜等の部位で行う。毛髪部では測定しない。"},{"id":"c5-334","n":334,"q":"救急救命士が行う観察と同時に注意すべき感染対策はどれか。","choices":["標準予防策の遵守","ノーガードでの処置","防護具の使い回し","手洗いを省略する"],"answer":0,"exp":"標準予防策（スタンダードプリコーション）は常に遵守し、手袋・マスク・ゴーグル等を適切に装着する。"},{"id":"c5-335","n":335,"q":"傷病者から血液や体液を採取した際の廃棄方法として正しいものはどれか。","choices":["感染性廃棄物として所定の容器に廃棄する","分別不要","通常の生ゴミ","燃えるゴミ"],"answer":0,"exp":"血液・体液等の感染性廃棄物は所定の容器に分別し、適切に廃棄する。"},{"id":"c5-336","n":336,"q":"救急救命士が行う薬剤投与の副作用で、エピネフリン投与後に注意すべきものはどれか。","choices":["下痢","徐脈","脱水","頻脈や血圧上昇、不整脈"],"answer":3,"exp":"エピネフリンは交感神経刺激作用により頻脈、血圧上昇、不整脈等の副作用を起こすことがある。"},{"id":"c5-337","n":337,"q":"ブドウ糖投与時に注意すべき副作用はどれか。","choices":["低体温","発熱","高浸透圧による局所痛や血管外漏出時の組織障害","徐脈"],"answer":2,"exp":"ブドウ糖溶液、特に高濃度では血管外漏出時に組織障害を起こす可能性があり、確実な静脈路確保が重要。"},{"id":"c5-338","n":338,"q":"救急救命士の「処置前確認」で重要な項目はどれか。","choices":["身長のみ確認","音量のみ確認","適応・禁忌・手順・指示内容の確認","体重のみ確認"],"answer":2,"exp":"処置前には適応と禁忌、手順、医師指示の内容を確認し、安全を確保する。"},{"id":"c5-339","n":339,"q":"救急救命士の「処置後確認」で重要な項目はどれか。","choices":["天気の確認","救急車の燃料","周囲の音響のみ","効果・合併症の有無・再評価"],"answer":3,"exp":"処置後は効果、合併症、再評価を行い、必要に応じて追加処置や搬送先選定を行う。"},{"id":"c5-340","n":340,"q":"救急救命士の業務に関する「書類管理」として重要でないものはどれか。","choices":["特定行為の指示・実施記録","MC報告書","活動記録票","個人的なSNS投稿"],"answer":3,"exp":"活動記録、MC報告書、特定行為記録等は業務上重要な書類。SNS投稿は業務書類ではなく、むしろ守秘義務上注意が必要。"},{"id":"c5-341","n":341,"q":"救急救命士の処置に関する「指示書」の保管について正しいものはどれか。","choices":["不要時はすぐ破棄","家族に渡す","関係法令・規程に沿った保管期間で適切に保管","保存不要"],"answer":2,"exp":"処置指示書等の記録は法令や規程に沿って適切に保管し、事後検証にも活用する。"},{"id":"c5-342","n":342,"q":"傷病者の同意能力がない場合の処置は原則としてどうするか。","choices":["処置しない","本人意思を無視して自由に実施","家族の判断のみで決定","緊急避難的に必要な範囲で処置し、MCの指示を受ける"],"answer":3,"exp":"同意能力がない救急事態では、救命のため必要な処置を緊急避難的に実施し、MCで指示を仰ぐのが原則。"},{"id":"c5-343","n":343,"q":"救急救命士の処置と医師法の関係として正しいものはどれか。","choices":["医師法の医行為禁止の例外として一部処置が認められている","医師法が全て否定される","医師法と無関係","医師法を違反している"],"answer":0,"exp":"救急救命士の処置は医師法上の医行為に該当する一部を、救急救命士法により例外的に認められている。"},{"id":"c5-344","n":344,"q":"薬剤投与時のWチェック（ダブルチェック）の目的はどれか。","choices":["投薬ミスの防止","ラベル剥がし","薬剤の冷却","時間稼ぎ"],"answer":0,"exp":"Wチェックは投薬ミスを防ぐための二人による確認作業で、医療安全の基本手順。"},{"id":"c5-345","n":345,"q":"薬剤投与における「6R」に含まれないものはどれか。","choices":["Right Drug","Right Patient","Right Dose","Right Room"],"answer":3,"exp":"6RはRight Patient、Right Drug、Right Dose、Right Route、Right Time、Right Purposeで、Right Roomは含まれない。"},{"id":"c5-346","n":346,"q":"救急救命士が医薬品を取り扱う際の管理として正しいものはどれか。","choices":["使用期限・保管温度等を適切に管理する","保管温度を無視","期限切れ品を使用","自宅で管理"],"answer":0,"exp":"医薬品は使用期限と保管温度等を適切に管理する必要がある。"},{"id":"c5-347","n":347,"q":"救急救命士の処置範囲の拡大に対する継続教育の意義はどれか。","choices":["新たな処置を安全に実施するための知識・技術の確保","教育を省略するため","報酬を増やすため","業務を減らすため"],"answer":0,"exp":"処置範囲の拡大には相応の教育・訓練が必要で、継続教育により安全性と質を確保する。"},{"id":"c5-348","n":348,"q":"救急救命士のプロトコル策定における中心的な役割を担う組織はどれか。","choices":["町内会","地域MC協議会","PTA","文化サークル"],"answer":1,"exp":"地域MC協議会がプロトコル策定や事後検証、教育等の中心的役割を担う。"},{"id":"c5-349","n":349,"q":"救急救命士法の「業務独占」の意味として正しいものはどれか。","choices":["看護業務を独占","救急救命処置は救急救命士等でなければ行ってはならない","診察業務を独占","医療業務すべてを独占"],"answer":1,"exp":"救急救命士法第43条は、保健師助産師看護師法の規定にかかわらず、救急救命士が診療の補助として救急救命処置を業として行うことを認めている。また第48条で救急救命士でない者の名称使用を禁止している（名称独占）。","revised":true},{"id":"c5-350","n":350,"q":"救急救命士の業務範囲拡大と地域格差の課題はどれか。","choices":["地域による医療資源の差が救急対応の質に影響する可能性","格差は発生しない","常に均等","課題はない"],"answer":0,"exp":"地域の医療資源やMC体制の差が救急対応の質に影響する可能性があり、標準化と地域格差の是正が課題。"},{"id":"c5-351","n":351,"q":"救急救命士が行う「観察」と「処置」の関係として最も正しいものはどれか。","choices":["観察なしに処置を開始","観察の結果に応じて適切な処置を行う","両者は無関係","処置後に観察する"],"answer":1,"exp":"救急現場ではまず観察し、得られた情報に基づき適切な処置を選択・実施する。"},{"id":"c5-352","n":352,"q":"救急救命士が行う救急搬送中の傷病者への再評価頻度として適切なものはどれか。","choices":["再評価は不要","搬送完了後のみ再評価","症状が変化しない限り不要","状態に応じて定期的に（例：数分ごと）再評価する"],"answer":3,"exp":"搬送中は状態に応じて定期的に再評価し、変化があれば即時対応することが重要。"},{"id":"c5-353","n":353,"q":"救急救命士が実施する処置の優先順位の基本はどれか。","choices":["家族の希望順","難易度の高い処置から始める","容易な処置から順に行う","生命維持に直結する処置から順に行う"],"answer":3,"exp":"救急救命処置は生命維持に直結するものから優先順位を付けて実施する。"},{"id":"c5-354","n":354,"q":"救急救命士のプロトコルにおける「包括的指示（standing order）」の意味はどれか。","choices":["処置を複数回繰り返す","特定の条件下では事前の包括的指示で処置できる仕組み","段階的に処置を増やす","段階的に処置を中止する"],"answer":1,"exp":"standing order（包括的指示）は、MC協議会等で事前に医師が定めた手順の範囲で、特定の条件下では個別の具体的指示を待たずに処置を行える仕組み。なお特定行為は原則として医師の具体的指示が必要である。","revised":true},{"id":"c5-355","n":355,"q":"救急救命士がエピネフリン投与後に観察すべき項目として最も重要なものはどれか。","choices":["体重変化","髪の色","皮膚の光沢","心拍・血圧・心電図波形の変化"],"answer":3,"exp":"エピネフリン投与後は心拍、血圧、心電図波形の変化をモニタリングし、効果と副作用を確認する。"},{"id":"c5-356","n":356,"q":"救急救命士が不確実な薬剤名を目視で確認できない場合の対応はどれか。","choices":["家族に判断を委ねる","指差呼称・Wチェック・医師確認等を行う","投与を強行する","自己判断で投与"],"answer":1,"exp":"薬剤名が不確実な場合は指差呼称・ダブルチェック・医師確認等を行い、確実に確認してから投与する。"},{"id":"c5-357","n":357,"q":"救急救命士の処置で「合併症が疑われる場合」の対応として正しいものはどれか。","choices":["患者に任せる","直ちに中止し再評価、MCと連絡する","継続する","家族に伝えない"],"answer":1,"exp":"合併症が疑われた時点で処置を中止し、再評価して医師と連絡を取ることが安全管理の基本。"},{"id":"c5-358","n":358,"q":"救急救命士の処置実施における「患者安全」の基本原則はどれか。","choices":["効率を最優先","患者情報の開示を拒否","迅速さのみを追求","「do no harm（害を与えない）」を原則に進める"],"answer":3,"exp":"医療倫理の基本である「do no harm（危害を加えない）」は救急救命士の処置にも当てはまる。"},{"id":"c5-359","n":359,"q":"輸液速度の決定に影響する要因として正しくないものはどれか。","choices":["患者の病態","プロトコル","医師指示","家族の感情"],"answer":3,"exp":"輸液速度は患者の病態、医師指示、プロトコルに基づき決定される。家族の感情は参考外。"},{"id":"c5-360","n":360,"q":"救急救命士の処置マニュアルはどの程度の頻度で見直されるべきか。","choices":["最新知見やガイドライン改訂に応じて定期的に見直す","一度決めたら一切変更しない","見直さない","10年ごと"],"answer":0,"exp":"新たな知見やガイドライン改訂に応じて定期的に見直し、地域MCで議論・更新することが望ましい。"},{"id":"c5-361","n":361,"q":"救急救命士と看護師の関係として正しいものはどれか。","choices":["上下関係である","競合関係である","独立した資格だが、協働して傷病者ケアに当たる","同一資格である"],"answer":2,"exp":"救急救命士と看護師は別資格だが、救急医療の場面では協働して傷病者ケアに当たる。"},{"id":"c5-362","n":362,"q":"救急救命士が業務上知り得た情報について正しいものはどれか。","choices":["SNSで発信してよい","公に共有してよい","家族に無断で公開してよい","守秘義務を負い、みだりに漏らしてはならない"],"answer":3,"exp":"救急救命士法により守秘義務が課されており、業務上知り得た情報をみだりに漏らしてはならない。"},{"id":"c5-363","n":363,"q":"守秘義務違反の罰則は救急救命士法ではどのように扱われているか。","choices":["罰則はない","業務停止のみ","違反に対する罰則が設けられている","拘禁刑（懲役）のみ"],"answer":2,"exp":"救急救命士法は守秘義務（第47条）違反に対して50万円以下の罰金を定めている（第54条、告訴がなければ公訴を提起できない親告罪）。","revised":true},{"id":"c5-364","n":364,"q":"救急救命士がSNS等で業務情報を発信する行為は、原則どうすべきか。","choices":["実名で発信すれば問題ない","自由に発信できる","守秘義務・プライバシー保護の観点から行わない","写真を添付すれば問題ない"],"answer":2,"exp":"業務情報のSNS発信は守秘義務違反や患者のプライバシー侵害につながるため行うべきではない。"},{"id":"c5-365","n":365,"q":"救急救命士が処置実施時に心理的ストレスを感じた場合の対応として正しいものはどれか。","choices":["同僚・上司・心理専門家に相談する","一人で抱え込む","業務を放棄する","患者に当たる"],"answer":0,"exp":"救急救命士は強いストレスを受けやすく、デブリーフィングやメンタルヘルスの支援を活用することが重要。"},{"id":"c5-366","n":366,"q":"PTSD（心的外傷後ストレス障害）の予防・早期発見に有効な取り組みはどれか。","choices":["無視","職場内での叱責","休暇の完全禁止","デブリーフィングや相談体制の整備"],"answer":3,"exp":"救急職員はPTSDリスクがあり、事後デブリーフィングや専門家相談体制の整備が重要。"},{"id":"c5-367","n":367,"q":"救急救命士が処置に関して医療過誤を起こした場合の対応として正しいものはどれか。","choices":["事実を正確に記録し、速やかに報告する","隠蔽する","家族に責任を押し付ける","記録を改ざんする"],"answer":0,"exp":"医療過誤発生時は速やかに事実を報告・記録し、原因究明と再発防止策を講じることが必要。"},{"id":"c5-368","n":368,"q":"救急救命士が行う処置の責任主体として正しいものはどれか。","choices":["責任は発生しない","医師の指示と救急救命士の双方に責任がある","救急救命士のみ","医師のみ"],"answer":1,"exp":"救急救命士の処置は医師の指示に基づく協働であり、指示医師と実施した救急救命士の双方に責任が生じる。"},{"id":"c5-369","n":369,"q":"救急救命士の「生涯学習」の考え方として正しいものはどれか。","choices":["学習は任意","資格取得後も継続的に知識・技術を更新する","一度資格を取れば学習不要","知識は変化しない"],"answer":1,"exp":"医療・救急の知識は日々更新されるため、救急救命士には生涯学習が求められる。"},{"id":"c5-370","n":370,"q":"救急救命士が医師以外の医療職と連携する際に大切なことはどれか。","choices":["無視する","情報を独占する","相互理解と尊重","上下関係の強調"],"answer":2,"exp":"チーム医療では職種間の相互理解と尊重が基本となり、患者の最善の利益を共有することが重要。"},{"id":"c5-371","n":371,"q":"救急救命士の処置実施時に「感染」を避ける原則はどれか。","choices":["マスクを外す","手袋を使い回す","手洗いを省略","標準予防策と清潔操作の徹底"],"answer":3,"exp":"処置前後の手指衛生、手袋交換、清潔操作の徹底が感染予防の基本。"},{"id":"c5-372","n":372,"q":"救急救命士が行う処置に「家族への説明」が求められる理由はどれか。","choices":["家族を巻き込むため","不安軽減と協力獲得、情報共有のため","家族を排除するため","家族を責めるため"],"answer":1,"exp":"家族への説明は不安軽減と協力獲得に寄与し、医療職と家族間の情報共有の基礎となる。"},{"id":"c5-373","n":373,"q":"救急救命士が実施する処置の「効果評価」で重要な観点はどれか。","choices":["時刻のみ","担当者の印象のみ","バイタルサインの変化・症状改善の客観的指標","家族の意見のみ"],"answer":2,"exp":"処置の効果はバイタルサインや症状変化等の客観的指標で評価し、必要に応じて追加処置を検討する。"},{"id":"c5-374","n":374,"q":"救急救命士が処置実施時に意識すべき「多職種連携」の利点はどれか。","choices":["情報遮断","連携は不要","責任の回避","総合的な傷病者ケアの質向上"],"answer":3,"exp":"多職種連携は傷病者に対して総合的なケアを提供し、質と安全性を向上させる。"},{"id":"c5-375","n":375,"q":"救急救命士の処置実施に伴う「アカウンタビリティ（説明責任）」として正しいものはどれか。","choices":["機密のため公開しない","説明は不要","実施内容と根拠を説明できる状態にしておく","一切記録しない"],"answer":2,"exp":"救急救命士は処置の根拠と内容を関係者に説明できるよう、記録と論理的説明を準備しておく必要がある。"}]},{"id":"c6","kind":"chapter","title":"第6章 外傷と特殊病態・災害医療","subtitle":"外傷初期診療・頭部胸部腹部外傷・特殊状況・災害対応","questions":[{"id":"c6-376","n":376,"q":"外傷初期診療における「primary survey」で最初に評価するものはどれか。","choices":["気道（A）","環境（E）","循環（C）","意識（D）"],"answer":0,"exp":"外傷のprimary surveyはA→B→C→D→Eの順で評価し、気道確保から開始する。"},{"id":"c6-377","n":377,"q":"外傷初期診療で「B」が評価する項目はどれか。","choices":["Behavior","呼吸（Breathing）","Balance","Blood type"],"answer":1,"exp":"BはBreathing＝呼吸の評価。呼吸数、呼吸音、SpO2等を確認する。"},{"id":"c6-378","n":378,"q":"外傷初期診療で「C」が評価する内容はどれか。","choices":["Cord","Collapse","Color","循環（Circulation）"],"answer":3,"exp":"CはCirculation＝循環の評価で、脈拍・血圧・出血・末梢循環等を確認する。"},{"id":"c6-379","n":379,"q":"外傷primary surveyで「E」が評価する内容はどれか。","choices":["Eye","全身観察と体温管理（Exposure/Environment）","Elbow","Ear"],"answer":1,"exp":"Eは全身観察と体温管理（exposure/environment）であり、隠れた外傷の発見と体温保持に配慮する。"},{"id":"c6-380","n":380,"q":"頭部外傷でJCSが100以上の場合の一般的対応はどれか。","choices":["様子を見て経過観察","三次救急施設への搬送","軽症扱いとする","自宅療養を勧める"],"answer":1,"exp":"JCS100以上は重症意識障害を示し、頭蓋内病変の可能性が高く三次救急医療機関への搬送が求められる。"},{"id":"c6-381","n":381,"q":"外傷性脳損傷で予後悪化の要因となる二次損傷はどれか。","choices":["高体温のみ","高血糖のみ","食事摂取のみ","低酸素と低血圧"],"answer":3,"exp":"外傷性脳損傷では低酸素・低血圧が二次損傷を引き起こし予後を悪化させるため、ABCの早期安定化が重要。"},{"id":"c6-382","n":382,"q":"頸部外傷で全脊柱固定を行うべき基準として適切なものはどれか。","choices":["咳嗽のみ","軽度擦過傷のみ","発熱のみ","意識障害、神経症状、受傷機転から疑われる場合"],"answer":3,"exp":"意識障害、神経症状、高エネルギー外傷等の場合は全脊柱固定を行う。"},{"id":"c6-383","n":383,"q":"胸部外傷で致死的な所見として「緊張性気胸」を疑う徴候はどれか。","choices":["発熱と発汗","気管偏位・頸静脈怒張・患側呼吸音減弱","軽度腹痛","多尿と頻脈"],"answer":1,"exp":"緊張性気胸は気管の健側偏位、頸静脈怒張、患側呼吸音の減弱が典型所見。"},{"id":"c6-384","n":384,"q":"腹部外傷で腹腔内出血を疑う所見はどれか。","choices":["腹部膨満、圧痛、ショック徴候","咳嗽のみ","関節痛のみ","発熱のみ"],"answer":0,"exp":"腹部膨満、圧痛、ショック徴候等は腹腔内出血を示唆し、迅速な搬送が必要。"},{"id":"c6-385","n":385,"q":"骨盤骨折で発生し得る合併症はどれか。","choices":["軽度の打撲","腹部だるさのみ","単なる発熱","大量出血・内臓損傷"],"answer":3,"exp":"骨盤骨折は大量の腹腔内・後腹膜出血を起こす可能性があり、ショックに陥りやすい。"},{"id":"c6-386","n":386,"q":"四肢骨折の初期処置として適切なものはどれか。","choices":["強く引っ張る","温める","自由に動かす","固定と冷却、愛護的取り扱い"],"answer":3,"exp":"四肢骨折は適切な固定と冷却、愛護的な取り扱いが基本で、神経血管の評価も重要。"},{"id":"c6-387","n":387,"q":"脊髄損傷が疑われる場合の移送として正しいものはどれか。","choices":["頚部を回旋させる","自力歩行させる","体をねじる","愛護的に全脊柱固定した上で搬送する"],"answer":3,"exp":"脊髄損傷疑いの傷病者は全脊柱を中立位で固定し、愛護的に搬送する必要がある。"},{"id":"c6-388","n":388,"q":"重症外傷の搬送先選定で優先すべきものはどれか。","choices":["眼科診療所","歯科診療所","外傷センター等の高次医療機関","美容整形外科"],"answer":2,"exp":"重症外傷は外傷センター等、外傷対応能力の高い医療機関への搬送が原則。"},{"id":"c6-389","n":389,"q":"外傷傷病者の搬送に際して使用される代表的な固定具はどれか。","choices":["バックボードとヘッドイモビライザー","布団","靴下","タオルのみ"],"answer":0,"exp":"重症外傷の搬送ではバックボードとヘッドイモビライザー、ストラップ等で全脊柱固定を行う。"},{"id":"c6-390","n":390,"q":"外傷患者の「ロードアンドゴー」の考え方として正しいものはどれか。","choices":["搬送を遅らせる","現場で完全に治療する","重症外傷では現場滞在を短くして迅速に搬送する","家族の意向優先"],"answer":2,"exp":"重症外傷では現場滞在を短く抑え、決定的治療が可能な医療機関への迅速搬送を優先する考え方がロードアンドゴー。"},{"id":"c6-391","n":391,"q":"ロードアンドゴーの適応となる所見はどれか。","choices":["軽度の鼻血","軽度の足関節捻挫","軽微な切り傷","ABC異常、意識障害、ショック徴候"],"answer":3,"exp":"ABCの異常やショック徴候、意識障害など生命に関わる兆候があればロードアンドゴーの適応となる。"},{"id":"c6-392","n":392,"q":"重症外傷における輸液戦略として最近注目されるのはどれか。","choices":["輸液禁止","許容的低血圧（permissive hypotension）による過剰輸液回避","高張食塩水のみ","大量輸液"],"answer":1,"exp":"重症外傷では出血助長の観点から過剰輸液を避け、許容的低血圧戦略が採られることがある。"},{"id":"c6-393","n":393,"q":"熱傷による体液喪失の対応として正しいものはどれか。","choices":["輸液禁忌","適切な輸液量の計算（重症度・体表面積に応じた）","経口水分のみ","必要量を超える過剰輸液"],"answer":1,"exp":"重症熱傷では体液喪失が顕著で、体表面積や体重に応じた輸液量を計算し補充する。"},{"id":"c6-394","n":394,"q":"吸入熱傷（気道熱傷）を疑う所見として正しいものはどれか。","choices":["腹部の創傷のみ","顔面の煤付着、眉毛・鼻毛焼損、嗄声","下肢の発赤のみ","手指の冷感のみ"],"answer":1,"exp":"顔面の煤・眉毛鼻毛焼損・嗄声・咳嗽・喘鳴等は吸入熱傷のサイン。気道閉塞のリスクが高い。"},{"id":"c6-395","n":395,"q":"電撃傷（感電）の特徴として正しいものはどれか。","choices":["必ず皮膚が広範に損傷する","体表面は軽微でも深部に重大な損傷を伴うことがある","呼吸停止は起きない","深部損傷は起きない"],"answer":1,"exp":"電撃傷は入出口の皮膚損傷が小さく見えても、体内を電流が通過し筋・心臓・神経等に重大な損傷を与える。"},{"id":"c6-396","n":396,"q":"薬毒物への曝露傷病者の初期対応として正しいものはどれか。","choices":["保護具は不要","直ちに傷病者に接触する","救助者は介入しない","救助者の安全確保・曝露回避を優先する"],"answer":3,"exp":"薬毒物曝露現場では救助者自身の安全確保と個人防護具装着が最優先。二次被害を防ぐ必要がある。"},{"id":"c6-397","n":397,"q":"中毒情報センター等への問い合わせで入手する情報はどれか。","choices":["原因物質の毒性情報と対応方針","交通情報","個人情報のみ","天気予報"],"answer":0,"exp":"中毒情報センター（日本中毒情報センター）は原因物質の毒性、症状、対応方針等の情報を提供している。"},{"id":"c6-398","n":398,"q":"有機リン中毒（農薬等）の代表的症状はどれか。","choices":["散瞳・乾燥皮膚のみ","発熱のみ","縮瞳・多量流涎・気管支分泌物増加・けいれん","関節痛のみ"],"answer":2,"exp":"有機リン中毒ではコリン作動性症状（縮瞳、流涎、気管支分泌過多、けいれん等）が特徴的。"},{"id":"c6-399","n":399,"q":"シアン化合物中毒の特徴はどれか。","choices":["軽度皮膚発赤のみ","嘔吐のみ","細胞呼吸の阻害による急激な意識障害","単なる頭痛のみ"],"answer":2,"exp":"シアン化合物は細胞呼吸を阻害し、急激な意識障害・心停止に至る重症中毒を起こす。"},{"id":"c6-400","n":400,"q":"リチウムイオン電池火災時の注意点として正しいものはどれか。","choices":["水で濡らせば安全","通常の火災と同じ扱い","有毒ガスと熱暴走に注意する","燃焼しない"],"answer":2,"exp":"リチウムイオン電池は熱暴走を起こし、有毒ガスや爆発の危険があるため特別な対応が必要。"},{"id":"c6-401","n":401,"q":"特殊災害（NBC）対応で重要な原則はどれか。","choices":["即時傷病者接触","隊員の安全確保と適切な除染","除染は行わない","防護具不要"],"answer":1,"exp":"NBC（核・生物・化学）災害では隊員の安全確保と適切な除染が必須となる。"},{"id":"c6-402","n":402,"q":"災害現場でのトリアージタグの色と意味の組み合わせで正しいものはどれか。","choices":["赤＝最優先・黄＝待機・緑＝軽症・黒＝救命困難","黒＝軽症","緑＝重症","赤＝軽症・黄＝最優先"],"answer":0,"exp":"トリアージタグは赤（最優先）・黄（待機）・緑（軽症）・黒（救命困難）の4色で優先順位を示す。"},{"id":"c6-403","n":403,"q":"大量傷病者発生時のトリアージで最初に行うべきことはどれか。","choices":["詳細な病歴聴取","保険証確認","全員への詳細検査","迅速な1次トリアージ（START法等）"],"answer":3,"exp":"大量傷病者発生時は迅速な1次トリアージで優先順位をつけ、その後2次トリアージで詳細評価する。"},{"id":"c6-404","n":404,"q":"START法で呼吸数を評価する基準として正しいものはどれか。","choices":["毎分10回以下は緑","呼吸数は関係ない","毎分30回を超える場合は赤に分類","呼吸の性状のみで判断"],"answer":2,"exp":"START法では呼吸数30回/分を超える場合は赤（最優先）に分類する。"},{"id":"c6-405","n":405,"q":"START法のCRT評価で赤と判定する基準はどれか。","choices":["CRTでは評価しない","2秒以上","0.5秒未満","1秒で黒"],"answer":1,"exp":"START法ではCRT（毛細血管再充満時間）2秒以上を赤（最優先）と判定する基準の一つとしている。"},{"id":"c6-406","n":406,"q":"災害医療活動における「CSCATTT」の「A」が示すものはどれか。","choices":["Assessment（評価）","Alert","Action","Arrest"],"answer":0,"exp":"CSCATTTのAはAssessment（評価）を意味する。"},{"id":"c6-407","n":407,"q":"災害拠点病院の役割として正しいものはどれか。","choices":["薬局業務のみ","平時の一般診療のみ","救急車両の整備のみ","多数傷病者への高度医療対応と地域医療支援"],"answer":3,"exp":"災害拠点病院は災害時の多数傷病者への高度医療対応と地域医療機関への支援を行う役割を担う。"},{"id":"c6-408","n":408,"q":"「防ぎえた外傷死（preventable trauma death）」を減らすための取り組みはどれか。","choices":["迅速搬送・適切な初期治療・外傷センター整備","外傷センターの削減","搬送を遅らせる","現場治療のみ"],"answer":0,"exp":"防ぎえた外傷死は迅速な搬送、適切な初期治療、外傷センターの整備等により減少させることができる。"},{"id":"c6-409","n":409,"q":"熱傷傷病者の初期対応で重要なものはどれか。","choices":["経口補水のみ","温める","経過観察のみ","早期の冷却と気道評価"],"answer":3,"exp":"熱傷は早期冷却により障害進行を抑え、同時に気道熱傷の評価と対応を行う。"},{"id":"c6-410","n":410,"q":"熱傷の深度分類のⅢ度（全層熱傷）の特徴はどれか。","choices":["軽度の発赤","痛みをあまり感じない、白色・黒色皮膚","強い痛みと水疱","軽い腫脹"],"answer":1,"exp":"Ⅲ度熱傷は真皮全層に及び、神経末端まで破壊されるため痛みが軽く、皮膚は白色や黒色を呈する。"},{"id":"c6-411","n":411,"q":"妊婦の外傷で注意すべき点はどれか。","choices":["母体蘇生が胎児の救命につながる","胎児は常に無事","胎児のみを救う","母体は無視する"],"answer":0,"exp":"妊婦外傷では母体蘇生・安定化が胎児の救命につながるため、母体管理を最優先する。"},{"id":"c6-412","n":412,"q":"小児外傷で大人と異なる特徴はどれか。","choices":["頭部が相対的に大きく頭部外傷を起こしやすい","成人より骨折しにくい","代償能力が極めて高い","体温調節が完璧"],"answer":0,"exp":"小児は頭部が相対的に大きく頭部外傷を起こしやすい。体温調節や循環代償も成人とは異なる。"},{"id":"c6-413","n":413,"q":"高齢者外傷の特徴として正しいものはどれか。","choices":["体力が豊富","軽微な外力でも骨折・頭蓋内出血が生じやすい","薬剤影響がない","転倒しない"],"answer":1,"exp":"高齢者は骨粗鬆症や抗凝固薬内服等で、軽微な外力でも骨折・頭蓋内出血を起こしやすい。"},{"id":"c6-414","n":414,"q":"脊髄損傷で「完全損傷」が疑われる場合の神経学的所見はどれか。","choices":["違和感のみ","一過性しびれ","不完全麻痺","損傷レベル以下の運動・感覚の完全消失"],"answer":3,"exp":"完全脊髄損傷では損傷レベル以下の運動・感覚が完全に消失する。"},{"id":"c6-415","n":415,"q":"脊髄損傷の神経学的分類（ASIA）で「A」に該当する状態はどれか。","choices":["不全麻痺で運動機能優位に残存","感覚のみ残存","完全麻痺","正常"],"answer":2,"exp":"ASIA（米国脊髄障害協会）分類のAは完全麻痺（運動・感覚消失）を示す。"},{"id":"c6-416","n":416,"q":"出血性ショックの重症度で「クラスⅢ」の特徴として最も適切なものはどれか。","choices":["循環血液量の30〜40%の喪失、頻脈と血圧低下","出血量10%未満","症状なし","血圧正常"],"answer":0,"exp":"出血性ショックのクラスⅢは循環血液量の30〜40%喪失で、頻脈と血圧低下、不安・混乱などを示す。"},{"id":"c6-417","n":417,"q":"頭部外傷に伴うびまん性軸索損傷の特徴はどれか。","choices":["意識障害は生じない","運動麻痺は起きない","必ずCTで明らかな血腫がみられる","受傷直後から意識障害を呈し、CTでは明らかな所見が乏しいことがある"],"answer":3,"exp":"びまん性軸索損傷は高エネルギー頭部外傷で生じ、直後から意識障害を呈するが画像上所見が乏しい場合がある。"},{"id":"c6-418","n":418,"q":"硬膜外血腫の典型的な経過はどれか。","choices":["受傷後に一時的に意識清明期（lucid interval）がみられる","受傷直後から徐脈になる","症状は全くない","必ず意識障害が持続する"],"answer":0,"exp":"硬膜外血腫では一時的な意識清明期（lucid interval）を経て意識障害が進行する経過が典型。"},{"id":"c6-419","n":419,"q":"硬膜下血腫は急性・亜急性・慢性に分類される。慢性硬膜下血腫の特徴はどれか。","choices":["症状は出ない","数時間で昏睡に至る","小児に多い","高齢者で軽微な外傷後に数週間〜数ヶ月で症状出現"],"answer":3,"exp":"慢性硬膜下血腫は軽微な頭部外傷後数週〜数ヶ月を経て症状が現れ、高齢者で多くみられる。"},{"id":"c6-420","n":420,"q":"脊柱固定を行う必要がない状況はどれか。","choices":["意識障害あり","高エネルギー外傷","転倒後に歩行可能で意識清明、痛みや神経症状がない軽症例","神経症状あり"],"answer":2,"exp":"脊柱固定の必要性は受傷機転・意識・神経症状・痛みから判断され、ClinicalクリアーなMinor traumaでは不要となり得る。"},{"id":"c6-421","n":421,"q":"多発外傷（multitrauma）で救命率に最も影響するのはどれか。","choices":["現場滞在時間の延長","迅速な搬送と外傷センター等での早期対応","家族の同乗","搬送速度の抑制"],"answer":1,"exp":"多発外傷の予後は早期根本治療に左右されるため、迅速な搬送と外傷センター等への集中搬送が重要。"},{"id":"c6-422","n":422,"q":"腹部刺創でみえる臓器は原則としてどう扱うか。","choices":["乾燥させる","清潔操作は不要","戻さずに清潔な湿潤ドレッシングで保護する","強く押し込む"],"answer":2,"exp":"腹部臓器脱出は戻さず、清潔な湿潤ガーゼ等で保護しそのまま搬送するのが原則。"},{"id":"c6-423","n":423,"q":"小児頭部外傷で注意すべき点はどれか。","choices":["成人と同じ扱い","頭部の相対的大きさと予後に関わる二次損傷の予防","小児は外傷に強いため軽視","無視してよい"],"answer":1,"exp":"小児は頭部が体幹に対して大きく、頭部外傷を起こしやすい。二次損傷防止のために早期対応が重要。"},{"id":"c6-424","n":424,"q":"交通事故による外傷で、ダッシュボード損傷と関連する外傷はどれか。","choices":["足関節捻挫","指先の切創","股関節脱臼や大腿骨骨折","発熱"],"answer":2,"exp":"ダッシュボードに膝が突き当たる機転では、膝・大腿骨・股関節損傷を生じることがある。"},{"id":"c6-425","n":425,"q":"高所からの墜落で疑うべき外傷は何か。","choices":["軽度頭痛のみ","脊椎・下肢・踵骨骨折等","咳のみ","食欲不振のみ"],"answer":1,"exp":"高所墜落では踵骨骨折、脊椎骨折、下肢骨折、内臓損傷等を疑う必要がある。"},{"id":"c6-426","n":426,"q":"爆傷（blast injury）で分類される一次損傷とは何か。","choices":["熱傷のみ","破片による損傷","爆風圧による気体含有臓器（肺・鼓膜等）の損傷","吹き飛ばされた二次外傷"],"answer":2,"exp":"一次損傷は爆風圧による気体含有臓器（肺・鼓膜・腸管等）の損傷で、爆傷特有の病態。"},{"id":"c6-427","n":427,"q":"爆傷の二次損傷はどれか。","choices":["精神的ショックのみ","爆風圧のみ","破片等による貫通性外傷","直接的火災"],"answer":2,"exp":"二次損傷は飛散する破片や物体による貫通性外傷を指す。"},{"id":"c6-428","n":428,"q":"高体温による熱中症の予防として適切なものはどれか。","choices":["断水","厚着","水分・電解質補給と適切な休息","運動強制"],"answer":2,"exp":"熱中症予防には水分と電解質の適切な補給、休息、環境調整が重要。"},{"id":"c6-429","n":429,"q":"凍傷の処置として正しいものはどれか。","choices":["適切な温度の温水での緩徐な復温","マッサージ","直火で温める","冷水で冷却"],"answer":0,"exp":"凍傷は37〜40℃程度の温水での緩徐な復温が推奨され、マッサージや直火は禁忌。"},{"id":"c6-430","n":430,"q":"山岳遭難等での低体温症の初期対応として正しいものはどれか。","choices":["激しい運動","アルコール摂取","濡れた衣服の除去と保温、愛護的取り扱い","強いマッサージ"],"answer":2,"exp":"低体温症では濡れた衣服を除去して乾燥させ、毛布等で保温し愛護的に扱う。心室細動リスクのため激しい動揺は避ける。"},{"id":"c6-431","n":431,"q":"溺水傷病者でCPRを行う場合の特徴として正しいものはどれか。","choices":["圧迫は不要","低酸素が主病態のため換気を早期に行う","換気は不要","搬送を遅らせる"],"answer":1,"exp":"溺水では低酸素が主因のため、BLSの早期換気と十分な胸骨圧迫が重要。"},{"id":"c6-432","n":432,"q":"高地肺水腫の初期対応として正しいものはどれか。","choices":["激しい運動","速やかに下山し酸素投与","水分制限","更に高所へ登る"],"answer":1,"exp":"高地肺水腫は速やかに低高度へ下降し、酸素投与と安静が第一選択。"},{"id":"c6-433","n":433,"q":"減圧症の初期対応として適切なものはどれか。","choices":["アルコール摂取","100%酸素投与と高気圧酸素療法施設への搬送","冷水浸漬","追加潜水"],"answer":1,"exp":"減圧症では100%酸素投与と速やかな高気圧酸素療法が基本の対応。"},{"id":"c6-434","n":434,"q":"蜂刺傷でアナフィラキシーを疑う場合の対応はどれか。","choices":["抗生物質を投与","冷却のみ","エピネフリン筋注の準備と迅速搬送","様子観察のみ"],"answer":2,"exp":"蜂刺傷によるアナフィラキシーではエピネフリン投与と迅速搬送が救命に直結する。"},{"id":"c6-435","n":435,"q":"ヘビ咬傷の対応として誤っているものはどれか。","choices":["患部の固定","速やかな搬送","安静","切開吸引"],"answer":3,"exp":"切開吸引は現代では推奨されない。安静、固定、迅速搬送が基本的対応となる。"},{"id":"c6-436","n":436,"q":"大量傷病者発生時の「2次トリアージ」は何を評価するか。","choices":["体温のみ","保険情報","住所のみ","生理学的・解剖学的な重症度を詳細評価し搬送順を決定する"],"answer":3,"exp":"2次トリアージは詳細な生理学的・解剖学的評価により搬送先・搬送順位を決定する段階。"},{"id":"c6-437","n":437,"q":"災害現場での「テンポラリー モルグ」の目的はどれか。","choices":["避難所を設ける","傷病者を治療する","食事を提供する","死亡者を一時的に安置する場所を確保すること"],"answer":3,"exp":"多数死亡者発生時はテンポラリーモルグを設け、尊厳を保ちつつ一時安置する。"},{"id":"c6-438","n":438,"q":"災害医療における「サージ容量」とは何か。","choices":["看護師数のみ","通常以上の傷病者数を受け入れるための医療資源の対応能力","救急車の台数","医師数のみ"],"answer":1,"exp":"サージ容量は平時を超える傷病者数に対応するための人的・物的・施設面の追加対応能力を示す概念。"},{"id":"c6-439","n":439,"q":"EMIS（広域災害救急医療情報システム）の主な役割はどれか。","choices":["災害時の医療機関の被災・受入状況を共有するシステム","電子カルテ","救急車の配車システム","薬剤管理システム"],"answer":0,"exp":"EMISは災害時に医療機関の被災状況・受入状況を共有するためのシステムで、広域医療連携に活用される。"},{"id":"c6-440","n":440,"q":"DMATの活動内容として正しくないものはどれか。","choices":["被災地での医療支援","災害発生後の長期復興支援のみ","現場救護所運営","広域医療搬送"],"answer":1,"exp":"DMATは災害急性期（概ね48時間以内）の医療支援を担い、長期復興支援は別チームが対応する。"},{"id":"c6-441","n":441,"q":"災害時に「クラッシュ症候群」を疑う状況はどれか。","choices":["咳嗽のみ","長時間四肢が圧迫された後の解放","単発の頭痛","軽い捻挫"],"answer":1,"exp":"クラッシュ症候群は長時間の筋組織圧迫解放後にカリウム・ミオグロビン等が血中に流入し、高カリウム血症や腎不全等を起こす。"},{"id":"c6-442","n":442,"q":"クラッシュ症候群の初期対応として重要なものはどれか。","choices":["救出前後の輸液と電解質管理","放置","水分制限","解放後に安静のみ"],"answer":0,"exp":"クラッシュ症候群では救出前後の大量輸液により電解質異常と急性腎障害を予防することが重要。"},{"id":"c6-443","n":443,"q":"災害時に救急救命士が果たす役割として正しいものはどれか。","choices":["手術執刀","薬剤の独自処方","診断書作成","現場でのトリアージ・応急処置・搬送支援"],"answer":3,"exp":"災害時の救急救命士の役割はトリアージ、応急処置、搬送支援等であり、診断書作成や手術は業務範囲外。"},{"id":"c6-444","n":444,"q":"災害対応における「自助・共助・公助」の順序として基本的な考え方はどれか。","choices":["まず自助、次に共助、そして公助","自助は不要","共助は不要","公助のみ"],"answer":0,"exp":"災害対応は基本的に自助（自分で身を守る）→共助（近隣との助け合い）→公助（行政支援）の順で機能する。"},{"id":"c6-445","n":445,"q":"多数傷病者発生時に救急活動で最も避けるべきことはどれか。","choices":["迅速なトリアージ","継続的な再評価","1人に時間をかけすぎて全体の対応が遅れること","チーム連携"],"answer":2,"exp":"災害時は1人に時間をかけすぎると全体の救命率が低下するため、迅速なトリアージと効率的対応が重要。"},{"id":"c6-446","n":446,"q":"外傷の観察で「ABCDE」に続いてすべき追加観察項目（FGH）の一例はどれか。","choices":["Family（家族名）","Full set of vital signs や History（問診）","Food（好み）","Friend（友人）"],"answer":1,"exp":"ABCDE後はFull set of vital signs、問診、FASTなどで評価を深めるのが一般的な外傷診療の流れ。"},{"id":"c6-447","n":447,"q":"救急搬送中に患者状態が急変した場合の対応として正しいものはどれか。","choices":["搬送停止","観察を中断","適切な処置を実施しMCへ連絡して指示を仰ぐ","家族判断に委ねる"],"answer":2,"exp":"搬送中の急変時は速やかな処置とオンラインMCによる医師指示の確認が重要。"},{"id":"c6-448","n":448,"q":"救急救命士が現場活動で使用する用具の点検・整備の頻度として適切なものはどれか。","choices":["年1回のみ","故障発生時のみ","整備は不要","勤務開始時・使用前後に点検する"],"answer":3,"exp":"救急用具は勤務開始時や使用前後に定期的に点検し、常に使用可能な状態を保つ必要がある。"},{"id":"c6-449","n":449,"q":"救急救命士が重症傷病者搬送時に病院選定で協力を求めるべき制度はどれか。","choices":["一切の連絡なし","搬送・受入ルール（搬送基準・傷病者情報共有システム等）","家族の主観","診療所選定のみ"],"answer":1,"exp":"都道府県ごとに搬送・受入ルールや情報共有システムが整備されており、それを用いて適切な病院を選定する。"},{"id":"c6-450","n":450,"q":"救急救命士が災害対応の経験から学ぶべき大切な姿勢はどれか。","choices":["記録しない","活動内容を秘匿する","忘れる","振り返りと改善、そして次への備え"],"answer":3,"exp":"災害対応後の振り返り（デブリーフィング）と組織的改善は次の災害への備えとして重要である。"}]},{"id":"mock","kind":"mock","title":"模擬試験 第1回","subtitle":"本番形式・50問","questions":[{"id":"mock-451","n":451,"q":"救急救命士の業務は誰の指示のもとで行われるか（特定行為）。","choices":["消防長","警察官","看護師","医師"],"answer":3,"exp":"救急救命士の特定行為は医師の具体的指示のもとで実施される。"},{"id":"mock-452","n":452,"q":"救急救命士法が公布された年はどれか。","choices":["2015年","2000年","1991年","1980年"],"answer":2,"exp":"救急救命士法は1991年に公布・施行された。"},{"id":"mock-453","n":453,"q":"JCSで「呼びかけで開眼する」状態に相当するのはどれか。","choices":["II-10","I-2","II-20","III-100"],"answer":0,"exp":"II-10は普通の呼びかけで容易に開眼する意識レベル。II-20は大きな声または体を揺さぶることにより開眼、II-30は痛み刺激を加えつつ呼びかけを繰り返すとかろうじて開眼する。","revised":true},{"id":"mock-454","n":454,"q":"GCSの最高点はいくつか。","choices":["12","10","20","15"],"answer":3,"exp":"GCSはE4+V5+M6の合計15が最高点。"},{"id":"mock-455","n":455,"q":"成人の正常脈拍の範囲はどれか。","choices":["150〜180回/分","60〜100回/分","200〜300回/分","30〜40回/分"],"answer":1,"exp":"成人の安静時脈拍は60〜100回/分が正常範囲。"},{"id":"mock-456","n":456,"q":"SpO2の一般的な正常範囲はどれか。","choices":["100%以上","60%前後","50%以下","96〜100%"],"answer":3,"exp":"成人のSpO2正常範囲は概ね96〜100%とされる。"},{"id":"mock-457","n":457,"q":"成人CPRの胸骨圧迫の深さとして推奨されるものはどれか。","choices":["約10cm","約5cm（6cmを超えない）","約2cm","指が届く程度"],"answer":1,"exp":"成人では約5cm（6cmを超えない）が推奨される。"},{"id":"mock-458","n":458,"q":"成人CPRの圧迫テンポは毎分何回が推奨されるか。","choices":["100〜120回","30回以下","60回程度","200回以上"],"answer":0,"exp":"成人は毎分100〜120回が推奨されるテンポ。"},{"id":"mock-459","n":459,"q":"成人1人法BLSの胸骨圧迫と換気の比率はどれか。","choices":["5:1","30:2","50:1","15:2"],"answer":1,"exp":"成人1人法は30:2サイクルで実施する。"},{"id":"mock-460","n":460,"q":"AEDが通電する不整脈はどれか。","choices":["PEA","心室細動・無脈性VT","心静止","洞徐脈"],"answer":1,"exp":"AEDはVFと無脈性VTに対して通電する。"},{"id":"mock-461","n":461,"q":"PEAや心静止に対して行うべき処置はどれか。","choices":["質の高いCPRと可逆的原因の検索","経口水分補給","放置","除細動"],"answer":0,"exp":"PEAや心静止では除細動は適応外で、質の高いCPRと可逆的原因（5H5T）の検索が重要。"},{"id":"mock-462","n":462,"q":"成人CPRでエピネフリンの通常用量はどれか。","choices":["100mg","10mg","0.01mg","1mg"],"answer":3,"exp":"成人CPRではエピネフリン1mgを3〜5分ごとに投与する。"},{"id":"mock-463","n":463,"q":"特定行為として低血糖傷病者に対して投与できる薬剤はどれか。","choices":["塩化カリウム","モルヒネ","ブドウ糖溶液","インスリン"],"answer":2,"exp":"血糖測定により低血糖と判明した場合、救急救命士はブドウ糖溶液を投与できる。"},{"id":"mock-464","n":464,"q":"気管挿管の位置確認で最も信頼性が高いのはどれか。","choices":["触診のみ","視診のみ","EtCO2波形","心電図"],"answer":2,"exp":"EtCO2波形による確認が最も信頼性が高く、食道挿管の見逃し防止に有効。"},{"id":"mock-465","n":465,"q":"アナフィラキシーの第一選択薬はどれか。","choices":["抗ヒスタミン薬","ステロイド","エピネフリン（筋注）","ブドウ糖"],"answer":2,"exp":"アナフィラキシーの初期治療はエピネフリン筋注が第一選択。"},{"id":"mock-466","n":466,"q":"熱中症の応急対応として正しいものはどれか。","choices":["温風での加温","厚着","断水","涼しい場所への移動と体表冷却"],"answer":3,"exp":"熱中症は速やかに涼しい場所へ移動し体表冷却を行う。"},{"id":"mock-467","n":467,"q":"低体温症でCPR中止前に考慮すべきことはどれか。","choices":["輸液は禁忌","十分な復温を試みる","即時中止","気道管理は不要"],"answer":1,"exp":"低体温症では復温しない限り死亡判定は行わず、復温を試みながらCPRを継続する。"},{"id":"mock-468","n":468,"q":"脳卒中の観察評価に用いられるCPSSに含まれる項目はどれか。","choices":["瞳孔径・脈波・呼吸","体温・脈拍・血圧","SpO2・血糖・尿量","顔面麻痺・上肢脱力・構音障害"],"answer":3,"exp":"CPSSは顔面麻痺・上肢脱力・構音障害の3項目で評価する脳卒中スクリーニング。"},{"id":"mock-469","n":469,"q":"くも膜下出血の典型的な症状はどれか。","choices":["長期的倦怠感","突発性の激しい頭痛","慢性的な咳","軽い腹痛"],"answer":1,"exp":"くも膜下出血は今までに経験のない突発的な激しい頭痛が典型症状。"},{"id":"mock-470","n":470,"q":"心筋梗塞で典型的な心電図変化はどれか。","choices":["P波の消失","ST低下のみ","PR延長","ST上昇"],"answer":3,"exp":"急性心筋梗塞ではST上昇が典型的所見であるが、非ST上昇型もある。"},{"id":"mock-471","n":471,"q":"大動脈解離の典型症状はどれか。","choices":["軽度の腹痛のみ","咳嗽のみ","軽度の頭痛","突発的な胸背部の激痛"],"answer":3,"exp":"大動脈解離は突発的な胸背部の激しい痛みが特徴的。"},{"id":"mock-472","n":472,"q":"緊張性気胸の典型所見はどれか。","choices":["気管の健側偏位・頸静脈怒張・患側呼吸音減弱","両側呼吸音正常","黄疸と腹水","徐脈と高血圧"],"answer":0,"exp":"緊張性気胸では気管の健側偏位、頸静脈怒張、患側呼吸音減弱が特徴的所見。"},{"id":"mock-473","n":473,"q":"心タンポナーデの三徴（ベックの三徴）に含まれるのはどれか。","choices":["高熱・関節痛・発疹","血圧低下・頸静脈怒張・心音減弱","発熱・咳・嗄声","高血圧・徐脈・多尿"],"answer":1,"exp":"ベックの三徴は血圧低下、頸静脈怒張、心音減弱。"},{"id":"mock-474","n":474,"q":"有機リン中毒の代表的症状はどれか。","choices":["縮瞳・流涎・気管支分泌増加","高体温のみ","散瞳・乾燥皮膚","便秘のみ"],"answer":0,"exp":"有機リン中毒ではコリン作動性症状が特徴。"},{"id":"mock-475","n":475,"q":"START法で赤（最優先）に分類される呼吸数はどれか。","choices":["6回/分のみ","30回/分を超える","0回/分のみ","12回/分前後"],"answer":1,"exp":"START法では呼吸数30回/分を超える場合に赤と判定する。"},{"id":"mock-476","n":476,"q":"トリアージで「黒」カテゴリの意味はどれか。","choices":["待機","軽症","中等症","救命困難または死亡"],"answer":3,"exp":"黒は救命困難または死亡を意味する。"},{"id":"mock-477","n":477,"q":"DMATの活動時期として正しいものはどれか。","choices":["平時のみ","数年後のみ","復興期のみ","災害急性期（おおむね48時間以内）"],"answer":3,"exp":"DMATは災害急性期（おおむね48時間以内）の活動を主たる目的とする。"},{"id":"mock-478","n":478,"q":"災害時の3T（TTT）に含まれないものはどれか。","choices":["Triage","Treatment-Technology-Transfer","Treatment","Transport"],"answer":1,"exp":"3TはTriage・Treatment・Transport。"},{"id":"mock-479","n":479,"q":"頭部外傷で「lucid interval（意識清明期）」がみられる代表的病態はどれか。","choices":["慢性硬膜下血腫","大量くも膜下出血","脳挫傷","硬膜外血腫"],"answer":3,"exp":"硬膜外血腫では受傷後一過性に意識清明期がみられる典型経過がある。"},{"id":"mock-480","n":480,"q":"成人の熱傷面積の推定に用いる法則はどれか。","choices":["5の法則","9の法則","7の法則","10の法則"],"answer":1,"exp":"成人熱傷面積は9の法則で推定する。"},{"id":"mock-481","n":481,"q":"吸入熱傷を疑う所見はどれか。","choices":["顔面の煤付着・嗄声・眉毛鼻毛焼損","指先の乾燥","腹部の打撲","下肢の擦過"],"answer":0,"exp":"顔面の煤付着や嗄声、眉毛鼻毛焼損は吸入熱傷のサイン。"},{"id":"mock-482","n":482,"q":"外傷primary surveyの「E」は何を指すか。","choices":["Eye","Elbow","Exposure/Environment（全身観察と体温管理）","Ear"],"answer":2,"exp":"Eは全身観察・体温管理を意味する。"},{"id":"mock-483","n":483,"q":"重症外傷で推奨される搬送戦略はどれか。","choices":["搬送遅延","ロードアンドゴー","現場完結治療","現場滞在を延長"],"answer":1,"exp":"重症外傷では現場滞在を最小限にするロードアンドゴーが基本戦略。"},{"id":"mock-484","n":484,"q":"クラッシュ症候群の初期対応で重要なものはどれか。","choices":["絶食","救出後の放置","救出前後の輸液と電解質管理","経口補水のみ"],"answer":2,"exp":"クラッシュ症候群は救出前後の大量輸液と電解質管理が予後を左右する。"},{"id":"mock-485","n":485,"q":"救急救命士法で定められる守秘義務について正しいものはどれか。","choices":["上司の許可があれば破れる","退職後は自由","業務中のみ守る","退職後も守らなければならない"],"answer":3,"exp":"守秘義務は退職後も継続して守る必要がある。"},{"id":"mock-486","n":486,"q":"感染対策で常に守るべき原則はどれか。","choices":["手袋は不要","必要時のみ手洗い","標準予防策（スタンダードプリコーション）","マスクは任意"],"answer":2,"exp":"標準予防策を常に守ることが感染管理の基本。"},{"id":"mock-487","n":487,"q":"救急救命士の免許を与える者はどれか。","choices":["消防庁長官","総理大臣","厚生労働大臣","都道府県知事"],"answer":2,"exp":"救急救命士免許は厚生労働大臣が与える。"},{"id":"mock-488","n":488,"q":"医療法で定める病院の病床数の要件はどれか。","choices":["100床以上","5床以上","200床以上","20床以上"],"answer":3,"exp":"医療法で病院は20床以上、診療所は19床以下または無床と定義される。"},{"id":"mock-489","n":489,"q":"心拍数60回/分未満を示す成人の状態はどれか。","choices":["徐脈","正常","頻脈","無脈"],"answer":0,"exp":"成人で60回/分未満は徐脈、100回/分超は頻脈と呼ぶ。"},{"id":"mock-490","n":490,"q":"高カリウム血症でみられる心電図変化はどれか。","choices":["テント状T波","QT短縮のみ","P波増大のみ","U波増大"],"answer":0,"exp":"高カリウム血症ではテント状T波が典型的。"},{"id":"mock-491","n":491,"q":"糖尿病性ケトアシドーシスの典型的呼吸はどれか。","choices":["チェーンストークス呼吸","ビオー呼吸","正常呼吸","クスマウル呼吸"],"answer":3,"exp":"DKAでは深く速いクスマウル呼吸が特徴。"},{"id":"mock-492","n":492,"q":"ショック指数（SI）の算出式はどれか。","choices":["体温÷血圧","収縮期血圧÷心拍数","心拍数÷収縮期血圧","呼吸数×心拍数"],"answer":2,"exp":"ショック指数は心拍数／収縮期血圧で計算される。"},{"id":"mock-493","n":493,"q":"妊婦搬送時の体位として推奨されるのはどれか。","choices":["完全腹臥位","右側臥位","左側臥位","完全仰臥位"],"answer":2,"exp":"妊娠後期では仰臥位で下大静脈が圧迫されるため左側臥位が推奨される。"},{"id":"mock-494","n":494,"q":"救急救命士の特定行為に該当するものはどれか。","choices":["手術","静脈路確保のための輸液","処方箋交付","診断書発行"],"answer":1,"exp":"静脈路確保・輸液は特定行為に含まれる。"},{"id":"mock-495","n":495,"q":"救急医療における「ゴールデンアワー」とは何か。","choices":["医師の勤務時間","救急車の運用時間","初期治療を行うべき最初の約1時間","夜間の活動時間"],"answer":2,"exp":"ゴールデンアワーは発症後1時間以内の初期治療の重要性を示す概念。"},{"id":"mock-496","n":496,"q":"Apgarスコアに含まれる項目はどれか。","choices":["心拍数、呼吸、筋緊張、反射、皮膚色","体温、尿量、身長、体重、酸素","血圧、脈拍、呼吸、体温、意識","赤血球、白血球、血小板、HCT、Hb"],"answer":0,"exp":"Apgarスコアは心拍・呼吸・筋緊張・反射・皮膚色の5項目で評価する。"},{"id":"mock-497","n":497,"q":"オンラインMCの特徴として正しいものはどれか。","choices":["事後検証のみ","機器点検のみ","教育のみ","現場で医師からリアルタイム指示を受ける"],"answer":3,"exp":"オンラインMCは現場で医師から無線等で指示を受ける仕組み。"},{"id":"mock-498","n":498,"q":"成人BVM換気の1回換気量目安はどれか。","choices":["50mL","500〜600mL（胸の上がりが見える程度）","100mL","2000mL"],"answer":1,"exp":"成人では500〜600mL程度を目安に、胸の上がりが確認できる程度で換気する。"},{"id":"mock-499","n":499,"q":"高所墜落で疑うべき骨折部位はどれか。","choices":["指骨のみ","踵骨・脊椎・下肢長管骨","鎖骨のみ","肋軟骨のみ"],"answer":1,"exp":"高所墜落では踵骨・脊椎・下肢長管骨の骨折や内臓損傷を疑う必要がある。"},{"id":"mock-500","n":500,"q":"救急救命士が災害時に果たすべき役割として最も適切なものはどれか。","choices":["診断書作成","手術執刀","現場でのトリアージと応急処置、迅速搬送","医薬品の処方"],"answer":2,"exp":"救急救命士は災害時もトリアージ・応急処置・搬送支援等が主な役割であり、手術や処方は業務範囲外。"}]}]};
+(function(){
+'use strict';
+
+/* ---------- data ---------- */
+const KEY = 'hinata-kyumei-v1';
+const LBL = ['ア','イ','ウ','エ','オ','カ','キ','ク'];
+const D = (DATA && Array.isArray(DATA.sections)) ? DATA : { title:'救急救命士 完全対策問題集', sections:[] };
+const SECTIONS = D.sections.filter(s => s && Array.isArray(s.questions));
+const QMAP = new Map();
+SECTIONS.forEach(s => s.questions.forEach(q => QMAP.set(q.id, { q, s })));
+const ALL_IDS = Array.from(QMAP.keys());
+const TOTAL = ALL_IDS.length;
+const SEC = id => SECTIONS.find(s => s.id === id);
+
+/* ---------- storage (every access guarded) ---------- */
+let storageOK = true;
+function blank(){ return { v:1, q:{}, theme:'auto', mocks:{}, draft:null }; }
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if (raw){
+      const o = JSON.parse(raw);
+      if (o && typeof o === 'object' && o.q && typeof o.q === 'object'){
+        const b = blank();
+        return Object.assign(b, o, { mocks: o.mocks || {}, q: o.q });
+      }
+    }
+  }catch(e){ storageOK = false; }
+  return blank();
+}
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(store)); storageOK = true; }
+  catch(e){ storageOK = false; }
+}
+let store = load();
+try{ const t = '__t'; localStorage.setItem(KEY + t, '1'); localStorage.removeItem(KEY + t); }catch(e){ storageOK = false; }
+
+function rec(id){
+  let r = store.q[id];
+  if (!r){ r = store.q[id] = { attempts:0, correct:0, last:null, streak:0, wrong:false, bookmarked:false }; }
+  return r;
+}
+function record(id, ok){
+  const r = rec(id);
+  r.attempts++;
+  r.last = ok ? 1 : 0;
+  r.ts = Date.now();
+  if (ok){
+    r.correct++;
+    r.streak++;
+    if (r.wrong && r.streak >= 2) r.wrong = false;
+  } else {
+    r.streak = 0;
+    r.wrong = true;
+  }
+}
+const isWrong = id => !!(store.q[id] && store.q[id].wrong);
+const isBm = id => !!(store.q[id] && store.q[id].bookmarked);
+const isAnswered = id => !!(store.q[id] && store.q[id].attempts > 0);
+function toggleBm(id){ const r = rec(id); r.bookmarked = !r.bookmarked; save(); return r.bookmarked; }
+
+function statsOf(ids){
+  let answered = 0, lastOk = 0, wrong = 0;
+  for (const id of ids){
+    const r = store.q[id];
+    if (!r) continue;
+    if (r.attempts > 0){ answered++; if (r.last === 1) lastOk++; }
+    if (r.wrong) wrong++;
+  }
+  return { total: ids.length, answered, wrong, acc: answered ? Math.round(lastOk / answered * 100) : null };
+}
+const secIds = s => s.questions.map(q => q.id);
+const wrongIds = () => ALL_IDS.filter(isWrong);
+const bmIds = () => ALL_IDS.filter(isBm);
+
+/* ---------- helpers ---------- */
+function esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function shuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function splitTitle(s){
+  const t = String(s.title || '');
+  const i = t.search(/[\s　]/);
+  if (i > 0 && /^(第|Part|模擬)/.test(t)) return { k: t.slice(0, i), n: t.slice(i).trim() };
+  return { k: '', n: t };
+}
+function shortLabel(s){ const p = splitTitle(s); return p.k || p.n; }
+function fmtTime(ms){
+  const t = Math.max(0, Math.floor(ms / 1000));
+  const h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), s = t % 60;
+  const pad = n => String(n).padStart(2, '0');
+  return h ? `${h}:${pad(m)}:${pad(s)}` : `${m}:${pad(s)}`;
+}
+function fmtDate(ts){ const d = new Date(ts); return `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`; }
+const reduceMotion = () => { try{ return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; } };
+function pctMsg(p){
+  if (p >= 90) return 'すばらしい！この調子でいこう。';
+  if (p >= 70) return 'よくできました。間違えた問題を確認しよう。';
+  if (p >= 50) return 'あと一歩。復習で確実に伸ばそう。';
+  return '解説を読んで、もう一度チャレンジしよう。';
+}
+
+/* ---------- icons ---------- */
+const I = {
+  logo:'<svg class="logo" viewBox="0 0 28 28" aria-hidden="true"><rect class="bgc" width="28" height="28" rx="7"/><path class="fg" d="M11.5 6h5v5.5H22v5h-5.5V22h-5v-5.5H6v-5h5.5z"/></svg>',
+  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>',
+  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle cx="16" cy="7" r="2.5"/><circle cx="10" cy="17" r="2.5"/></svg>',
+  grid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg>',
+  ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9.5"/></svg>',
+  ng:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>'
+};
+
+/* ---------- theme ---------- */
+function applyTheme(){
+  const t = store.theme;
+  if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+  else document.documentElement.removeAttribute('data-theme');
+}
+
+/* ---------- state ---------- */
+const app = document.getElementById('app');
+const modalEl = document.getElementById('modal');
+let view = { name:'home' };
+let S = null;   // practice session
+let M = null;   // running mock exam
+let MR = null;  // last graded mock
+let modalOk = null;
+
+function go(name, params){ view = Object.assign({ name }, params || {}); render(true); }
+
+function topbar(left, center, right){
+  return `<header class="topbar"><div class="topbar-in">${left}<div class="top-title">${center}</div>${right || '<span class="spacer"></span>'}</div></header>`;
+}
+const backBtn = (act, label) => `<button class="icon-btn" data-act="${act || 'home'}" aria-label="${label || 'ホームへ戻る'}">${I.back}</button>`;
+
+/* ---------- views ---------- */
+function vHome(){
+  if (!SECTIONS.length){
+    return `<header class="topbar"><div class="topbar-in"><div class="brand">${I.logo}<span>救命士ドリル</span></div></div></header>
+    <main class="wrap"><div class="card empty" tabindex="-1" data-focus>問題データが読み込まれていません。</div></main>`;
+  }
+  const all = statsOf(ALL_IDS);
+  const wc = wrongIds().length, bc = bmIds().length;
+  const pct = TOTAL ? Math.round(all.answered / TOTAL * 100) : 0;
+  const draft = store.draft && SEC(store.draft.sid) ? store.draft : null;
+  const chapters = SECTIONS.filter(s => s.kind !== 'mock');
+  const mocks = SECTIONS.filter(s => s.kind === 'mock');
+  const card = s => {
+    const ids = secIds(s), st = statsOf(ids), p = splitTitle(s);
+    const w = st.total ? Math.round(st.answered / st.total * 100) : 0;
+    const best = s.kind === 'mock' ? bestMock(s.id) : null;
+    return `<button class="sec-card" data-act="openSection" data-id="${esc(s.id)}">
+      ${p.k ? `<span class="kicker">${esc(p.k)}</span>` : ''}${s.kind === 'mock' ? '<span class="tag">本番形式</span>' : ''}
+      <span class="t">${esc(p.n)}</span>
+      ${s.subtitle ? `<span class="s">${esc(s.subtitle)}</span>` : '<span class="s"></span>'}
+      <span class="bar thin" aria-hidden="true"><span style="width:${w}%"></span></span>
+      <span class="m"><span>${st.answered} / ${st.total}問</span><span>正答率 ${st.acc == null ? '—' : st.acc + '%'}</span>${st.wrong ? `<span class="w">復習 ${st.wrong}</span>` : ''}${best ? `<span>模試ベスト ${best.score}/${best.total}</span>` : ''}</span>
+    </button>`;
+  };
+  return `<header class="topbar"><div class="topbar-in"><div class="brand">${I.logo}<span>救命士ドリル</span></div>
+    <button class="icon-btn" data-act="settings" aria-label="設定">${I.gear}</button></div></header>
+  <main class="wrap">
+    ${storageOK ? '' : '<p class="notice">この端末では進捗を保存できません（プライベートブラウズ等）。ページを閉じると記録は消えます。</p>'}
+    <section class="card hero">
+      <p class="hello">ひなたさん、今日もいっしょにがんばろう</p>
+      <h1 tabindex="-1" data-focus>${esc(D.title || '救急救命士 問題集')}</h1>
+      <div class="stats">
+        <div class="stat"><b>${all.answered}<small>/${TOTAL}</small></b><span>解いた問題</span></div>
+        <div class="stat"><b>${all.acc == null ? '—' : all.acc}<small>${all.acc == null ? '' : '%'}</small></b><span>正答率</span></div>
+        <div class="stat"><b>${wc}</b><span>要復習</span></div>
+      </div>
+      <div class="bar" role="progressbar" aria-label="全体の進捗" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div>
+      <div class="quick">
+        ${draft ? `<button class="btn btn-primary" data-act="mockResume">模擬試験の続きから（${Object.keys(draft.answers).length}/${draft.ids.length}問）</button>` : ''}
+        <button class="btn ${draft ? '' : 'btn-primary'}" data-act="random10">ランダム10問</button>
+        <button class="btn" data-act="reviewWrong" ${wc ? '' : 'disabled'}>間違えた問題を復習 <span class="badge">${wc}</span></button>
+        <div class="btn-row">
+          <button class="btn btn-ghost" data-act="lists" data-tab="wrong">復習リスト</button>
+          <button class="btn btn-ghost" data-act="lists" data-tab="bm">★ 保存 ${bc}</button>
+        </div>
+      </div>
+    </section>
+    ${chapters.length ? `<h2 class="sec-h">章ごとに解く</h2>${chapters.map(card).join('')}` : ''}
+    ${mocks.length ? `<h2 class="sec-h">模擬試験</h2>${mocks.map(card).join('')}` : ''}
+    <p class="small muted" style="margin-top:24px;text-align:center">間違えた問題は、その後2回続けて正解すると復習リストから外れます。</p>
+  </main>`;
+}
+
+function bestMock(sid){
+  const h = (store.mocks && store.mocks[sid]) || [];
+  let b = null; for (const r of h){ if (!b || r.score > b.score) b = r; } return b;
+}
+
+function modeList(s){
+  const ids = secIds(s);
+  const un = ids.filter(id => !isAnswered(id)).length;
+  const wr = ids.filter(isWrong).length;
+  const mode = (m, t, d, n) => `<button class="mode" data-act="mode" data-sid="${esc(s.id)}" data-mode="${m}" ${n ? '' : 'disabled'}><b>${t}</b><span class="d">${d}</span><span class="n">${n}問</span></button>`;
+  return `<div class="modes">
+    ${mode('seq', '順番どおり', '1問目から順に解く', ids.length)}
+    ${mode('rand', 'ランダム', '出題順をシャッフル', ids.length)}
+    ${mode('new', '未回答のみ', 'まだ解いていない問題', un)}
+    ${mode('wrong', '間違えたのみ', '復習リストにある問題', wr)}
+  </div>`;
+}
+
+function vStart(){
+  const s = SEC(view.sid);
+  if (!s) return vHome();
+  const p = splitTitle(s), ids = secIds(s), st = statsOf(ids);
+  const head = `<div class="head">${p.k ? `<span class="kicker">${esc(p.k)}</span>` : ''}<h1 tabindex="-1" data-focus>${esc(p.n)}</h1>${s.subtitle ? `<p>${esc(s.subtitle)}</p>` : ''}</div>
+    <div class="chips"><span class="chip">全${st.total}問</span><span class="chip">解いた ${st.answered}</span><span class="chip">正答率 ${st.acc == null ? '—' : st.acc + '%'}</span><span class="chip">復習 ${st.wrong}</span></div>`;
+  if (s.kind === 'mock'){
+    const hist = ((store.mocks && store.mocks[s.id]) || []).slice().reverse().slice(0, 5);
+    const hasDraft = store.draft && store.draft.sid === s.id;
+    return topbar(backBtn(), '模擬試験') + `<main class="wrap">${head}
+      <section class="card mock-box" style="margin-top:14px">
+        <h2>本番モード</h2>
+        <p class="small muted">全${ids.length}問。1問ずつの正解は表示されません。前後に移動でき、最後に「採点」すると結果と解説を確認できます。経過時間を表示します。</p>
+        <div class="quick">
+          ${hasDraft ? `<button class="btn btn-primary" data-act="mockResume">続きから再開（${Object.keys(store.draft.answers).length}/${store.draft.ids.length}問 解答済）</button>
+            <button class="btn" data-act="mockStart" data-sid="${esc(s.id)}">最初からやり直す</button>`
+            : `<button class="btn btn-primary" data-act="mockStart" data-sid="${esc(s.id)}">模擬試験を開始</button>`}
+        </div>
+        ${hist.length ? `<ul class="hist" aria-label="これまでの結果">${hist.map(r => `<li><span>${fmtDate(r.date)}</span><span>${r.score} / ${r.total}（${Math.round(r.score / r.total * 100)}%）・ ${fmtTime(r.elapsed)}</span></li>`).join('')}</ul>` : ''}
+      </section>
+      <h2 class="sec-h">練習モード（1問ずつ解説あり）</h2>
+      ${modeList(s)}
+    </main>`;
+  }
+  return topbar(backBtn(), esc(p.k || '問題を選ぶ')) + `<main class="wrap">${head}<h2 class="sec-h">出題のしかた</h2>${modeList(s)}</main>`;
+}
+
+function starBtn(id){
+  const on = isBm(id);
+  return `<button class="star-btn" data-act="bm" data-id="${esc(id)}" aria-pressed="${on}" aria-label="ブックマーク">${I.star}<span>${on ? '保存済' : '保存'}</span></button>`;
+}
+
+function vQuiz(){
+  const id = S.ids[S.i], { q, s } = QMAP.get(id);
+  const picked = S.picked;
+  const done = picked != null;
+  const ok = done && picked === q.answer;
+  const pct = Math.round((S.i + (done ? 1 : 0)) / S.ids.length * 100);
+  const choices = q.choices.map((c, i) => {
+    let cls = '', mk = '';
+    if (done){
+      if (i === q.answer){ cls = 'is-ok'; mk = '正解'; }
+      else if (i === picked){ cls = 'is-ng'; mk = 'あなたの解答'; }
+      else cls = 'is-dim';
+    }
+    return `<button class="choice ${cls}" data-act="pick" data-i="${i}" ${done ? 'disabled' : ''} aria-label="${LBL[i]}　${esc(c)}${mk ? '（' + mk + '）' : ''}"><span class="cl">${LBL[i]}</span><span class="ct">${esc(c)}</span><span class="mk">${mk}</span></button>`;
+  }).join('');
+  const r = store.q[id];
+  const last = S.i === S.ids.length - 1;
+  return `<header class="topbar"><div class="topbar-in">
+      <button class="icon-btn" data-act="quit" aria-label="やめてホームへ">${I.close}<span class="lbl">やめる</span></button>
+      <div class="top-title">${esc(S.title)}<small>${S.i + 1} / ${S.ids.length}</small></div>
+      <span class="spacer"></span></div>
+      <div class="pbar-top" aria-hidden="true"><span style="width:${pct}%"></span></div></header>
+  <main class="wrap ${done ? 'has-bottom' : ''}">
+    <div class="qmeta"><span class="lab"><b>${esc(shortLabel(s))}</b>　問${esc(q.n != null ? q.n : '')}</span>${starBtn(id)}</div>
+    <h1 class="qtext" tabindex="-1" ${done ? '' : 'data-focus'}>${esc(q.q)}</h1>
+    <div class="choices" role="group" aria-label="選択肢">${choices}</div>
+    ${done ? `<div class="feedback ${ok ? 'ok' : 'ng'}" tabindex="-1" id="fb" role="status">${ok ? I.ok : I.ng}<span>${ok ? '正解！' : '不正解'}${ok ? '' : `<span class="sub">正解は ${LBL[q.answer]}「${esc(q.choices[q.answer])}」</span>`}</span></div>
+      <section class="exp"><h2>解説</h2><p>${esc(q.exp || '（解説なし）')}</p></section>
+      ${r ? `<p class="qhist">この問題の記録：${r.attempts}回中${r.correct}回正解${r.wrong ? `・復習中（あと${Math.max(0, 2 - r.streak)}回連続正解で卒業）` : ''}</p>` : ''}` : ''}
+  </main>
+  ${done ? `<div class="bottombar"><div class="bottombar-in"><button class="btn btn-primary" data-act="next" id="nextBtn">${last ? '結果を見る' : '次へ'}</button></div></div>` : ''}`;
+}
+
+function reviewItem(id, chosen, mark, opts){
+  const ent = QMAP.get(id); if (!ent) return '';
+  const { q, s } = ent;
+  const sym = mark === 'ok' ? '○' : mark === 'ng' ? '×' : mark === 'st' ? '★' : '−';
+  const ch = q.choices.map((c, i) => {
+    const isA = i === q.answer, isC = chosen === i && !isA;
+    return `<li class="${isA ? 'ok' : isC ? 'ng' : ''}"><b>${LBL[i]}</b><span class="ct">${esc(c)}${isA ? '<span class="tg">正解</span>' : isC ? '<span class="tg">あなたの解答</span>' : ''}</span></li>`;
+  }).join('');
+  const r = store.q[id];
+  return `<details class="rv"${opts && opts.open ? ' open' : ''}><summary><span class="rv-mark ${mark || ''}" aria-label="${mark === 'ok' ? '正解' : mark === 'ng' ? '不正解' : mark === 'na' ? '未回答' : ''}">${sym}</span><span><span class="rv-meta">${esc(shortLabel(s))}・問${esc(q.n)}${mark === 'na' ? '・未回答' : ''}</span><span class="rv-q">${esc(q.q)}</span></span></summary>
+    <div class="rv-body"><p class="full">${esc(q.q)}</p><ol class="rv-ch">${ch}</ol>
+      <div class="exp"><h3>解説</h3><p>${esc(q.exp || '（解説なし）')}</p></div>
+      <div class="rv-tools"><span>${r && r.attempts ? `${r.attempts}回中${r.correct}回正解${r.wrong ? `・あと${Math.max(0, 2 - r.streak)}回連続正解で卒業` : ''}` : ''}</span>${starBtn(id)}</div>
+    </div></details>`;
+}
+
+function vResult(){
+  const log = S.log, n = log.length, c = log.filter(x => x.ok).length;
+  const p = n ? Math.round(c / n * 100) : 0;
+  const wrong = log.filter(x => !x.ok);
+  return topbar(backBtn(), '結果') + `<main class="wrap">
+    <section class="card score"><p class="muted small">${esc(S.title)}</p>
+      <p class="big" tabindex="-1" data-focus>${c}<small> / ${n}問</small></p><p class="pct">正答率 ${p}%</p><p class="msg">${n ? pctMsg(p) : '問題に解答しませんでした。'}</p></section>
+    <div class="quick">
+      ${wrong.length ? `<button class="btn btn-primary" data-act="retryWrong">間違えた問題だけもう一度（${wrong.length}問）</button>` : ''}
+      <div class="btn-row"><button class="btn" data-act="retrySame">同じ問題をもう一度</button><button class="btn" data-act="home">ホームへ</button></div>
+    </div>
+    ${wrong.length ? `<h2 class="sec-h">間違えた問題（タップで解説）</h2>${wrong.map(x => reviewItem(x.id, x.choice, 'ng')).join('')}` : (n ? '<p class="empty">全問正解！</p>' : '')}
+  </main>`;
+}
+
+function mockElapsed(){ return M ? M.elapsed + (Date.now() - M.runStart) : 0; }
+
+function vMock(){
+  const id = M.ids[M.i], { q, s } = QMAP.get(id);
+  const sel = M.answers[id];
+  const answered = Object.keys(M.answers).length;
+  const last = M.i === M.ids.length - 1;
+  const choices = q.choices.map((c, i) => `<button class="choice ${sel === i ? 'is-sel' : ''}" data-act="mpick" data-i="${i}" aria-pressed="${sel === i}"><span class="cl">${LBL[i]}</span><span class="ct">${esc(c)}</span><span class="mk">${sel === i ? '選択中' : ''}</span></button>`).join('');
+  const grid = M.grid ? `<nav class="grid" aria-label="問題一覧">${M.ids.map((qid, i) => `<button data-act="mjump" data-i="${i}" class="${M.answers[qid] != null ? 'done' : ''} ${i === M.i ? 'cur' : ''}" aria-label="問${i + 1}${M.answers[qid] != null ? ' 解答済' : ''}">${i + 1}</button>`).join('')}</nav>
+    <button class="btn" data-act="mgrade" style="margin-bottom:18px">採点する（${answered}/${M.ids.length}問 解答済）</button>` : '';
+  return `<header class="topbar"><div class="topbar-in">
+      <button class="icon-btn" data-act="mquit" aria-label="中断してホームへ">${I.close}<span class="lbl">中断</span></button>
+      <div class="top-title">${esc(shortLabel(s))} ${M.i + 1} / ${M.ids.length}<small>経過 <span class="timer" id="timer">${fmtTime(mockElapsed())}</span>・解答済 ${answered}</small></div>
+      <button class="icon-btn" data-act="mgrid" aria-label="問題一覧" aria-expanded="${!!M.grid}">${I.grid}</button></div>
+      <div class="pbar-top" aria-hidden="true"><span style="width:${Math.round(answered / M.ids.length * 100)}%"></span></div></header>
+  <main class="wrap has-bottom">
+    ${grid}
+    <div class="qmeta"><span class="lab"><b>問${M.i + 1}</b></span>${starBtn(id)}</div>
+    <h1 class="qtext" tabindex="-1" data-focus>${esc(q.q)}</h1>
+    <div class="choices" role="group" aria-label="選択肢">${choices}</div>
+    <p class="qhist">選んだ答えは何度でも変更できます。正解は採点後に表示されます。</p>
+  </main>
+  <div class="bottombar"><div class="bottombar-in two">
+    <button class="btn" data-act="mprev" ${M.i === 0 ? 'disabled' : ''}>前へ</button>
+    ${last ? `<button class="btn btn-primary" data-act="mgrade">採点する</button>` : `<button class="btn btn-primary" data-act="mnext">次へ</button>`}
+  </div></div>`;
+}
+
+function vMockResult(){
+  const s = SEC(MR.sid);
+  const p = Math.round(MR.score / MR.ids.length * 100);
+  const wrongN = MR.ids.filter(id => MR.answers[id] !== QMAP.get(id).q.answer).length;
+  return topbar(backBtn(), '模擬試験の結果') + `<main class="wrap">
+    <section class="card score"><p class="muted small">${esc(s ? s.title : '模擬試験')}</p>
+      <p class="big" tabindex="-1" data-focus>${MR.score}<small> / ${MR.ids.length}問</small></p><p class="pct">正答率 ${p}%</p>
+      <p class="msg">経過時間 ${fmtTime(MR.elapsed)}${MR.unanswered ? `・未回答 ${MR.unanswered}問` : ''}<br>${pctMsg(p)}</p></section>
+    <div class="quick">
+      ${wrongN ? `<button class="btn btn-primary" data-act="mrRetry">間違えた問題だけもう一度（${wrongN}問）</button>` : ''}
+      <button class="btn" data-act="home">ホームへ</button>
+    </div>
+    <h2 class="sec-h">全問の結果（タップで解説）</h2>
+    ${MR.ids.map(id => { const a = MR.answers[id]; const m = a == null ? 'na' : a === QMAP.get(id).q.answer ? 'ok' : 'ng'; return reviewItem(id, a, m); }).join('')}
+  </main>`;
+}
+
+function vLists(){
+  const tab = view.tab === 'bm' ? 'bm' : 'wrong';
+  const ids = tab === 'bm' ? bmIds() : wrongIds();
+  const other = tab === 'bm' ? wrongIds().length : bmIds().length;
+  const wc = tab === 'wrong' ? ids.length : other, bc = tab === 'bm' ? ids.length : other;
+  let body;
+  if (!ids.length){
+    body = `<p class="empty">${tab === 'bm' ? '★を付けた問題はまだありません。<br>問題画面の「保存」で追加できます。' : '復習が必要な問題はありません。<br>この調子！'}</p>`;
+  } else {
+    body = `<button class="btn btn-primary" data-act="listPlay" data-tab="${tab}" style="margin-bottom:8px">この${ids.length}問を解く</button>
+      <button class="btn" data-act="listPlay" data-tab="${tab}" data-shuffle="1" style="margin-bottom:14px">シャッフルして解く</button>
+      ${tab === 'wrong' ? '<p class="small muted" style="margin-bottom:10px">間違えたあと2回続けて正解すると、このリストから外れます。</p>' : ''}
+      ${ids.map(id => reviewItem(id, null, tab === 'bm' ? 'st' : 'ng')).join('')}`;
+  }
+  return topbar(backBtn(), '<span tabindex="-1" data-focus>復習リスト</span>') + `<main class="wrap">
+    <div class="tabs" role="tablist">
+      <button role="tab" data-act="lists" data-tab="wrong" aria-selected="${tab === 'wrong'}">間違えた問題 ${wc}</button>
+      <button role="tab" data-act="lists" data-tab="bm" aria-selected="${tab === 'bm'}">★ 保存 ${bc}</button>
+    </div>${body}</main>`;
+}
+
+function vSettings(){
+  const all = statsOf(ALL_IDS);
+  let att = 0; for (const id of ALL_IDS){ const r = store.q[id]; if (r) att += r.attempts; }
+  const th = store.theme || 'auto';
+  const opt = (v, l) => `<label><input type="radio" name="theme" value="${v}" ${th === v ? 'checked' : ''}><span>${l}</span></label>`;
+  return topbar(backBtn(), '<span tabindex="-1" data-focus>設定</span>') + `<main class="wrap stack">
+    <section class="card"><h2>表示テーマ</h2><p class="small muted">「自動」は端末の設定に合わせます。</p>
+      <div class="seg" role="radiogroup" aria-label="表示テーマ">${opt('auto', '自動')}${opt('light', 'ライト')}${opt('dark', 'ダーク')}</div></section>
+    <section class="card"><h2>学習の記録</h2>
+      <p class="small muted">解いた問題 ${all.answered} / ${TOTAL}・のべ解答数 ${att}・復習中 ${wrongIds().length}・保存 ${bmIds().length}</p>
+      <p class="small muted" style="margin-top:6px">記録はこの端末のこのブラウザだけに保存されます。${storageOK ? '' : '<br><b>現在、保存できない状態です。</b>'}</p></section>
+    <section class="card"><h2>進捗をリセット</h2><p class="small muted" style="margin-bottom:12px">すべての解答記録・復習リスト・保存・模試の結果を消去します。元に戻せません。</p>
+      <button class="btn btn-danger" data-act="resetAsk">進捗をリセット</button></section>
+  </main>`;
+}
+
+/* ---------- render ---------- */
+function render(toTop){
+  let html;
+  switch (view.name){
+    case 'start': html = vStart(); break;
+    case 'quiz': html = S ? vQuiz() : vHome(); break;
+    case 'result': html = S ? vResult() : vHome(); break;
+    case 'mock': html = M ? vMock() : vHome(); break;
+    case 'mockResult': html = MR ? vMockResult() : vHome(); break;
+    case 'lists': html = vLists(); break;
+    case 'settings': html = vSettings(); break;
+    default: html = vHome();
+  }
+  app.innerHTML = html;
+  if (toTop) window.scrollTo(0, 0);
+  const f = app.querySelector('[data-focus]');
+  if (f && toTop){ try{ f.focus({ preventScroll:true }); }catch(e){} }
+}
+
+/* ---------- practice ---------- */
+function startPractice(ids, title){
+  ids = ids.filter(id => QMAP.has(id));
+  if (!ids.length) return;
+  S = { title, ids, i:0, picked:null, log:[] };
+  go('quiz');
+}
+function pick(i){
+  if (!S || S.picked != null) return;
+  const id = S.ids[S.i], q = QMAP.get(id).q;
+  if (i < 0 || i >= q.choices.length) return;
+  const ok = i === q.answer;
+  S.picked = i;
+  record(id, ok); save();
+  S.log.push({ id, choice:i, ok });
+  render(false);
+  const fb = document.getElementById('fb');
+  if (fb){
+    try{ fb.focus({ preventScroll:true }); }catch(e){}
+    try{ fb.scrollIntoView({ block:'nearest', behavior: reduceMotion() ? 'auto' : 'smooth' }); }catch(e){ fb.scrollIntoView(); }
+  }
+}
+function next(){
+  if (!S || S.picked == null) return;
+  S.i++; S.picked = null;
+  if (S.i >= S.ids.length) go('result'); else render(true);
+}
+
+/* ---------- mock ---------- */
+function persistDraft(){
+  if (!M) return;
+  store.draft = { sid:M.sid, ids:M.ids, answers:M.answers, i:M.i, elapsed:mockElapsed() };
+  save();
+}
+function mockBegin(sid){
+  const s = SEC(sid); if (!s) return;
+  M = { sid, ids: secIds(s), answers:{}, i:0, elapsed:0, runStart:Date.now(), grid:false };
+  persistDraft(); go('mock');
+}
+function mockResume(){
+  const d = store.draft; if (!d || !SEC(d.sid)) return;
+  const ids = d.ids.filter(id => QMAP.has(id));
+  if (!ids.length){ store.draft = null; save(); go('home'); return; }
+  M = { sid:d.sid, ids, answers: d.answers || {}, i: Math.min(d.i || 0, ids.length - 1), elapsed: d.elapsed || 0, runStart: Date.now(), grid:false };
+  go('mock');
+}
+function mockGrade(){
+  const elapsed = mockElapsed();
+  let score = 0, un = 0;
+  for (const id of M.ids){
+    const a = M.answers[id];
+    if (a == null){ un++; continue; }
+    const ok = a === QMAP.get(id).q.answer;
+    if (ok) score++;
+    record(id, ok);
+  }
+  if (!store.mocks) store.mocks = {};
+  const h = store.mocks[M.sid] || (store.mocks[M.sid] = []);
+  h.push({ date: Date.now(), score, total: M.ids.length, elapsed });
+  if (h.length > 20) h.splice(0, h.length - 20);
+  store.draft = null;
+  save();
+  MR = { sid:M.sid, ids:M.ids, answers:M.answers, elapsed, score, unanswered:un };
+  M = null;
+  go('mockResult');
+}
+setInterval(() => {
+  if (view.name === 'mock' && M){ const t = document.getElementById('timer'); if (t) t.textContent = fmtTime(mockElapsed()); }
+}, 1000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && M && view.name === 'mock') persistDraft(); });
+window.addEventListener('pagehide', () => { if (M && view.name === 'mock') persistDraft(); });
+
+/* ---------- modal ---------- */
+function openModal(o){
+  modalOk = o.onOk;
+  modalEl.innerHTML = `<div class="scrim" data-act="modalCancel"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="mdt" data-stop>
+    <h2 id="mdt">${esc(o.title)}</h2><p>${esc(o.body)}</p>
+    <div class="btn-row"><button class="btn" data-act="modalCancel" id="mdCancel">${esc(o.cancel || 'キャンセル')}</button><button class="btn ${o.danger ? 'btn-danger' : 'btn-primary'}" data-act="modalOk">${esc(o.ok || 'OK')}</button></div>
+  </div></div>`;
+  const c = document.getElementById('mdCancel'); if (c) c.focus();
+}
+function closeModal(){ modalEl.innerHTML = ''; modalOk = null; }
+
+/* ---------- actions ---------- */
+const ACT = {
+  home(){ S = null; go('home'); },
+  settings(){ go('settings'); },
+  openSection(d){ go('start', { sid:d.id }); },
+  mode(d){
+    const s = SEC(d.sid); if (!s) return;
+    let ids = secIds(s), name = shortLabel(s);
+    if (d.mode === 'rand'){ ids = shuffle(ids); name += '（ランダム）'; }
+    else if (d.mode === 'new'){ ids = ids.filter(id => !isAnswered(id)); name += '（未回答）'; }
+    else if (d.mode === 'wrong'){ ids = ids.filter(isWrong); name += '（復習）'; }
+    startPractice(ids, name);
+  },
+  random10(){ startPractice(shuffle(ALL_IDS).slice(0, 10), 'ランダム10問'); },
+  reviewWrong(){ startPractice(wrongIds(), '間違えた問題の復習'); },
+  lists(d){ go('lists', { tab:d.tab }); },
+  listPlay(d){
+    let ids = d.tab === 'bm' ? bmIds() : wrongIds();
+    if (d.shuffle) ids = shuffle(ids);
+    startPractice(ids, d.tab === 'bm' ? '★保存した問題' : '間違えた問題の復習');
+  },
+  pick(d){ pick(+d.i); },
+  next(){ next(); },
+  quit(){ S = null; go('home'); },
+  bm(d, el){
+    const on = toggleBm(d.id);
+    document.querySelectorAll('.star-btn[data-id="' + (window.CSS && CSS.escape ? CSS.escape(d.id) : d.id) + '"]').forEach(b => {
+      b.setAttribute('aria-pressed', on); const sp = b.querySelector('span'); if (sp) sp.textContent = on ? '保存済' : '保存';
+    });
+  },
+  retryWrong(){ if (S) startPractice(S.log.filter(x => !x.ok).map(x => x.id), '間違えた問題をもう一度'); },
+  retrySame(){ if (S) startPractice(S.ids.slice(), S.title); },
+  mockStart(d){
+    if (store.draft && store.draft.sid){
+      openModal({ title:'最初からやり直しますか？', body:'途中まで解いた模擬試験の解答は消えます。', ok:'やり直す', danger:true, onOk(){ store.draft = null; save(); mockBegin(d.sid); } });
+    } else mockBegin(d.sid);
+  },
+  mockResume(){ mockResume(); },
+  mpick(d){
+    if (!M) return;
+    const id = M.ids[M.i], i = +d.i;
+    if (M.answers[id] === i) delete M.answers[id]; else M.answers[id] = i;
+    persistDraft();
+    const y = window.scrollY; render(false); window.scrollTo(0, y);
+  },
+  mprev(){ if (M && M.i > 0){ M.i--; persistDraft(); render(true); } },
+  mnext(){ if (M && M.i < M.ids.length - 1){ M.i++; persistDraft(); render(true); } },
+  mjump(d){ if (M){ M.i = +d.i; M.grid = false; persistDraft(); render(true); } },
+  mgrid(){ if (M){ M.grid = !M.grid; render(true); } },
+  mquit(){
+    openModal({ title:'模擬試験を中断しますか？', body:'ここまでの解答と経過時間は保存されます。ホームの「続きから」で再開できます。', ok:'中断する', cancel:'続ける', onOk(){ persistDraft(); M = null; go('home'); } });
+  },
+  mgrade(){
+    if (!M) return;
+    const un = M.ids.length - Object.keys(M.answers).length;
+    openModal({ title:'採点しますか？', body: un ? `未回答が${un}問あります。未回答は不正解として採点します。` : 'すべての問題に解答済みです。', ok:'採点する', cancel:'見直す', onOk(){ mockGrade(); } });
+  },
+  mrRetry(){
+    if (!MR) return;
+    const ids = MR.ids.filter(id => MR.answers[id] !== QMAP.get(id).q.answer);
+    startPractice(ids, '模試の間違い直し');
+  },
+  resetAsk(){
+    openModal({ title:'進捗をリセットしますか？', body:'すべての解答記録・復習リスト・保存した問題・模試の結果が消えます。元に戻せません。', ok:'リセットする', danger:true,
+      onOk(){ const theme = store.theme; store = blank(); store.theme = theme; save(); S = null; M = null; MR = null; go('home'); } });
+  },
+  modalCancel(d, el, e){ if (el.classList.contains('scrim') && e.target !== el) return; closeModal(); },
+  modalOk(){ const f = modalOk; closeModal(); if (f) f(); }
+};
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if (!el || el.disabled) return;
+  const fn = ACT[el.dataset.act];
+  if (fn) fn(el.dataset, el, e);
+});
+app.addEventListener('change', e => {
+  if (e.target && e.target.name === 'theme'){ store.theme = e.target.value; save(); applyTheme(); }
+});
+document.addEventListener('keydown', e => {
+  if (modalEl.firstChild){
+    if (e.key === 'Escape') closeModal();
+    return;
+  }
+  if (e.altKey || e.ctrlKey || e.metaKey) return;
+  const tag = (e.target && e.target.tagName) || '';
+  if (/INPUT|TEXTAREA|SELECT/.test(tag)) return;
+  const n = parseInt(e.key, 10);
+  if (view.name === 'quiz' && S){
+    if (S.picked == null && n >= 1 && n <= 8){ e.preventDefault(); pick(n - 1); }
+    else if (S.picked != null && (e.key === 'Enter' || e.key === 'ArrowRight') && e.target.tagName !== 'BUTTON'){ e.preventDefault(); next(); }
+    else if (S.picked != null && e.key === 'ArrowRight'){ e.preventDefault(); next(); }
+  } else if (view.name === 'mock' && M){
+    const q = QMAP.get(M.ids[M.i]).q;
+    if (n >= 1 && n <= q.choices.length){ e.preventDefault(); ACT.mpick({ i: n - 1 }); }
+    else if (e.key === 'ArrowRight'){ e.preventDefault(); ACT.mnext(); }
+    else if (e.key === 'ArrowLeft'){ e.preventDefault(); ACT.mprev(); }
+  }
+});
+
+applyTheme();
+render(false);
+})();
+</script>
+
+</body>
+</html>
