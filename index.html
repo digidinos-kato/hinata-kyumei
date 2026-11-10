@@ -181,6 +181,7 @@ h1,h2,h3,p{margin:0}
 .portal-card .pd{display:block;font-size:14px;color:var(--muted);margin:4px 0 12px}
 .portal-card .pm{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);margin-top:8px}
 .portal-card.plan-entry{border-style:dashed}
+.portal-card.guide-entry{text-decoration:none;color:inherit;border-color:var(--accent);background:var(--accent-soft)}
 
 /* 出題傾向と学習計画 */
 .an h2.sec-h{margin-top:30px}
@@ -549,6 +550,9 @@ function vPortal(){
     ${storageOK ? '' : '<p class="notice">この端末では進捗を保存できません（プライベートブラウズ等）。ページを閉じると記録は消えます。</p>'}
     <p class="hello">ひなたさん、今日もいっしょにがんばろう</p>
     <h1 tabindex="-1" data-focus style="font-size:20px;margin:2px 0 4px">どちらで勉強する？</h1>
+    <a class="portal-card guide-entry" href="guide.html">
+      <span class="pk">第50回 受験案内</span><span class="pt">試験の仕組みと合格への道すじ</span><span class="pd">2027年3月14日の本試験の日程・出願・合格基準（必修の足切り）・出題範囲・学習スケジュールをまとめました</span>
+    </a>
     ${card('drill')}${card('kokushi')}
     ${BOOKS.kokushi.sections.length ? `<button class="portal-card plan-entry" data-act="plan">
       <span class="pk">試験対策</span><span class="pt">出題傾向と学習計画</span><span class="pd">国試過去問${AN().N}問の分析から、優先して勉強する分野と頻出問題をまとめました</span>
