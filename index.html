@@ -180,6 +180,57 @@ h1,h2,h3,p{margin:0}
 .portal-card .pt{display:block;font-size:19px;font-weight:700;line-height:1.4}
 .portal-card .pd{display:block;font-size:14px;color:var(--muted);margin:4px 0 12px}
 .portal-card .pm{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);margin-top:8px}
+.portal-card.plan-entry{border-style:dashed}
+
+/* 出題傾向と学習計画 */
+.an h2.sec-h{margin-top:30px}
+.an .lead{font-size:14px;color:var(--muted);margin:-4px 0 12px}
+.an-sum{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.an-sum .card{padding:12px 14px}
+.an-sum b{display:block;font-size:24px;font-variant-numeric:tabular-nums;line-height:1.3}
+.an-sum span{font-size:12.5px;color:var(--muted)}
+.an-key{background:var(--accent-soft);border-radius:14px;padding:14px 16px;font-size:14.5px;margin-top:12px}
+.an-key b{display:block;margin-bottom:4px}
+.an-rows{padding:4px 0}
+.an-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:10px 16px;border-top:1px solid var(--border)}
+.an-row:first-child{border-top:0}
+.an-row .nm{font-weight:700;font-size:15px;min-width:0}
+.an-row .nm small{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+.an-row .ct{font-variant-numeric:tabular-nums;font-weight:700;text-align:right;white-space:nowrap}
+.an-row .ct small{font-weight:400;color:var(--muted);font-size:12px;margin-left:4px}
+.an-row .bar{grid-column:1/-1;height:8px}
+.an-row .meta{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;font-size:12.5px;color:var(--muted)}
+.an-row .rd{display:inline-flex;gap:3px}
+.an-row .rd i{font-style:normal;font-variant-numeric:tabular-nums;min-width:22px;text-align:center;background:var(--surface-2);border-radius:5px;font-size:12px}
+.an-row .rd i.z{opacity:.45}
+.an-tag{display:inline-block;font-size:11.5px;font-weight:700;border-radius:99px;padding:1px 9px;background:var(--surface-2);color:var(--muted)}
+.an-tag.a{background:var(--accent);color:var(--accent-ink)}
+.an-tag.b{background:var(--accent-soft);color:var(--accent-strong)}
+.an-play{border:1.5px solid var(--border);background:var(--surface);border-radius:10px;min-height:36px;padding:4px 12px;font-size:13px;font-weight:700;color:var(--accent-strong);margin-left:auto}
+.an-play:hover{border-color:var(--accent)}
+.an-acc{font-variant-numeric:tabular-nums}
+.an-acc.low{color:var(--ng);font-weight:700}
+.an-phase{position:relative;padding-left:22px;border-left:3px solid var(--accent-soft);margin-left:8px}
+.an-phase+.an-phase{margin-top:14px}
+.an-phase::before{content:"";position:absolute;left:-9px;top:4px;width:15px;height:15px;border-radius:50%;background:var(--accent)}
+.an-phase h3{font-size:16px}
+.an-phase .when{font-size:12.5px;color:var(--accent-strong);font-weight:700}
+.an-phase ul{margin:6px 0 0;padding-left:1.2em;font-size:14.5px}
+.an-phase li+li{margin-top:3px}
+.an-term{padding:12px 16px;border-top:1px solid var(--border)}
+.an-term:first-child{border-top:0}
+.an-term .hd{display:flex;align-items:center;gap:10px}
+.an-term .hd b{font-size:15.5px}
+.an-term p{font-size:13.5px;color:var(--muted);margin-top:4px}
+.an-trend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.an-trend .card{padding:12px 14px}
+.an-trend h3{font-size:14px}
+.an-trend p{font-size:12.5px;color:var(--muted);margin-top:6px}
+.an-cols{display:flex;align-items:flex-end;gap:6px;height:96px;margin-top:8px}
+.an-cols div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:0}
+.an-cols span{display:block;width:100%;max-width:24px;background:var(--accent);border-radius:4px 4px 0 0;min-height:2px;margin:2px 0}
+.an-cols b{color:var(--text);font-weight:700}
+@media (max-width:420px){.an-trend{grid-template-columns:1fr}}
 .qfig{margin:14px 0 4px;text-align:center}
 .qfig img{max-width:100%;max-height:60vh;border-radius:12px;border:1px solid var(--border);background:#fff}
 .qtopic{display:block;font-size:12px;color:var(--muted);margin-top:-2px;margin-bottom:6px}
@@ -499,6 +550,208 @@ function vPortal(){
     <p class="hello">ひなたさん、今日もいっしょにがんばろう</p>
     <h1 tabindex="-1" data-focus style="font-size:20px;margin:2px 0 4px">どちらで勉強する？</h1>
     ${card('drill')}${card('kokushi')}
+    ${BOOKS.kokushi.sections.length ? `<button class="portal-card plan-entry" data-act="plan">
+      <span class="pk">試験対策</span><span class="pt">出題傾向と学習計画</span><span class="pd">国試過去問${AN().N}問の分析から、優先して勉強する分野と頻出問題をまとめました</span>
+    </button>` : ''}
+  </main>`;
+}
+
+/* ---------- 出題傾向と学習計画 ---------- */
+const AN_THEMES = [
+  ['心肺停止・CPR/AED', /心肺停止|心停止|胸骨圧迫|心肺蘇生|AED|除細動|心室細動|無脈性|PETCO2|呼気終末/],
+  ['気道確保・気道異物', /気道確保|気管挿管|声門上|ラリンゲアル|食道閉鎖式|喉頭鏡|気道異物|ハイムリック|吸引/],
+  ['救命処置（薬剤・輸液・血糖）', /アドレナリン|静脈路|輸液|乳酸リンゲル|ブドウ糖|血糖測定|エピペン|特定行為/],
+  ['心電図・不整脈', /心電図|不整脈|心房細動|ブロック|WPW|頻拍|徐脈|ST上昇|誘導/],
+  ['急性冠症候群・心筋梗塞', /急性冠症候群|心筋梗塞|狭心症/],
+  ['大動脈解離・大動脈瘤', /大動脈解離|大動脈瘤/],
+  ['肺血栓塞栓症', /肺血栓塞栓|肺塞栓|深部静脈血栓/],
+  ['心不全・心タンポナーデ', /心不全|タンポナーデ|頸静脈怒張|起坐呼吸/],
+  ['ショック', /ショック/],
+  ['脳卒中（梗塞・出血・SAH）', /脳卒中|脳梗塞|脳出血|くも膜下|膜下出血|一過性脳虚血|CPSS|シンシナティ/],
+  ['意識障害・JCS/GCS', /意識障害|JCS|GCS|昏睡|昏迷/],
+  ['痙攣・てんかん', /痙攣|けいれん|てんかん/],
+  ['頭痛', /頭痛/],
+  ['呼吸様式・SpO2・呼吸不全', /呼吸様式|チェーン・ストークス|クスマウル|失調性呼吸|呼吸不全|陥没呼吸|SpO2|酸素飽和度|パルスオキシ|CO2ナルコーシス/],
+  ['喘息・COPD・気胸・肺炎', /喘息|COPD|慢性閉塞性|気胸|肺炎|過換気/],
+  ['アナフィラキシー', /アナフィラキシー|アレルギー|蕁麻疹/],
+  ['糖尿病・低血糖・内分泌', /糖尿病|低血糖|高血糖|インスリン|ケトアシドーシス|甲状腺|クリーゼ|副腎/],
+  ['酸塩基平衡・電解質', /アシドーシス|アルカローシス|pH|カリウム|ナトリウム|カルシウム|電解質/],
+  ['消化器（吐下血・腹痛）', /吐血|下血|消化管出血|マロリー|潰瘍|腸閉塞|イレウス|虫垂炎|膵炎|胆嚢|腹膜炎|肝硬変|食道静脈瘤|腹痛/],
+  ['感染症', /感染|ウイルス|細菌|結核|インフルエンザ|コロナ|髄膜炎|麻疹|風疹|水痘|帯状疱疹|敗血症|食中毒|サルモネラ|ノロ|アニサキス/],
+  ['小児', /小児|乳児|幼児|新生児|乳幼児|虐待|突発性発疹|川崎|クループ|熱性/],
+  ['妊娠・分娩', /妊娠|妊婦|分娩|胎児|胎盤|子宮外|臍帯/],
+  ['高齢者', /高齢者|フレイル|認知症|せん妄/],
+  ['精神・自殺企図', /精神|自殺|うつ|統合失調|パニック/],
+  ['頭部外傷', /頭部外傷|脳挫傷|硬膜外|硬膜下|頭蓋|脳ヘルニア|クッシング/],
+  ['胸部外傷', /胸部外傷|緊張性気胸|フレイルチェスト|肋骨骨折|血胸|開放性気胸/],
+  ['腹部・骨盤外傷', /腹部外傷|骨盤|腹腔内出血|実質臓器/],
+  ['脊椎・脊髄外傷', /脊髄|脊椎|頸髄|頸椎|全脊柱固定|バックボード|ネックカラー/],
+  ['四肢外傷・圧挫', /四肢|骨折|クラッシュ|圧挫|コンパートメント|切断|止血帯|ターニケット/],
+  ['熱傷・化学損傷・電撃', /熱傷|化学損傷|電撃|雷撃|気道熱傷|9の法則/],
+  ['中毒', /中毒|有機リン|一酸化炭素|シアン|硫化水素|パラコート|アセトアミノフェン|拮抗薬|トキシドローム/],
+  ['熱中症・低体温・溺水', /熱中症|低体温|溺水|凍傷|減圧症|高山病/],
+  ['放射線障害', /放射線|被ばく|被曝|シーベルト/],
+  ['法令・MC・救急医療体制', /救急救命士法|医療法|消防法|法律|省令|メディカルコントロール|指示|プロトコール|事後検証|救急医療体制|救命救急センター|二次救急|救急告示|消防庁/],
+  ['災害医療・トリアージ', /災害|トリアージ|START|DMAT|多数傷病者/],
+  ['社会保障・保健制度', /保険|年金|社会保障|介護|生活保護|福祉|保健所|市町村|都道府県|医療計画|人口|死因|統計/]
+];
+/* 何度も正答になった語句の覚え方（分析時に確認した内容） */
+const AN_NOTES = {
+  '肺血栓塞栓症':'呼吸音は正常なのに急な低酸素・肺胞死腔・失神・閉塞性ショック。切り口を変えて毎年のように正答になる最頻出語。',
+  '声門上気道デバイスを用いた気道確保':'オンラインMCの指示が必要な処置。心拍のある呼吸停止にも実施できる。',
+  'くも膜下出血':'頭痛＋一側の散瞳・眼瞼下垂（動眼神経麻痺）なら脳動脈瘤によるSAHを疑う。',
+  '会陰部':'熱傷の重症部位は顔面・手・足・会陰部・主要関節。',
+  '頸髄損傷':'肺胞低換気型の呼吸不全。補助換気が有効。',
+  '硬膜':'開放性頭部損傷は硬膜まで外界と交通するもの。頭蓋内で痛覚があるのも硬膜。',
+  '急性緑内障発作':'頭痛＋片眼の激痛＋悪心嘔吐。脳疾患と取り違えやすい。',
+  '有機リン':'皮膚からも吸収される。拮抗薬はPAMとアトロピン。',
+  'プリオン':'感染性をもつタンパク質。狂牛病（BSE）の原因。',
+  'クラミジア':'女性の骨盤内感染症の主な原因。',
+  '結核':'二類感染症。BCGは定期接種。',
+  '血胸':'打診で濁音（気胸は鼓音）。循環血液量減少性ショックを来す。',
+  '季節性インフルエンザ':'飛沫感染なのでサージカルマスク。冬に流行のピーク。',
+  'パーキンソン病':'慢性に進行する中枢神経の変性疾患。',
+  '陥没呼吸':'呼吸困難で緊急度の高いサイン。',
+  '分娩第3期':'胎盤娩出期。分娩介助の資器材写真で出題。',
+  '白血病':'血液疾患の代表として繰り返し正答に。'
+};
+let AN_CACHE = null;
+function AN(){
+  if (AN_CACHE) return AN_CACHE;
+  const exams = BOOKS.kokushi.sections.slice().sort((a, b) => a.round - b.round);
+  const R = exams.map(e => e.round);
+  const all = [];
+  exams.forEach(e => e.questions.forEach(q => all.push({ q, r: e.round })));
+  const N = all.length;
+  const big = t => {
+    const b = String(t || '').split(' / ')[0].replace(/^[IV]+ /, '');
+    return ({ '人体の構造と機能':'基礎医学', '疾患の成り立ちと回復の過程':'基礎医学', '健康と社会保障':'基礎医学' })[b] || b || '未分類';
+  };
+  const subFix = { '消化系疾患':'消化器系疾患', '高齢者・妊婦の外傷':'小児・高齢者・妊婦の外傷', '化学損傷・電撃傷':'化学損傷' };
+  const sub = t => { const p = String(t || '').split(' / '); if (!p[1]) return null; return { b: p[0].replace(/^[IV]+ /, ''), s: subFix[p[1]] || p[1] }; };
+  const agg = (keyOf) => {
+    const m = new Map();
+    all.forEach(x => {
+      const k = keyOf(x); if (k == null) return;
+      const key = typeof k === 'string' ? k : k.b + ' / ' + k.s;
+      if (!m.has(key)) m.set(key, { key, label: k, ids: [], r: R.map(() => 0) });
+      const o = m.get(key); o.ids.push(x.q.id); o.r[R.indexOf(x.r)]++;
+    });
+    return Array.from(m.values()).map(o => Object.assign(o, { n: o.ids.length, every: o.r.every(v => v > 0) })).sort((a, b) => b.n - a.n);
+  };
+  const bigs = agg(x => big(x.q.topic));
+  const subs = agg(x => sub(x.q.topic));
+  const themes = AN_THEMES.map(([name, re]) => {
+    const hit = all.filter(x => re.test(x.q.q + ' ' + x.q.choices.join(' ')));
+    return { name, ids: hit.map(x => x.q.id), n: hit.length, r: R.map(r => hit.filter(x => x.r === r).length) };
+  }).sort((a, b) => b.n - a.n);
+  const ca = new Map();
+  all.forEach(x => toArr(x.q.answer).forEach(a => {
+    const t = x.q.choices[a];
+    if (!t || t.length < 2 || /^[A-E]$/.test(t)) return;
+    if (!ca.has(t)) ca.set(t, []);
+    ca.get(t).push(x);
+  }));
+  const terms = Array.from(ca.entries()).filter(([, v]) => new Set(v.map(x => x.r)).size >= 2)
+    .map(([t, v]) => ({ t, ids: v.map(x => x.q.id), n: v.length, rounds: new Set(v.map(x => x.r)).size }))
+    .sort((a, b) => b.n - a.n || b.rounds - a.rounds);
+  const perR = f => R.map(r => all.filter(x => x.r === r && f(x.q)).length);
+  const figs = perR(q => !!q.fig);
+  const circ = (subs.find(s => s.label.s === '循環系疾患') || { r: R.map(() => 0) }).r;
+  const ecg = (themes.find(t => t.name === '心電図・不整脈') || { r: R.map(() => 0) }).r;
+  const top3 = bigs.slice(0, 3).reduce((s, b) => s + b.n, 0);
+  return AN_CACHE = { R, N, bigs, subs, themes, terms, figs, circ, ecg, top3 };
+}
+function vPlan(){
+  const A = AN();
+  const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+  const rd = r => `<span class="rd" aria-label="回別 ${A.R.map((x, i) => '第' + x + '回' + r[i] + '問').join('、')}">${r.map(v => `<i class="${v ? '' : 'z'}">${v}</i>`).join('')}</span>`;
+  const acc = ids => {
+    const st = statsOf(ids);
+    if (!st.answered) return `<span class="an-acc">未着手</span>`;
+    return `<span class="an-acc ${st.acc < 60 ? 'low' : ''}">正答率 ${st.acc}%（${st.answered}/${st.total}問）</span>`;
+  };
+  const play = (kind, key, label) => `<button class="an-play" data-act="planPlay" data-kind="${kind}" data-key="${esc(key)}" aria-label="${esc(label)}の問題を解く">解く</button>`;
+  const prio = i => i < 3 ? '<span class="an-tag a">最優先</span>' : i < 5 ? '<span class="an-tag b">優先</span>' : '<span class="an-tag">固定枠</span>';
+  const bigMax = A.bigs[0] ? A.bigs[0].n : 1;
+  const bigRows = A.bigs.map((b, i) => `<div class="an-row">
+      <div class="nm">${esc(b.label)}</div><div class="ct">${b.n}問<small>${pct(b.n, A.N)}%</small></div>
+      <span class="bar"><span style="width:${pct(b.n, bigMax)}%"></span></span>
+      <div class="meta">${prio(i)}${rd(b.r)}${acc(b.ids)}${play('big', b.key, b.label)}</div></div>`).join('');
+  const subTop = A.subs.slice(0, 15), subMax = subTop[0] ? subTop[0].n : 1;
+  const subRows = subTop.map(s => `<div class="an-row">
+      <div class="nm">${esc(s.label.s)}<small>${esc(s.label.b)}</small></div><div class="ct">${s.n}問</div>
+      <span class="bar"><span style="width:${pct(s.n, subMax)}%"></span></span>
+      <div class="meta">${s.every ? '<span class="an-tag a">毎回出題</span>' : ''}${rd(s.r)}${acc(s.ids)}${play('sub', s.key, s.label.s)}</div></div>`).join('');
+  const thTop = A.themes.slice(0, 15), thMax = thTop[0] ? thTop[0].n : 1;
+  const thRows = thTop.map(t => `<div class="an-row">
+      <div class="nm">${esc(t.name)}</div><div class="ct">${t.n}問</div>
+      <span class="bar"><span style="width:${pct(t.n, thMax)}%"></span></span>
+      <div class="meta">${rd(t.r)}${acc(t.ids)}${play('theme', t.name, t.name)}</div></div>`).join('');
+  const termRows = A.terms.slice(0, 18).map(t => `<div class="an-term">
+      <div class="hd"><b>${esc(t.t)}</b><span class="an-tag ${t.n >= 3 ? 'a' : 'b'}">${t.rounds}回で${t.n}問</span>${play('term', t.t, t.t)}</div>
+      ${AN_NOTES[t.t] ? `<p>${esc(AN_NOTES[t.t])}</p>` : ''}</div>`).join('');
+  const cols = arr => { const mx = Math.max(1, ...arr); return `<div class="an-cols">${arr.map((v, i) => `<div><b>${v}</b><span style="height:${Math.round(v / mx * 70)}%"></span>${A.R[i]}回</div>`).join('')}</div>`; };
+  const fixed = A.subs.filter(s => s.every && s.n <= 6).slice(0, 8).map(s => s.label.s);
+  const first = A.R[0], last = A.R[A.R.length - 1];
+  const weak = A.subs.filter(s => { const st = statsOf(s.ids); return st.answered >= 3 && st.acc < 60; }).slice(0, 5);
+
+  return topbar(backBtn('portal', '入口に戻る'), '出題傾向と学習計画', '') + `
+  <main class="wrap an">
+    <h1 tabindex="-1" data-focus style="font-size:20px">出題傾向と学習計画</h1>
+    <p class="small muted" style="margin-top:4px">国試本試験 第${first}〜${last}回の収録問題${A.N}問を分析しました。「解く」でその分野の過去問だけを練習できます。正答率はひなたさんの解答記録です。</p>
+
+    <div class="an-sum" style="margin-top:14px">
+      <div class="card"><b>${pct(A.top3, A.N)}%</b><span>上位3分野（${A.bigs.slice(0, 3).map(b => esc(b.label.replace('救急', '').replace('・病態生理学', ''))).join('・')}）の割合</span></div>
+      <div class="card"><b>${A.figs[0]}→${A.figs[A.figs.length - 1]}問</b><span>図・写真問題（第${first}回→第${last}回）</span></div>
+    </div>
+    <div class="an-key"><b>まずここから</b>分野ごとの問題数は毎回ほぼ同じです。配点の大きい3分野を先に固め、毎回出る小さな分野は確実な得点源にします。何度も正答になった語句は、問われ方とセットで覚えます。</div>
+
+    ${weak.length ? `<h2 class="sec-h">いまの苦手（正答率60%未満）</h2><div class="card an-rows" style="padding:0">${weak.map(s => `<div class="an-row"><div class="nm">${esc(s.label.s)}<small>${esc(s.label.b)}</small></div><div class="ct">${s.n}問</div><div class="meta">${acc(s.ids)}${play('sub', s.key, s.label.s)}</div></div>`).join('')}</div>` : ''}
+
+    <h2 class="sec-h">学習計画（試験までの3段階）</h2>
+    <div class="card">
+      <div class="an-phase"><span class="when">第1期 ｜ 今〜12月</span><h3>配点の大きい3分野を固める</h3><ul>
+        <li>救急救命士が行う処置（特定行為・気道確保器具・薬剤の適応）</li>
+        <li>循環系疾患（急性冠症候群・大動脈解離・肺血栓塞栓症・心不全）</li>
+        <li>心肺停止・救急蘇生法（CPR・AED・PETCO2）</li>
+        <li>意識障害（JCS/GCS、一次性脳病変か二次性か）と神経系疾患</li>
+        <li>観察（全身状態・SpO2・心電図モニター・血圧）</li></ul></div>
+      <div class="an-phase"><span class="when">第2期 ｜ 1月</span><h3>分野をまたぐテーマと固定枠をつぶす</h3><ul>
+        <li>感染症・心電図・呼吸器疾患・小児は分野をまたいで出るので、病気ごとに「症候・観察・処置・搬送」を1枚にまとめる</li>
+        <li>毎回欠かさず出る小さな分野：${fixed.map(esc).join('、')}</li>
+        <li>環境障害・急性中毒学（毎回6問）は範囲が狭いので満点を狙う</li></ul></div>
+      <div class="an-phase"><span class="when">第3期 ｜ 2月〜直前</span><h3>過去問を通しで解き、頻出語句と図問題で仕上げ</h3><ul>
+        <li>年度別の本試験を時間を計って通しで解く</li>
+        <li>下の「何度も正答になった語句」を問われ方とセットで暗記</li>
+        <li>同じ設問でも正答は毎回違う。間違えた問題は5つの選択肢すべての正誤を説明できるまで復習</li>
+        <li>図・写真問題（創傷・器具・心電図）を繰り返す</li></ul></div>
+    </div>
+
+    <h2 class="sec-h">大分野ごとの出題数</h2>
+    <p class="lead">小さな数字は第${A.R.join('・')}回それぞれの問題数です。毎回ほぼ同じ数が出ています。</p>
+    <div class="card an-rows" style="padding:0">${bigRows}</div>
+
+    <h2 class="sec-h">優先して勉強する細目 TOP15</h2>
+    <p class="lead">書籍の細目単位で多い順に並べました。</p>
+    <div class="card an-rows" style="padding:0">${subRows}</div>
+
+    <h2 class="sec-h">分野をまたぐ頻出テーマ TOP15</h2>
+    <p class="lead">同じ病気が「症候」「疾病」「外傷」などに分かれて出るので、問題文と選択肢のキーワードで数え直しました。</p>
+    <div class="card an-rows" style="padding:0">${thRows}</div>
+
+    <h2 class="sec-h">何度も正答になった語句（頻出問題）</h2>
+    <p class="lead">問われ方を変えて、別の回でも正答になった語句です。</p>
+    <div class="card" style="padding:0">${termRows}</div>
+
+    <h2 class="sec-h">回を追って増えているもの</h2>
+    <div class="an-trend">
+      <div class="card"><h3>図・写真を使う問題</h3>${cols(A.figs)}<p>創傷写真・器具・解剖図・心電図など。増えています。</p></div>
+      <div class="card"><h3>循環系疾患</h3>${cols(A.circ)}<p>急性冠症候群・大動脈解離・肺血栓塞栓症まわり。</p></div>
+      <div class="card"><h3>心電図・不整脈</h3>${cols(A.ecg)}<p>モニター誘導・12誘導伝送・致死性不整脈。</p></div>
+    </div>
+
+    <p class="small muted" style="margin-top:24px">収録はA問題の一部（各回の全問ではありません）なので、この分析は収録された問題の範囲での傾向です。テーマはキーワードで自動分類しているため、1問が複数のテーマに入ることがあります。</p>
   </main>`;
 }
 function vHome(){
@@ -783,6 +1036,7 @@ function render(toTop){
     case 'lists': html = vLists(); break;
     case 'settings': html = vSettings(); break;
     case 'portal': html = vPortal(); break;
+    case 'plan': html = vPlan(); break;
     default: html = vHome();
   }
   app.innerHTML = html;
@@ -888,6 +1142,16 @@ function closeModal(){ modalEl.innerHTML = ''; modalOk = null; }
 const ACT = {
   home(){ S = null; go('home'); },
   portal(){ S = null; go('portal'); },
+  plan(){ S = null; go('plan'); },
+  planPlay(d){
+    const A = AN();
+    const src = d.kind === 'big' ? A.bigs : d.kind === 'sub' ? A.subs : d.kind === 'theme' ? A.themes : A.terms;
+    const it = src.find(x => (x.key || x.name || x.t) === d.key);
+    if (!it) return;
+    useBook('kokushi'); store.book = 'kokushi'; save(); MR = null;
+    const name = d.kind === 'sub' ? it.label.s : d.kind === 'big' ? it.label : d.kind === 'theme' ? it.name : '頻出：' + it.t;
+    startPractice(shuffle(it.ids), name);
+  },
   openBook(d){ useBook(d.k); store.book = BOOK.key; save(); S = null; MR = null; go('home'); },
   submitMulti(){ if (S && S.picked == null && S.sel.length === needN(QMAP.get(S.ids[S.i]).q)) submitAns(S.sel); },
   settings(){ go('settings', { from: view.name }); },
